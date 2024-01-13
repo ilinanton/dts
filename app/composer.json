@@ -1,0 +1,17 @@
+{
+    "name": "ilinanton/dts",
+    "description": "Development Team Statistics",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Anton Ilin"
+        }
+    ],
+    "require": {},
+    "require-dev": {}
+}
