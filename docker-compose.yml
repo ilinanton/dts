@@ -1,0 +1,59 @@
+name: dts
+version: "3.6"
+
+networks:
+  dts_network:
+    name: dts_network
+    driver: bridge
+
+x-logging: &default-logging
+  driver: ${DOCKER_LOG_DRIVER:-json-file}
+  options:
+    max-size: ${DOCKER_LOG_MAX_SIZE:-100m}
+    max-file: ${DOCKER_LOG_MAX_FILE:-1}
+
+services:
+  php:
+    build:
+      context: ./docker/php
+    restart: unless-stopped
+    container_name: dts_php
+    tty: true
+    depends_on:
+      - mysql
+    networks:
+      dts_network:
+        aliases:
+          - dts_php
+    volumes:
+      - ./app:/var/www/app
+    logging: *default-logging
+
+  mysql:
+    restart: unless-stopped
+    image: mysql:8.0.33
+    container_name: dts_mysql
+    healthcheck:
+      test: mysqladmin ping -h 0.0.0.0 -u root -p${MYSQL_ROOT_PASSWORD:-password} | grep -q 'mysqld is alive' || exit 1
+      interval: 5s
+      timeout: 20s
+      retries: 5
+      start_period: 30s
+    expose:
+      - 3306
+    ports:
+      - ${MYSQL_PUB_PORT:-3306}:3306
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-dev_stat}
+      MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST:-%}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-password}
+      MYSQL_USER: ${MYSQL_USER:-user}
+      MYSQL_PASSWORD: ${MYSQL_USER_PASS:-password}
+    networks:
+      dts_network:
+        aliases:
+          - dts_mysql
+    volumes:
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/mysql.cnf:ro
+      - ./data/mysql:/var/lib/mysql
+    logging: *default-logging
