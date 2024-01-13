@@ -1,4 +1,6 @@
 /**/.idea/
 /**/.env
+/**/phinx.yml
+/**/migration/*/phinx.php
 /data
 /app/vendor
