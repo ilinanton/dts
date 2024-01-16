@@ -1,7 +1,7 @@
 /**/.idea/
 /**/.env
 /**/phinx.yml
-/**/migration/*/phinx.php
+/app/phinx_migrations/*/phinx.php
 /**/.phpcs-cache
 /data
 /app/vendor
