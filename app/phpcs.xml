@@ -29,6 +29,6 @@
         </properties>
     </rule>
 
-    <file>index.php</file>
+    <file>app.php</file>
     <file>src/</file>
 </ruleset>
