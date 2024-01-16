@@ -28,4 +28,4 @@ phpcbf:
 #      APP       #
 ##################
 app_run:
-	${DC} exec php php app.php
+	${DC} exec php php bootstrap.php

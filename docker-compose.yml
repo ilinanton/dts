@@ -22,6 +22,7 @@ services:
     depends_on:
       - mysql
     environment:
+      APP_DATABASE_TYPE: ${APP_DATABASE_TYPE}
       MYSQL_URL: ${MYSQL_URL}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}

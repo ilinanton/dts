@@ -2,4 +2,8 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-print_r(getenv());
+use App\App;
+
+$app = new App();
+
+$app->run();
