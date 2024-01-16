@@ -23,7 +23,6 @@ services:
       - mysql
     environment:
       MYSQL_URL: ${MYSQL_URL}
-      MYSQL_PUB_PORT: ${MYSQL_PUB_PORT}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_USER_PASS}
