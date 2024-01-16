@@ -20,3 +20,9 @@ phpcs:
 	${DC} exec php ./vendor/bin/phpcs -n -p --no-cache
 phpcbf:
 	${DC} exec php ./vendor/bin/phpcbf -n -p
+
+##################
+#      APP       #
+##################
+run_app:
+	${DC} exec php php app.php
