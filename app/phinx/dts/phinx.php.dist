@@ -1,7 +1,6 @@
 <?php
 
-$mysqlUrl = getenv('MYSQL_PUB_URL');
-$mysqlPort = getenv('MYSQL_PUB_PORT');
+$mysqlUrl = getenv('MYSQL_URL');
 $mysqlDatabase = getenv('MYSQL_DATABASE');
 $mysqlUser = getenv('MYSQL_USER');
 $mysqlPassword = getenv('MYSQL_PASSWORD');
@@ -21,7 +20,7 @@ return
             'name' => $mysqlDatabase,
             'user' => $mysqlUser,
             'pass' => $mysqlPassword,
-            'port' => $mysqlPort,
+            'port' => 3306,
             'charset' => 'utf8',
         ],
         'development' => [
@@ -30,7 +29,7 @@ return
             'name' => $mysqlDatabase,
             'user' => $mysqlUser,
             'pass' => $mysqlPassword,
-            'port' => $mysqlPort,
+            'port' => 3306,
             'charset' => 'utf8',
         ],
         'testing' => [
@@ -39,7 +38,7 @@ return
             'name' => $mysqlDatabase,
             'user' => $mysqlUser,
             'pass' => $mysqlPassword,
-            'port' => $mysqlPort,
+            'port' => 3306,
             'charset' => 'utf8',
         ]
     ],

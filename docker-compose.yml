@@ -22,7 +22,7 @@ services:
     depends_on:
       - mysql
     environment:
-      MYSQL_PUB_URL: ${MYSQL_PUB_URL}
+      MYSQL_URL: ${MYSQL_URL}
       MYSQL_PUB_PORT: ${MYSQL_PUB_PORT}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}

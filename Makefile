@@ -13,6 +13,9 @@ DC_DOWN = ${DC} down
 DC_UP = ${DC} up -d --build
 DC_RESTART = ${DC_DOWN} && ${DC_UP}
 
+dc_restart:
+	${DC_RESTART}
+
 ##################
 #  CODE QUALITY  #
 ##################
