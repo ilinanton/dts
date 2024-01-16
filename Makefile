@@ -24,5 +24,5 @@ phpcbf:
 ##################
 #      APP       #
 ##################
-run_app:
+app_run:
 	${DC} exec php php app.php
