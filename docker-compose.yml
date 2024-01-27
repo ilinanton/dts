@@ -27,6 +27,10 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_USER_PASS}
+
+      GITLAB_URL: ${GITLAB_URL}
+      GITLAB_TOKEN: ${GITLAB_TOKEN}
+      GITLAB_GROUP_ID: ${GITLAB_GROUP_ID}
     networks:
       dts_network:
         aliases:
