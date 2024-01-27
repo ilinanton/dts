@@ -20,7 +20,7 @@
     <rule ref="Generic.Metrics.NestingLevel">
         <properties>
             <property name="nestingLevel" value="5"/>
-            <property name="absoluteNestingLevel" value="10"/>
+            <property name="absoluteNestingLevel" value="5"/>
         </properties>
     </rule>
     <rule ref="CognitiveComplexity">
