@@ -7,5 +7,5 @@ use DI\ContainerBuilder;
 $containerBuilder = new ContainerBuilder();
 $containerBuilder->useAttributes(false);
 $containerBuilder->useAutowiring(false);
-$containerBuilder->addDefinitions('config.php');
+$containerBuilder->addDefinitions(__DIR__ . '/config.php');
 return $containerBuilder->build();
