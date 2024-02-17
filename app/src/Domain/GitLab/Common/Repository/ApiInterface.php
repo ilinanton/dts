@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\GitLab\Repository;
+namespace App\Domain\GitLab\Common\Repository;
 
 interface ApiInterface
 {
