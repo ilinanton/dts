@@ -29,6 +29,6 @@
         </properties>
     </rule>
 
-    <file>bootstrap.php</file>
+    <file>console.php</file>
     <file>src/</file>
 </ruleset>

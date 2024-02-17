@@ -2,10 +2,15 @@
 
 namespace App;
 
+use Psr\Container\ContainerInterface;
+
 final class App
 {
-    public function __construct()
+    private ContainerInterface $container;
+
+    public function __construct(ContainerInterface $container)
     {
+        $this->container = $container;
     }
 
     public function run(): void
