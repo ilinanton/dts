@@ -3,7 +3,6 @@
 namespace App\Infrastructure\GitLab;
 
 use App\Domain\GitLab\Repository\ApiInterface;
-use App\Domain\GitLab\Repository\ApiClientInterface;
 
 class Api implements ApiInterface
 {
