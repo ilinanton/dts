@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Interface\Console\Command;
 use Psr\Container\ContainerInterface;
 
 final class App
@@ -13,8 +14,26 @@ final class App
         $this->container = $container;
     }
 
-    public function run(): void
+    public function run(): int
     {
-        echo "H!" . PHP_EOL;
+        while (true) {
+            $command = readline("Command: ");
+            try {
+                $this->container->get($this->identifyCommand($command)->useCaseClass())->execute();
+            } catch (\Throwable $exception) {
+                echo $exception->getMessage() . PHP_EOL;
+                return $exception->getCode();
+            }
+        }
+    }
+
+    private function identifyCommand(string $command): Command
+    {
+        $commandList = Command::cases();
+        $matchingCommandIndex = array_search($command, array_column($commandList, "name"));
+        if (false === $matchingCommandIndex) {
+            throw new \Exception('Command not found!');
+        }
+        return $commandList[$matchingCommandIndex];
     }
 }
