@@ -1,8 +1,10 @@
 <?php
 
+use App\Application\Command;
 use App\Application\ExitUseCase;
 use App\Application\GitLab\SyncGitLabProjects;
 use App\Application\GitLab\SyncGitLabUsers;
+use App\Application\MenuUseCase;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -10,16 +12,22 @@ return [
     'GITLAB_TOKEN' => getenv('GITLAB_TOKEN'),
     'GITLAB_GROUP_ID' => getenv('GITLAB_GROUP_ID'),
 
-    'command_exit' => function (ContainerInterface $c) {
+    Command::menu->diId() => function (ContainerInterface $c) {
+        return $c->get(MenuUseCase::class);
+    },
+    Command::exit->diId() => function (ContainerInterface $c) {
         return $c->get(ExitUseCase::class);
     },
-    'command_sync_gitlab_projects' => function (ContainerInterface $c) {
+    Command::sync_gitlab_projects->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitLabProjects::class);
     },
-    'command_sync_gitlab_users' => function (ContainerInterface $c) {
+    Command::sync_gitlab_users->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitLabUsers::class);
     },
 
+    MenuUseCase::class => function (ContainerInterface $c) {
+        return new MenuUseCase();
+    },
     ExitUseCase::class => function (ContainerInterface $c) {
         return new ExitUseCase();
     },
