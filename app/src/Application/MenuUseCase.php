@@ -10,7 +10,7 @@ class MenuUseCase implements UseCaseInterface
 
         $commands = Command::cases();
         foreach ($commands as $key => $command) {
-            echo '[' . $key . '] ' . $command->name . ' - ' . $command->value . PHP_EOL;
+            echo '[' . $key . '] - ' . $command->value . PHP_EOL;
         }
     }
 }

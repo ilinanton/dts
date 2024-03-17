@@ -4,8 +4,8 @@ namespace App\Application;
 
 enum Command: string
 {
-    case menu = 'Menu';
     case exit = 'Exit';
+    case menu = 'Menu';
     case sync_gitlab_projects = 'Sync gitlab projects';
     case sync_gitlab_users = 'Sync gitlab users';
 
