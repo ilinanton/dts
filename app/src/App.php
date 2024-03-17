@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Interface\Console\Command;
+use App\Application\UseCaseInterface;
 use Psr\Container\ContainerInterface;
 
 final class App
@@ -19,7 +19,7 @@ final class App
         while (true) {
             $command = readline("Command: ");
             try {
-                $this->container->get($this->identifyCommand($command)->useCaseClass())->execute();
+                $this->identifyCommand($command)->execute();
             } catch (\Throwable $exception) {
                 echo $exception->getMessage() . PHP_EOL;
                 return $exception->getCode();
@@ -27,13 +27,12 @@ final class App
         }
     }
 
-    private function identifyCommand(string $command): Command
+    private function identifyCommand(string $command): UseCaseInterface
     {
-        $commandList = Command::cases();
-        $matchingCommandIndex = array_search($command, array_column($commandList, "name"));
-        if (false === $matchingCommandIndex) {
+        $commandId = 'command_' . $command;
+        if (!$this->container->has($commandId)) {
             throw new \Exception('Command not found!');
         }
-        return $commandList[$matchingCommandIndex];
+        return $this->container->get($commandId);
     }
 }
