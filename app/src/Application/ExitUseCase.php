@@ -2,7 +2,7 @@
 
 namespace App\Application;
 
-class ExitUseCase implements UseCaseInterface
+final class ExitUseCase implements UseCaseInterface
 {
     public function execute(): void
     {

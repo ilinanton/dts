@@ -8,7 +8,7 @@ use App\Domain\GitLab\Project\ValueObject\ProjectId;
 use App\Domain\GitLab\Project\ValueObject\ProjectName;
 use App\Domain\GitLab\Project\ValueObject\ProjectWebUrl;
 
-class Project extends AbstractEntity
+final class Project extends AbstractEntity
 {
     private ProjectId $id;
     private ProjectName $name;

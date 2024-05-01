@@ -2,7 +2,7 @@
 
 namespace App\Domain\GitLab\Project\ValueObject;
 
-class ProjectId
+final class ProjectId
 {
     private int $value;
 

@@ -5,7 +5,7 @@ namespace App\Infrastructure\GitLab;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 
-class GitLabApiClient implements GitLabApiClientInterface
+final class GitLabApiClient implements GitLabApiClientInterface
 {
     private Client $client;
     public function __construct(string $baseUri, string $privateToken)

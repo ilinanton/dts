@@ -2,7 +2,7 @@
 
 namespace App\Application;
 
-class MenuUseCase implements UseCaseInterface
+final class MenuUseCase implements UseCaseInterface
 {
     public function execute(): void
     {

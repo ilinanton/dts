@@ -6,7 +6,7 @@ use ArrayIterator;
 use IteratorAggregate;
 use Traversable;
 
-class ProjectCollection implements IteratorAggregate
+final class ProjectCollection implements IteratorAggregate
 {
     /** @var Project[] */
     private array $list;

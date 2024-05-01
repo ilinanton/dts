@@ -5,7 +5,7 @@ namespace App\Application\GitLab;
 use App\Application\UseCaseInterface;
 use App\Domain\GitLab\Member\Repository\GitLabApiMemberRepositoryInterface;
 
-class SyncGitLabUsersUseCase implements UseCaseInterface
+final class SyncGitLabUsersUseCase implements UseCaseInterface
 {
     private GitLabApiMemberRepositoryInterface $gitLabApi;
 

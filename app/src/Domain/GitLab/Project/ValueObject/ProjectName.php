@@ -2,7 +2,7 @@
 
 namespace App\Domain\GitLab\Project\ValueObject;
 
-class ProjectName
+final class ProjectName
 {
     private string $value;
 

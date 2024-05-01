@@ -4,7 +4,7 @@ namespace App\Infrastructure\GitLab;
 
 use App\Domain\GitLab\Member\Repository\GitLabApiMemberRepositoryInterface;
 
-class GitLabApiMemberRepository implements GitLabApiMemberRepositoryInterface
+final class GitLabApiMemberRepository implements GitLabApiMemberRepositoryInterface
 {
     private GitLabApiClientInterface $client;
 

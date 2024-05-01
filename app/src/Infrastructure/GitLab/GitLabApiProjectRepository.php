@@ -6,7 +6,7 @@ use App\Domain\GitLab\Project\ProjectCollection;
 use App\Domain\GitLab\Project\ProjectFactory;
 use App\Domain\GitLab\Project\Repository\GitLabApiProjectRepositoryInterface;
 
-class GitLabApiProjectRepository implements GitLabApiProjectRepositoryInterface
+final class GitLabApiProjectRepository implements GitLabApiProjectRepositoryInterface
 {
     private GitLabApiClientInterface $client;
     private ProjectFactory $projectFactory;

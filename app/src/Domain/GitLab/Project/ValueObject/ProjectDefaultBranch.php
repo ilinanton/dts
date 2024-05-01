@@ -2,7 +2,7 @@
 
 namespace App\Domain\GitLab\Project\ValueObject;
 
-class ProjectDefaultBranch
+final class ProjectDefaultBranch
 {
     private string $value;
 
