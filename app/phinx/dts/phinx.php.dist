@@ -3,7 +3,7 @@
 $mysqlUrl = getenv('MYSQL_URL');
 $mysqlDatabase = getenv('MYSQL_DATABASE');
 $mysqlUser = getenv('MYSQL_USER');
-$mysqlPassword = getenv('MYSQL_PASSWORD');
+$mysqlPassword = getenv('MYSQL_USER_PASS');
 
 return
 [
