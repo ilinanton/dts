@@ -2,13 +2,15 @@
 
 use App\Application\Command;
 use App\Application\ExitUseCase;
-use App\Application\GitLab\SyncGitLabProjects;
-use App\Application\GitLab\SyncGitLabUsers;
+use App\Application\GitLab\SyncGitLabProjectsUseCase;
+use App\Application\GitLab\SyncGitLabUsersUseCase;
 use App\Application\MenuUseCase;
-use App\Domain\GitLab\Common\Repository\GitLabApiRepositoryInterface;
+use App\Domain\GitLab\Member\Repository\GitLabApiMemberRepositoryInterface;
+use App\Domain\GitLab\Project\Repository\GitLabApiProjectRepositoryInterface;
 use App\Infrastructure\GitLab\GitLabApiClient;
 use App\Infrastructure\GitLab\GitLabApiClientInterface;
-use App\Infrastructure\GitLab\GitLabApiRepository;
+use App\Infrastructure\GitLab\GitLabApiProjectRepository;
+use App\Infrastructure\GitLab\GitLabApiMemberRepository;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -28,10 +30,10 @@ return [
         return $c->get(ExitUseCase::class);
     },
     Command::sync_gitlab_projects->diId() => function (ContainerInterface $c) {
-        return $c->get(SyncGitLabProjects::class);
+        return $c->get(SyncGitLabProjectsUseCase::class);
     },
     Command::sync_gitlab_users->diId() => function (ContainerInterface $c) {
-        return $c->get(SyncGitLabUsers::class);
+        return $c->get(SyncGitLabUsersUseCase::class);
     },
 
     MenuUseCase::class => function (ContainerInterface $c) {
@@ -40,15 +42,19 @@ return [
     ExitUseCase::class => function (ContainerInterface $c) {
         return new ExitUseCase();
     },
-    SyncGitLabProjects::class => function (ContainerInterface $c) {
-        return new SyncGitLabProjects($c->get(GitLabApiRepositoryInterface::class));
+
+    SyncGitLabProjectsUseCase::class => function (ContainerInterface $c) {
+        return new SyncGitLabProjectsUseCase($c->get(GitLabApiProjectRepositoryInterface::class));
     },
-    SyncGitLabUsers::class => function (ContainerInterface $c) {
-        return new SyncGitLabUsers($c->get(GitLabApiRepositoryInterface::class));
+    SyncGitLabUsersUseCase::class => function (ContainerInterface $c) {
+        return new SyncGitLabUsersUseCase($c->get(GitLabApiMemberRepositoryInterface::class));
     },
 
-    GitLabApiRepositoryInterface::class => function (ContainerInterface $c) {
-        return new GitLabApiRepository($c->get(GitLabApiClientInterface::class));
+    GitLabApiProjectRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitLabApiProjectRepository($c->get(GitLabApiClientInterface::class));
+    },
+    GitLabApiMemberRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitLabApiMemberRepository($c->get(GitLabApiClientInterface::class));
     },
     GitLabApiClientInterface::class => function (ContainerInterface $c) {
         return new GitLabApiClient($c->get('GITLAB_GROUP_URI'), $c->get('GITLAB_TOKEN'));
