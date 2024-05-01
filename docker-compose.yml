@@ -1,5 +1,4 @@
 name: dts
-version: "3.6"
 
 networks:
   dts_network:
