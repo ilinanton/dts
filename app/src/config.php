@@ -5,10 +5,10 @@ use App\Application\ExitUseCase;
 use App\Application\GitLab\SyncGitLabProjects;
 use App\Application\GitLab\SyncGitLabUsers;
 use App\Application\MenuUseCase;
-use App\Domain\GitLab\Common\Repository\GitLabApiClientInterface;
-use App\Domain\GitLab\Common\Repository\GitLabApiInterface;
-use App\Infrastructure\GitLab\GitLabApi;
+use App\Domain\GitLab\Common\Repository\GitLabApiRepositoryInterface;
 use App\Infrastructure\GitLab\GitLabApiClient;
+use App\Infrastructure\GitLab\GitLabApiClientInterface;
+use App\Infrastructure\GitLab\GitLabApiRepository;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -41,14 +41,14 @@ return [
         return new ExitUseCase();
     },
     SyncGitLabProjects::class => function (ContainerInterface $c) {
-        return new SyncGitLabProjects($c->get(GitLabApiInterface::class));
+        return new SyncGitLabProjects($c->get(GitLabApiRepositoryInterface::class));
     },
     SyncGitLabUsers::class => function (ContainerInterface $c) {
-        return new SyncGitLabUsers($c->get(GitLabApiInterface::class));
+        return new SyncGitLabUsers($c->get(GitLabApiRepositoryInterface::class));
     },
 
-    GitLabApiInterface::class => function (ContainerInterface $c) {
-        return new GitLabApi($c->get(GitLabApiClientInterface::class));
+    GitLabApiRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitLabApiRepository($c->get(GitLabApiClientInterface::class));
     },
     GitLabApiClientInterface::class => function (ContainerInterface $c) {
         return new GitLabApiClient($c->get('GITLAB_GROUP_URI'), $c->get('GITLAB_TOKEN'));

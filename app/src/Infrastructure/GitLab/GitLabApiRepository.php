@@ -2,10 +2,9 @@
 
 namespace App\Infrastructure\GitLab;
 
-use App\Domain\GitLab\Common\Repository\GitLabApiClientInterface;
-use App\Domain\GitLab\Common\Repository\GitLabApiInterface;
+use App\Domain\GitLab\Common\Repository\GitLabApiRepositoryInterface;
 
-class GitLabApi implements GitLabApiInterface
+class GitLabApiRepository implements GitLabApiRepositoryInterface
 {
     private GitLabApiClientInterface $client;
 
