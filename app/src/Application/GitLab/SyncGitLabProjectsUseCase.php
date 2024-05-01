@@ -16,7 +16,7 @@ class SyncGitLabProjectsUseCase implements UseCaseInterface
 
     public function execute(): void
     {
-        $data = $this->gitLabApiProjectRepository->get();
-        var_dump($data);
+        $projectCollection = $this->gitLabApiProjectRepository->get();
+        var_dump($projectCollection);
     }
 }
