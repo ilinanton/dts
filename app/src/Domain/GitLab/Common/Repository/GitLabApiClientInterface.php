@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Infrastructure\GitLab;
+namespace App\Domain\GitLab\Common\Repository;
 
 use Psr\Http\Message\ResponseInterface;
 
-interface ApiClientInterface
+interface GitLabApiClientInterface
 {
     public function get(string $uri): ResponseInterface;
 }

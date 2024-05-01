@@ -2,13 +2,14 @@
 
 namespace App\Infrastructure\GitLab;
 
-use App\Domain\GitLab\Common\Repository\ApiInterface;
+use App\Domain\GitLab\Common\Repository\GitLabApiClientInterface;
+use App\Domain\GitLab\Common\Repository\GitLabApiInterface;
 
-class Api implements ApiInterface
+class GitLabApi implements GitLabApiInterface
 {
-    private ApiClientInterface $client;
+    private GitLabApiClientInterface $client;
 
-    public function __construct(ApiClientInterface $client)
+    public function __construct(GitLabApiClientInterface $client)
     {
         $this->client = $client;
     }

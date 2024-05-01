@@ -2,7 +2,7 @@
 
 namespace App\Domain\GitLab\Common\Repository;
 
-interface ApiInterface
+interface GitLabApiInterface
 {
     public function getGroupMembers(): array;
 
