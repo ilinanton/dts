@@ -31,4 +31,5 @@
 
     <file>console.php</file>
     <file>src/</file>
+    <file>phinx/</file>
 </ruleset>
