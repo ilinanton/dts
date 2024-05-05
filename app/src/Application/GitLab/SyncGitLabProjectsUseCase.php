@@ -8,7 +8,7 @@ use App\Domain\GitLab\Project\Repository\GitLabDataBaseProjectRepositoryInterfac
 
 final class SyncGitLabProjectsUseCase implements UseCaseInterface
 {
-    private const PROJECTS_PER_PAGE = 20;
+    private const COUNT_PROJECTS_PER_PAGE = 20;
 
     private GitLabApiProjectRepositoryInterface $gitLabApiProjectRepository;
     private GitLabDataBaseProjectRepositoryInterface $gitLabDataBaseProjectRepository;
@@ -26,10 +26,10 @@ final class SyncGitLabProjectsUseCase implements UseCaseInterface
         $page = 0;
         do {
             ++$page;
-            $projectCollection = $this->gitLabApiProjectRepository->get($page, self::PROJECTS_PER_PAGE);
+            $projectCollection = $this->gitLabApiProjectRepository->get($page, self::COUNT_PROJECTS_PER_PAGE);
             foreach ($projectCollection as $project) {
                 $this->gitLabDataBaseProjectRepository->save($project);
             }
-        } while (self::PROJECTS_PER_PAGE === count($projectCollection));
+        } while (self::COUNT_PROJECTS_PER_PAGE === count($projectCollection));
     }
 }
