@@ -26,4 +26,24 @@ final class Project extends AbstractEntity
         $this->defaultBranch = $defaultBranch;
         $this->webUrl = $webUrl;
     }
+
+    public function getId(): ProjectId
+    {
+        return $this->id;
+    }
+
+    public function getName(): ProjectName
+    {
+        return $this->name;
+    }
+
+    public function getDefaultBranch(): ProjectDefaultBranch
+    {
+        return $this->defaultBranch;
+    }
+
+    public function getWebUrl(): ProjectWebUrl
+    {
+        return $this->webUrl;
+    }
 }
