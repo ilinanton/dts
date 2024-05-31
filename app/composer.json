@@ -24,7 +24,8 @@
         "symfony/dotenv": "v7.0.2",
         "guzzlehttp/guzzle": "^7.8",
         "php-di/php-di": "^7.0",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "ext-readline": "*"
     },
     "config": {
         "allow-plugins": {
