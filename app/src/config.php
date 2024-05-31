@@ -5,6 +5,7 @@ use App\Application\ExitUseCase;
 use App\Application\GitLab\SyncGitLabProjectsUseCase;
 use App\Application\GitLab\SyncGitLabUsersUseCase;
 use App\Application\MenuUseCase;
+use App\Domain\GitLab\Member\MemberFactory;
 use App\Domain\GitLab\Member\Repository\GitLabApiMemberRepositoryInterface;
 use App\Domain\GitLab\Project\ProjectFactory;
 use App\Domain\GitLab\Project\Repository\GitLabApiProjectRepositoryInterface;
@@ -72,7 +73,10 @@ return [
         );
     },
     GitLabApiMemberRepositoryInterface::class => function (ContainerInterface $c) {
-        return new GitLabApiMemberRepository($c->get(GitLabApiClientInterface::class));
+        return new GitLabApiMemberRepository(
+            $c->get(GitLabApiClientInterface::class),
+            new MemberFactory()
+        );
     },
     GitLabApiClientInterface::class => function (ContainerInterface $c) {
         return new GitLabApiClient(
