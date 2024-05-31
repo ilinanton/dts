@@ -2,6 +2,8 @@
 
 namespace App\Domain\GitLab\Project\ValueObject;
 
+use InvalidArgumentException;
+
 final class ProjectId
 {
     private int $value;
@@ -20,7 +22,7 @@ final class ProjectId
     private function assertValueIsValid(int $value): void
     {
         if ($value <= 0) {
-            throw new \InvalidArgumentException('Id is incorrect!');
+            throw new InvalidArgumentException('Id is incorrect!');
         }
     }
 }

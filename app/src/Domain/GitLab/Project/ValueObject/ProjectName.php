@@ -2,6 +2,8 @@
 
 namespace App\Domain\GitLab\Project\ValueObject;
 
+use InvalidArgumentException;
+
 final class ProjectName
 {
     private string $value;
@@ -20,7 +22,7 @@ final class ProjectName
     private function assertValueIsValid(string $value): void
     {
         if (0 === strlen($value)) {
-            throw new \InvalidArgumentException('Name is empty!');
+            throw new InvalidArgumentException('Name is empty!');
         }
     }
 }
