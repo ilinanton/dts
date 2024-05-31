@@ -8,12 +8,14 @@ use App\Application\MenuUseCase;
 use App\Domain\GitLab\Common\GitLabApiClientInterface;
 use App\Domain\GitLab\Member\MemberFactory;
 use App\Domain\GitLab\Member\Repository\GitLabApiMemberRepositoryInterface;
+use App\Domain\GitLab\Member\Repository\GitLabDataBaseMemberRepositoryInterface;
 use App\Domain\GitLab\Project\ProjectFactory;
 use App\Domain\GitLab\Project\Repository\GitLabApiProjectRepositoryInterface;
 use App\Domain\GitLab\Project\Repository\GitLabDataBaseProjectRepositoryInterface;
 use App\Infrastructure\GitLab\GitLabApiClient;
 use App\Infrastructure\GitLab\GitLabApiMemberRepository;
 use App\Infrastructure\GitLab\GitLabApiProjectRepository;
+use App\Infrastructure\GitLab\GitLabMySqlMemberRepository;
 use App\Infrastructure\GitLab\GitLabMySqlProjectRepository;
 use Psr\Container\ContainerInterface;
 
@@ -63,7 +65,10 @@ return [
         );
     },
     SyncGitLabUsersUseCase::class => function (ContainerInterface $c) {
-        return new SyncGitLabUsersUseCase($c->get(GitLabApiMemberRepositoryInterface::class));
+        return new SyncGitLabUsersUseCase(
+            $c->get(GitLabApiMemberRepositoryInterface::class),
+            $c->get(GitLabDataBaseMemberRepositoryInterface::class)
+        );
     },
 
     GitLabApiProjectRepositoryInterface::class => function (ContainerInterface $c) {
@@ -86,6 +91,13 @@ return [
     },
     GitLabDataBaseProjectRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitLabMySqlProjectRepository(
+            $c->get('MYSQL_DSN'),
+            $c->get('MYSQL_USER'),
+            $c->get('MYSQL_USER_PASS')
+        );
+    },
+    GitLabDataBaseMemberRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitLabMySqlMemberRepository(
             $c->get('MYSQL_DSN'),
             $c->get('MYSQL_USER'),
             $c->get('MYSQL_USER_PASS')
