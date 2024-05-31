@@ -2,13 +2,14 @@
 
 namespace App\Domain\GitLab\Member;
 
+use App\Domain\GitLab\Common\AbstractEntity;
 use App\Domain\GitLab\Member\ValueObject\MemberAvatarUrl;
 use App\Domain\GitLab\Member\ValueObject\MemberId;
 use App\Domain\GitLab\Member\ValueObject\MemberName;
 use App\Domain\GitLab\Member\ValueObject\MemberUsername;
 use App\Domain\GitLab\Member\ValueObject\MemberWebUrl;
 
-final class Member
+final class Member extends AbstractEntity
 {
     private MemberId $id;
     private MemberUsername $username;

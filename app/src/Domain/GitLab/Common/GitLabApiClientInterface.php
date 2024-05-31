@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\GitLab;
+namespace App\Domain\GitLab\Common;
 
 use Psr\Http\Message\ResponseInterface;
 

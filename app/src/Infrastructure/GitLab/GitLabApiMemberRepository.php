@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\GitLab;
 
+use App\Domain\GitLab\Common\GitLabApiClientInterface;
 use App\Domain\GitLab\Member\MemberCollection;
 use App\Domain\GitLab\Member\MemberFactory;
 use App\Domain\GitLab\Member\Repository\GitLabApiMemberRepositoryInterface;
