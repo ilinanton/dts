@@ -20,7 +20,7 @@ final class ProjectName
     private function assertValueIsValid(string $value): void
     {
         if (0 === strlen($value)) {
-            throw new \InvalidArgumentException('Project name is empty!');
+            throw new \InvalidArgumentException('Name is empty!');
         }
     }
 }
