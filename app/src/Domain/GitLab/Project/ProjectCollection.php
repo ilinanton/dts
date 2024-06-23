@@ -12,9 +12,9 @@ final class ProjectCollection implements IteratorAggregate, Countable
     /** @var Project[] */
     private array $list;
 
-    public function add(Project $project): void
+    public function add(Project $item): void
     {
-        $this->list[] = $project;
+        $this->list[] = $item;
     }
 
     public function getIterator(): Traversable
