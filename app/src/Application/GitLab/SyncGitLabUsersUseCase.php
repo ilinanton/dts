@@ -8,7 +8,7 @@ use App\Infrastructure\GitLab\GitLabMySqlMemberRepository;
 
 final class SyncGitLabUsersUseCase implements UseCaseInterface
 {
-    private const COUNT_MEMBERS_PER_PAGE = 20;
+    private const COUNT_ITEMS_PER_PAGE = 20;
 
     private GitLabApiMemberRepositoryInterface $gitLabApiMemberRepository;
     private GitLabMySqlMemberRepository $gitLabMySqlMemberRepository;
@@ -27,10 +27,10 @@ final class SyncGitLabUsersUseCase implements UseCaseInterface
         $page = 0;
         do {
             ++$page;
-            $projectCollection = $this->gitLabApiMemberRepository->get($page, self::COUNT_MEMBERS_PER_PAGE);
+            $projectCollection = $this->gitLabApiMemberRepository->get($page, self::COUNT_ITEMS_PER_PAGE);
             foreach ($projectCollection as $project) {
                 $this->gitLabMySqlMemberRepository->save($project);
             }
-        } while (self::COUNT_MEMBERS_PER_PAGE === count($projectCollection));
+        } while (self::COUNT_ITEMS_PER_PAGE === count($projectCollection));
     }
 }
