@@ -12,9 +12,9 @@ final class MemberCollection implements IteratorAggregate, Countable
     /** @var Member[] */
     private array $list;
 
-    public function add(Member $member): void
+    public function add(Member $item): void
     {
-        $this->list[] = $member;
+        $this->list[] = $item;
     }
 
     public function getIterator(): Traversable
