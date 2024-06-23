@@ -2,6 +2,7 @@
 
 use App\Application\Command;
 use App\Application\ExitUseCase;
+use App\Application\GitLab\SyncGitLabMergeRequestUseCase;
 use App\Application\GitLab\SyncGitLabProjectsUseCase;
 use App\Application\GitLab\SyncGitLabUsersUseCase;
 use App\Application\MenuUseCase;
@@ -9,11 +10,14 @@ use App\Domain\GitLab\Common\Repository\GitLabApiClientInterface;
 use App\Domain\GitLab\Member\MemberFactory;
 use App\Domain\GitLab\Member\Repository\GitLabApiMemberRepositoryInterface;
 use App\Domain\GitLab\Member\Repository\GitLabDataBaseMemberRepositoryInterface;
+use App\Domain\GitLab\MergeRequest\MergeRequestFactory;
+use App\Domain\GitLab\MergeRequest\Repository\GitLabApiMergeRequestRepositoryInterface;
 use App\Domain\GitLab\Project\ProjectFactory;
 use App\Domain\GitLab\Project\Repository\GitLabApiProjectRepositoryInterface;
 use App\Domain\GitLab\Project\Repository\GitLabDataBaseProjectRepositoryInterface;
 use App\Infrastructure\GitLab\GitLabApiClient;
 use App\Infrastructure\GitLab\GitLabApiMemberRepository;
+use App\Infrastructure\GitLab\GitLabApiMergeRequestRepository;
 use App\Infrastructure\GitLab\GitLabApiProjectRepository;
 use App\Infrastructure\GitLab\GitLabMySqlMemberRepository;
 use App\Infrastructure\GitLab\GitLabMySqlProjectRepository;
@@ -50,6 +54,9 @@ return [
     Command::sync_gitlab_users->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitLabUsersUseCase::class);
     },
+    Command::sync_gitlab_merge_request->diId() => function (ContainerInterface $c) {
+        return $c->get(SyncGitLabMergeRequestUseCase::class);
+    },
 
     MenuUseCase::class => function (ContainerInterface $c) {
         return new MenuUseCase();
@@ -70,6 +77,11 @@ return [
             $c->get(GitLabDataBaseMemberRepositoryInterface::class)
         );
     },
+    SyncGitLabMergeRequestUseCase::class => function (ContainerInterface $c) {
+        return new SyncGitLabMergeRequestUseCase(
+            $c->get(GitLabApiMergeRequestRepositoryInterface::class),
+        );
+    },
 
     GitLabApiProjectRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitLabApiProjectRepository(
@@ -81,6 +93,12 @@ return [
         return new GitLabApiMemberRepository(
             $c->get(GitLabApiClientInterface::class),
             new MemberFactory()
+        );
+    },
+    GitLabApiMergeRequestRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitLabApiMergeRequestRepository(
+            $c->get(GitLabApiClientInterface::class),
+            new MergeRequestFactory()
         );
     },
     GitLabApiClientInterface::class => function (ContainerInterface $c) {
