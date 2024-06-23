@@ -15,7 +15,7 @@ final class GitLabMySqlProjectRepository implements GitLabDataBaseProjectReposit
         $this->pdo = new PDO($dsn, $userName, $password);
     }
 
-    public function save(Project $project): void
+    public function save(Project $object): void
     {
         $sql = <<<SQL
 INSERT INTO git_lab_project (id, name, default_branch, web_url)
@@ -25,10 +25,10 @@ SQL;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            ':ID' => $project->getId()->getValue(),
-            ':NAME' => $project->getName()->getValue(),
-            ':DEFAULT_BRANCH' => $project->getDefaultBranch()->getValue(),
-            ':WEB_URL' => $project->getWebUrl()->getValue(),
+            ':ID' => $object->getId()->getValue(),
+            ':NAME' => $object->getName()->getValue(),
+            ':DEFAULT_BRANCH' => $object->getDefaultBranch()->getValue(),
+            ':WEB_URL' => $object->getWebUrl()->getValue(),
         ]);
     }
 }

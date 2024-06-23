@@ -15,7 +15,7 @@ final class GitLabMySqlMemberRepository implements GitLabDataBaseMemberRepositor
         $this->pdo = new PDO($dsn, $userName, $password);
     }
 
-    public function save(Member $member): void
+    public function save(Member $object): void
     {
         $sql = <<<SQL
 INSERT INTO git_lab_member (id, username, name, avatar_url, web_url)
@@ -25,11 +25,11 @@ SQL;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            ':ID' => $member->getId()->getValue(),
-            ':USERNAME' => $member->getUsername()->getValue(),
-            ':NAME' => $member->getName()->getValue(),
-            ':AVATAR_URL' => $member->getAvatarUrl()->getValue(),
-            ':WEB_URL' => $member->getWebUrl()->getValue(),
+            ':ID' => $object->getId()->getValue(),
+            ':USERNAME' => $object->getUsername()->getValue(),
+            ':NAME' => $object->getName()->getValue(),
+            ':AVATAR_URL' => $object->getAvatarUrl()->getValue(),
+            ':WEB_URL' => $object->getWebUrl()->getValue(),
         ]);
     }
 }

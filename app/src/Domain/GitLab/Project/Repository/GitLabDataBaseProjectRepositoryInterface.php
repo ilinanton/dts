@@ -6,5 +6,5 @@ use App\Domain\GitLab\Project\Project;
 
 interface GitLabDataBaseProjectRepositoryInterface
 {
-    public function save(Project $project): void;
+    public function save(Project $object): void;
 }

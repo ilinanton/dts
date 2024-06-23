@@ -6,5 +6,5 @@ use App\Domain\GitLab\Member\Member;
 
 interface GitLabDataBaseMemberRepositoryInterface
 {
-    public function save(Member $member): void;
+    public function save(Member $object): void;
 }
