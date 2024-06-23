@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\GitLab;
 
-use App\Domain\GitLab\Common\GitLabApiClientInterface;
+use App\Domain\GitLab\Common\Repository\GitLabApiClientInterface;
 use App\Domain\GitLab\Project\ProjectCollection;
 use App\Domain\GitLab\Project\ProjectFactory;
 use App\Domain\GitLab\Project\Repository\GitLabApiProjectRepositoryInterface;

@@ -5,7 +5,7 @@ use App\Application\ExitUseCase;
 use App\Application\GitLab\SyncGitLabProjectsUseCase;
 use App\Application\GitLab\SyncGitLabUsersUseCase;
 use App\Application\MenuUseCase;
-use App\Domain\GitLab\Common\GitLabApiClientInterface;
+use App\Domain\GitLab\Common\Repository\GitLabApiClientInterface;
 use App\Domain\GitLab\Member\MemberFactory;
 use App\Domain\GitLab\Member\Repository\GitLabApiMemberRepositoryInterface;
 use App\Domain\GitLab\Member\Repository\GitLabDataBaseMemberRepositoryInterface;

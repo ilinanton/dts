@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\GitLab;
 
-use App\Domain\GitLab\Common\GitLabApiClientInterface;
+use App\Domain\GitLab\Common\Repository\GitLabApiClientInterface;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 
