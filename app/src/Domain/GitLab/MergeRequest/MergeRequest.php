@@ -61,4 +61,69 @@ final class MergeRequest
         $this->authorId = $authorId;
         $this->webUrl = $webUrl;
     }
+
+    public function getId(): MergeRequestId
+    {
+        return $this->id;
+    }
+
+    public function getIid(): MergeRequestIid
+    {
+        return $this->iid;
+    }
+
+    public function getProjectId(): ProjectId
+    {
+        return $this->projectId;
+    }
+
+    public function getTitle(): MergeRequestTitle
+    {
+        return $this->title;
+    }
+
+    public function getState(): MergeRequestState
+    {
+        return $this->state;
+    }
+
+    public function getMergeUserId(): MergeRequestMergeUserId
+    {
+        return $this->mergeUserId;
+    }
+
+    public function getMergedAt(): MergeRequestMergedAt
+    {
+        return $this->mergedAt;
+    }
+
+    public function getCreatedAt(): MergeRequestCreatedAt
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): MergeRequestUpdatedAt
+    {
+        return $this->updatedAt;
+    }
+
+    public function getTargetBranch(): MergeRequestTargetBranch
+    {
+        return $this->targetBranch;
+    }
+
+    public function getSourceBranch(): MergeRequestSourceBranch
+    {
+        return $this->sourceBranch;
+    }
+
+    public function getAuthorId(): MergeRequestAuthorId
+    {
+        return $this->authorId;
+    }
+
+    public function getWebUrl(): MergeRequestWebUrl
+    {
+        return $this->webUrl;
+    }
 }
