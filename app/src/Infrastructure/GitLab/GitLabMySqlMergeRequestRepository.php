@@ -50,7 +50,14 @@ VALUES
      :AUTHOR_ID,
      :WEB_URL
     )
-ON DUPLICATE KEY UPDATE name = :NAME, default_branch = :DEFAULT_BRANCH
+ON DUPLICATE KEY UPDATE
+     title = :TITLE, 
+     state = :STATE,
+     merge_user_id = :MERGE_USER_ID,
+     merged_at = :MERGED_AT,
+     updated_at = :UPDATED_AT,
+     target_branch = :TARGET_BRANCH,
+     web_url = :WEB_URL
 SQL;
 
         $stmt = $this->pdo->prepare($sql);
