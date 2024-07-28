@@ -41,6 +41,13 @@ return [
         return 'mysql:host=' . $c->get('MYSQL_URL') . ';'
             . 'dbname=' . $c->get('MYSQL_DATABASE');
     },
+    PDO::class => function (ContainerInterface $c) {
+        return new PDO(
+            $c->get('MYSQL_DSN'),
+            $c->get('MYSQL_USER'),
+            $c->get('MYSQL_USER_PASS')
+        );
+    },
 
     Command::menu->diId() => function (ContainerInterface $c) {
         return $c->get(MenuUseCase::class);
@@ -109,16 +116,12 @@ return [
     },
     GitLabDataBaseProjectRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitLabMySqlProjectRepository(
-            $c->get('MYSQL_DSN'),
-            $c->get('MYSQL_USER'),
-            $c->get('MYSQL_USER_PASS')
+            $c->get(PDO::class)
         );
     },
     GitLabDataBaseMemberRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitLabMySqlMemberRepository(
-            $c->get('MYSQL_DSN'),
-            $c->get('MYSQL_USER'),
-            $c->get('MYSQL_USER_PASS')
+            $c->get(PDO::class)
         );
     }
 ];

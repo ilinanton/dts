@@ -10,9 +10,9 @@ final class GitLabMySqlMemberRepository implements GitLabDataBaseMemberRepositor
 {
     private PDO $pdo;
 
-    public function __construct(string $dsn, string $userName, string $password)
+    public function __construct(PDO $pdo)
     {
-        $this->pdo = new PDO($dsn, $userName, $password);
+        $this->pdo = $pdo;
     }
 
     public function save(Member $object): void
