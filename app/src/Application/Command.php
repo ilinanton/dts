@@ -8,7 +8,7 @@ enum Command: string
     case menu = 'Menu';
     case sync_gitlab_projects = 'Sync gitlab projects';
     case sync_gitlab_users = 'Sync gitlab users';
-    case sync_gitlab_merge_request = 'Sync gitlab merge request';
+    case sync_gitlab_merge_requests = 'Sync gitlab merge requests';
 
     public function diId(): string
     {

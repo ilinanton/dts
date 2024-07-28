@@ -63,7 +63,7 @@ return [
     Command::sync_gitlab_users->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitLabUsersUseCase::class);
     },
-    Command::sync_gitlab_merge_request->diId() => function (ContainerInterface $c) {
+    Command::sync_gitlab_merge_requests->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitLabMergeRequestsUseCase::class);
     },
 
