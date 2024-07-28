@@ -31,19 +31,10 @@ final class GitLabApiMergeRequestRepository implements GitLabApiMergeRequestRepo
         $mergeRequestCollection = new MergeRequestCollection();
 
         foreach ($data as $item) {
-            $project = $this->mergeRequestFactory->create($item);
-            $mergeRequestCollection->add($project);
+            $mergeRequest = $this->mergeRequestFactory->create($item);
+            $mergeRequestCollection->add($mergeRequest);
         }
 
         return $mergeRequestCollection;
-
-////        $uri = 'projects/17801372/merge_requests/7354/approve';
-//        $uri = 'projects/17801372/events?' . http_build_query([
-//                'page' => $page,
-//                'per_page' => $perPage,
-//            ]);
-//        $response = $this->client->get($uri);
-//        $body = (string)$response->getBody();
-//        var_dump($body);
     }
 }
