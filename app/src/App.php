@@ -5,6 +5,7 @@ namespace App;
 use App\Application\Command;
 use App\Application\UseCaseInterface;
 use Psr\Container\ContainerInterface;
+use Throwable;
 
 final class App
 {
@@ -22,9 +23,10 @@ final class App
                 $this->identifyCommand(Command::menu->id())->execute();
                 $input = (int) readline("Command id: ");
                 $this->identifyCommand($input)->execute();
-            } catch (\Throwable $exception) {
-                echo $exception->getMessage() . PHP_EOL;
-                return $exception->getCode();
+            } catch (Throwable $exception) {
+                $code = $exception->getCode();
+                echo '#' . $code . ' ' . $exception->getMessage() . PHP_EOL;
+                return is_int($code) ? $code : 1;
             }
         }
     }
