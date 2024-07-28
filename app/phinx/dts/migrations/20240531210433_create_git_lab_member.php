@@ -6,12 +6,12 @@ use Phinx\Migration\AbstractMigration;
 
 final class CreateGitLabMember extends AbstractMigration
 {
-    private string $table = 'git_lab_member';
+    private const TABLE_NAME = 'git_lab_member';
 
     public function up(): void
     {
         $this->table(
-            $this->table,
+            self::TABLE_NAME,
             [
                 'id' => false,
                 'primary_key' => ['id'],
@@ -27,8 +27,8 @@ final class CreateGitLabMember extends AbstractMigration
 
     public function down(): void
     {
-        if ($this->hasTable($this->table)) {
-            $this->table($this->table)->drop()->save();
+        if ($this->hasTable(self::TABLE_NAME)) {
+            $this->table(self::TABLE_NAME)->drop()->save();
         }
     }
 }
