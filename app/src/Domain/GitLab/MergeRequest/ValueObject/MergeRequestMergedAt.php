@@ -21,7 +21,7 @@ final class MergeRequestMergedAt
 
     public function getValue(): string
     {
-        return $this->value;
+        return $this->value->format('Y-m-d H:i:s');
     }
 
     private function assertValueIsValid(string $value): void
