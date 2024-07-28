@@ -23,7 +23,6 @@ final class MergeRequest
     private ProjectId $projectId;
     private MergeRequestTitle $title;
     private MergeRequestState $state;
-    private MergeRequestMergeUserId $mergeUserId;
     private MergeRequestMergedAt $mergedAt;
     private MergeRequestCreatedAt $createdAt;
     private MergeRequestUpdatedAt $updatedAt;
@@ -38,7 +37,6 @@ final class MergeRequest
         ProjectId $projectId,
         MergeRequestTitle $title,
         MergeRequestState $state,
-        MergeRequestMergeUserId $mergeUserId,
         MergeRequestMergedAt $mergedAt,
         MergeRequestCreatedAt $createdAt,
         MergeRequestUpdatedAt $updatedAt,
@@ -52,7 +50,6 @@ final class MergeRequest
         $this->projectId = $projectId;
         $this->title = $title;
         $this->state = $state;
-        $this->mergeUserId = $mergeUserId;
         $this->mergedAt = $mergedAt;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
@@ -85,11 +82,6 @@ final class MergeRequest
     public function getState(): MergeRequestState
     {
         return $this->state;
-    }
-
-    public function getMergeUserId(): MergeRequestMergeUserId
-    {
-        return $this->mergeUserId;
     }
 
     public function getMergedAt(): MergeRequestMergedAt

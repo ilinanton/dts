@@ -25,7 +25,6 @@ final class CreateGitLabMergeRequest extends AbstractMigration
                 'values' => ['opened', 'closed', 'locked', 'merged'],
                 'null' => false,
             ])
-            ->addColumn('merge_user_id', 'biginteger', ['signed' => false, 'null' => true])
             ->addColumn('merged_at', 'datetime', ['null' => true])
             ->addColumn('created_at', 'datetime', ['null' => false])
             ->addColumn('updated_at', 'datetime', ['null' => true])
