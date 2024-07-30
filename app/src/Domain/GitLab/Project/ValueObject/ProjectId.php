@@ -2,27 +2,8 @@
 
 namespace App\Domain\GitLab\Project\ValueObject;
 
-use InvalidArgumentException;
+use App\Domain\GitLab\Common\ValueObject\AbstractRequiredId;
 
-final class ProjectId
+final class ProjectId extends AbstractRequiredId
 {
-    private int $value;
-
-    public function __construct(int $value)
-    {
-        $this->assertValueIsValid($value);
-        $this->value = $value;
-    }
-
-    public function getValue(): int
-    {
-        return $this->value;
-    }
-
-    private function assertValueIsValid(int $value): void
-    {
-        if ($value <= 0) {
-            throw new InvalidArgumentException('Id is incorrect!');
-        }
-    }
 }

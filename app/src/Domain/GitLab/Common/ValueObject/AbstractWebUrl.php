@@ -22,7 +22,7 @@ abstract class AbstractWebUrl
     private function assertValueIsValid(string $value): void
     {
         if (false === filter_var($value, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
-            throw new InvalidArgumentException('Web url is incorrect!');
+            throw new InvalidArgumentException(get_class($this) . ' url is incorrect!');
         }
     }
 }
