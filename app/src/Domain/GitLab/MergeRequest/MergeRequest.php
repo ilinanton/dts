@@ -7,20 +7,19 @@ use App\Domain\GitLab\MergeRequest\ValueObject\MergeRequestCreatedAt;
 use App\Domain\GitLab\MergeRequest\ValueObject\MergeRequestId;
 use App\Domain\GitLab\MergeRequest\ValueObject\MergeRequestIid;
 use App\Domain\GitLab\MergeRequest\ValueObject\MergeRequestMergedAt;
-use App\Domain\GitLab\MergeRequest\ValueObject\MergeRequestMergeUserId;
+use App\Domain\GitLab\MergeRequest\ValueObject\MergeRequestProjectId;
 use App\Domain\GitLab\MergeRequest\ValueObject\MergeRequestSourceBranch;
 use App\Domain\GitLab\MergeRequest\ValueObject\MergeRequestState;
 use App\Domain\GitLab\MergeRequest\ValueObject\MergeRequestTargetBranch;
 use App\Domain\GitLab\MergeRequest\ValueObject\MergeRequestTitle;
 use App\Domain\GitLab\MergeRequest\ValueObject\MergeRequestUpdatedAt;
 use App\Domain\GitLab\MergeRequest\ValueObject\MergeRequestWebUrl;
-use App\Domain\GitLab\Project\ValueObject\ProjectId;
 
 final class MergeRequest
 {
     private MergeRequestId $id;
     private MergeRequestIid $iid;
-    private ProjectId $projectId;
+    private MergeRequestProjectId $projectId;
     private MergeRequestTitle $title;
     private MergeRequestState $state;
     private MergeRequestMergedAt $mergedAt;
@@ -34,7 +33,7 @@ final class MergeRequest
     public function __construct(
         MergeRequestId $id,
         MergeRequestIid $iid,
-        ProjectId $projectId,
+        MergeRequestProjectId $projectId,
         MergeRequestTitle $title,
         MergeRequestState $state,
         MergeRequestMergedAt $mergedAt,
@@ -69,7 +68,7 @@ final class MergeRequest
         return $this->iid;
     }
 
-    public function getProjectId(): ProjectId
+    public function getProjectId(): MergeRequestProjectId
     {
         return $this->projectId;
     }
