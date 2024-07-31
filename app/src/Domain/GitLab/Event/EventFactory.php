@@ -2,7 +2,6 @@
 
 namespace App\Domain\GitLab\Event;
 
-
 use App\Domain\GitLab\Event\ValueObject\EventActionName;
 use App\Domain\GitLab\Event\ValueObject\EventAuthorId;
 use App\Domain\GitLab\Event\ValueObject\EventCreateAt;
