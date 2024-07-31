@@ -10,6 +10,7 @@ use App\Domain\GitLab\Event\ValueObject\EventProjectId;
 use App\Domain\GitLab\Event\ValueObject\EventTargetId;
 use App\Domain\GitLab\Event\ValueObject\EventTargetIid;
 use App\Domain\GitLab\Event\ValueObject\EventTargetTitle;
+use App\Domain\GitLab\Event\ValueObject\EventTargetType;
 
 final class Event
 {
@@ -18,6 +19,7 @@ final class Event
     private EventActionName $actionName;
     private EventTargetId $targetId;
     private EventTargetIid $targetIid;
+    private EventTargetType $targetType;
     private EventAuthorId $authorId;
     private EventTargetTitle $targetTitle;
     private EventCreateAt $createdAt;
@@ -65,6 +67,11 @@ final class Event
     public function getTargetIid(): EventTargetIid
     {
         return $this->targetIid;
+    }
+
+    public function getTargetType(): EventTargetType
+    {
+        return $this->targetType;
     }
 
     public function getAuthorId(): EventAuthorId

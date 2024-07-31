@@ -2,8 +2,8 @@
 
 namespace App\Domain\GitLab\Event\ValueObject;
 
-use App\Domain\GitLab\Common\ValueObject\AbstractRequiredId;
+use App\Domain\GitLab\Common\ValueObject\AbstractId;
 
-final class EventTargetId extends AbstractRequiredId
+final class EventTargetId extends AbstractId
 {
 }

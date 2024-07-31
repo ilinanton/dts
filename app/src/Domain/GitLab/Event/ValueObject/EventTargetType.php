@@ -2,7 +2,7 @@
 
 namespace App\Domain\GitLab\Event\ValueObject;
 
-final class EventTargetTitle
+final class EventTargetType
 {
     private string $value;
 

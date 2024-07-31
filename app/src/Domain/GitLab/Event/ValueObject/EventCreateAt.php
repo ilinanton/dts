@@ -12,11 +12,7 @@ final class EventCreateAt
     public function __construct(string $value)
     {
         $this->assertValueIsValid($value);
-        if (strlen($value) > 0) {
-            $this->value = DateTimeImmutable::createFromFormat(DATE_RFC3339_EXTENDED, $value);
-        } else {
-            $this->value = new DateTimeImmutable();
-        }
+        $this->value = DateTimeImmutable::createFromFormat(DATE_RFC3339_EXTENDED, $value);
     }
 
     public function getValue(): string
@@ -26,11 +22,9 @@ final class EventCreateAt
 
     private function assertValueIsValid(string $value): void
     {
-        if (strlen($value) > 0) {
-            $dateTime = DateTimeImmutable::createFromFormat(DATE_RFC3339_EXTENDED, $value);
-            if (false === $dateTime) {
-                throw new InvalidArgumentException('Updated at is incorrect!');
-            }
+        $dateTime = DateTimeImmutable::createFromFormat(DATE_RFC3339_EXTENDED, $value);
+        if (false === $dateTime) {
+            throw new InvalidArgumentException('Created at is incorrect!');
         }
     }
 }
