@@ -6,5 +6,5 @@ use App\Domain\GitLab\Project\ProjectCollection;
 
 interface GitLabApiProjectRepositoryInterface
 {
-    public function get(array $params): ProjectCollection;
+    public function get(array $params = []): ProjectCollection;
 }

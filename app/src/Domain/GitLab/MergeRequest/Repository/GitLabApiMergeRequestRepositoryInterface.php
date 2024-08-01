@@ -6,5 +6,5 @@ use App\Domain\GitLab\MergeRequest\MergeRequestCollection;
 
 interface GitLabApiMergeRequestRepositoryInterface
 {
-    public function get(int $page = 1, int $perPage = 20): MergeRequestCollection;
+    public function get(array $params = []): MergeRequestCollection;
 }

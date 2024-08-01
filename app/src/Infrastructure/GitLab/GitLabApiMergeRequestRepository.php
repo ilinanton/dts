@@ -18,14 +18,9 @@ final class GitLabApiMergeRequestRepository implements GitLabApiMergeRequestRepo
         $this->mergeRequestFactory = $mergeRequestFactory;
     }
 
-    public function get(int $page = 1, int $perPage = 20): MergeRequestCollection
+    public function get(array $params = []): MergeRequestCollection
     {
-        $uri = 'merge_requests?' . http_build_query([
-                'page' => $page,
-                'per_page' => $perPage,
-            ]);
-
-        $response = $this->client->get($uri);
+        $response = $this->client->getGroupMergeRequests($params);
         $body = (string)$response->getBody();
         $data = json_decode($body, true);
         $mergeRequestCollection = new MergeRequestCollection();
