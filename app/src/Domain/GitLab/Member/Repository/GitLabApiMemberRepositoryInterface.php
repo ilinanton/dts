@@ -6,5 +6,5 @@ use App\Domain\GitLab\Member\MemberCollection;
 
 interface GitLabApiMemberRepositoryInterface
 {
-    public function get(int $page = 1, int $perPage = 20): MemberCollection;
+    public function get(array $params = []): MemberCollection;
 }

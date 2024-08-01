@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Domain\GitLab\Member;
+namespace App\Domain\GitLab\Event;
 
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use Traversable;
 
-final class MemberCollection implements IteratorAggregate, Countable
+final class EventCollection implements IteratorAggregate, Countable
 {
-    /** @var Member[] */
+    /** @var Event[] */
     private array $list = [];
 
-    public function add(Member $item): void
+    public function add(Event $item): void
     {
         $this->list[] = $item;
     }

@@ -26,7 +26,10 @@ final class SyncGitLabMergeRequestsUseCase implements UseCaseInterface
         $page = 0;
         do {
             ++$page;
-            $mergeRequestCollection = $this->gitLabApiMergeRequestRepository->get($page, self::COUNT_ITEMS_PER_PAGE);
+            $mergeRequestCollection = $this->gitLabApiMergeRequestRepository->get([
+                'page' => $page,
+                'per_page' => self::COUNT_ITEMS_PER_PAGE,
+            ]);
             foreach ($mergeRequestCollection as $mergeRequest) {
                 $this->gitLabDataBaseMergeRequestRepository->save($mergeRequest);
             }

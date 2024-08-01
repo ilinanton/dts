@@ -26,7 +26,10 @@ final class SyncGitLabProjectsUseCase implements UseCaseInterface
         $page = 0;
         do {
             ++$page;
-            $projectCollection = $this->gitLabApiProjectRepository->get($page, self::COUNT_ITEMS_PER_PAGE);
+            $projectCollection = $this->gitLabApiProjectRepository->get([
+                'page' => $page,
+                'per_page' => self::COUNT_ITEMS_PER_PAGE,
+            ]);
             foreach ($projectCollection as $project) {
                 $this->gitLabDataBaseProjectRepository->save($project);
             }

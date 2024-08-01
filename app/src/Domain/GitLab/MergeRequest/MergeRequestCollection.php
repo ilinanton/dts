@@ -10,7 +10,7 @@ use Traversable;
 final class MergeRequestCollection implements IteratorAggregate, Countable
 {
     /** @var MergeRequest[] */
-    private array $list;
+    private array $list = [];
 
     public function add(MergeRequest $item): void
     {

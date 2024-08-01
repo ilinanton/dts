@@ -10,7 +10,7 @@ use Traversable;
 final class ProjectCollection implements IteratorAggregate, Countable
 {
     /** @var Project[] */
-    private array $list;
+    private array $list = [];
 
     public function add(Project $item): void
     {
