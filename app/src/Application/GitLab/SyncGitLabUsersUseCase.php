@@ -3,23 +3,23 @@
 namespace App\Application\GitLab;
 
 use App\Application\UseCaseInterface;
-use App\Domain\GitLab\Member\Repository\GitLabApiMemberRepositoryInterface;
-use App\Infrastructure\GitLab\GitLabMySqlMemberRepository;
+use App\Domain\GitLab\User\Repository\GitLabApiUserRepositoryInterface;
+use App\Infrastructure\GitLab\GitLabMySqlUserRepository;
 
 final class SyncGitLabUsersUseCase implements UseCaseInterface
 {
     private const COUNT_ITEMS_PER_PAGE = 20;
 
-    private GitLabApiMemberRepositoryInterface $gitLabApiMemberRepository;
-    private GitLabMySqlMemberRepository $gitLabMySqlMemberRepository;
+    private GitLabApiUserRepositoryInterface $gitLabApiUserRepository;
+    private GitLabMySqlUserRepository $gitLabMySqlUserRepository;
 
 
     public function __construct(
-        GitLabApiMemberRepositoryInterface $gitLabApiMemberRepository,
-        GitLabMySqlMemberRepository $gitLabMySqlMemberRepository
+        GitLabApiUserRepositoryInterface $gitLabApiUserRepository,
+        GitLabMySqlUserRepository $gitLabMySqlUserRepository
     ) {
-        $this->gitLabApiMemberRepository = $gitLabApiMemberRepository;
-        $this->gitLabMySqlMemberRepository = $gitLabMySqlMemberRepository;
+        $this->gitLabApiUserRepository = $gitLabApiUserRepository;
+        $this->gitLabMySqlUserRepository = $gitLabMySqlUserRepository;
     }
 
     public function execute(): void
@@ -27,13 +27,13 @@ final class SyncGitLabUsersUseCase implements UseCaseInterface
         $page = 0;
         do {
             ++$page;
-            $projectCollection = $this->gitLabApiMemberRepository->get([
+            $userCollection = $this->gitLabApiUserRepository->get([
                 'page' => $page,
                 'per_page' => self::COUNT_ITEMS_PER_PAGE,
             ]);
-            foreach ($projectCollection as $project) {
-                $this->gitLabMySqlMemberRepository->save($project);
+            foreach ($userCollection as $user) {
+                $this->gitLabMySqlUserRepository->save($user);
             }
-        } while (self::COUNT_ITEMS_PER_PAGE === count($projectCollection));
+        } while (self::COUNT_ITEMS_PER_PAGE === count($userCollection));
     }
 }

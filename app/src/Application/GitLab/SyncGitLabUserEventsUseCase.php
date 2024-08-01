@@ -5,7 +5,7 @@ namespace App\Application\GitLab;
 use App\Application\UseCaseInterface;
 use App\Domain\GitLab\Event\Repository\GitLabApiEventRepositoryInterface;
 use App\Domain\GitLab\Event\Repository\GitLabDataBaseEventRepositoryInterface;
-use App\Domain\GitLab\Member\Repository\GitLabDataBaseMemberRepositoryInterface;
+use App\Domain\GitLab\User\Repository\GitLabDataBaseUserRepositoryInterface;
 
 final class SyncGitLabUserEventsUseCase implements UseCaseInterface
 {
@@ -13,25 +13,25 @@ final class SyncGitLabUserEventsUseCase implements UseCaseInterface
 
     private GitLabApiEventRepositoryInterface $gitLabApiEventRepository;
     private GitLabDataBaseEventRepositoryInterface $gitLabDataBaseEventRepository;
-    private GitLabDataBaseMemberRepositoryInterface $gitLabDataBaseMemberRepository;
+    private GitLabDataBaseUserRepositoryInterface $gitLabDataBaseUserRepository;
 
     public function __construct(
         GitLabApiEventRepositoryInterface $gitLabApiEventRepository,
         GitLabDataBaseEventRepositoryInterface $gitLabDataBaseEventRepository,
-        GitLabDataBaseMemberRepositoryInterface $gitLabDataBaseMemberRepository
+        GitLabDataBaseUserRepositoryInterface $gitLabDataBaseUserRepository
     ) {
         $this->gitLabApiEventRepository = $gitLabApiEventRepository;
         $this->gitLabDataBaseEventRepository = $gitLabDataBaseEventRepository;
-        $this->gitLabDataBaseMemberRepository = $gitLabDataBaseMemberRepository;
+        $this->gitLabDataBaseUserRepository = $gitLabDataBaseUserRepository;
     }
 
     public function execute(): void
     {
-        $memberCollection = $this->gitLabDataBaseMemberRepository->getAll();
-        foreach ($memberCollection as $member) {
+        $userCollection = $this->gitLabDataBaseUserRepository->getAll();
+        foreach ($userCollection as $user) {
             $page = 0;
-            $userId = $member->getId()->getValue();
-            $name = $member->getName()->getValue();
+            $userId = $user->getId()->getValue();
+            $name = $user->getName()->getValue();
             echo 'Load events for ' . $name . ' (' . $userId . ')';
             do {
                 ++$page;
@@ -44,6 +44,7 @@ final class SyncGitLabUserEventsUseCase implements UseCaseInterface
                     $this->gitLabDataBaseEventRepository->save($event);
                 }
                 sleep(1);
+                echo ' .';
             } while (self::COUNT_ITEMS_PER_PAGE === count($eventCollection) && $page <= 4);
             echo ' done ' . PHP_EOL;
         }

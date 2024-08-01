@@ -2,24 +2,24 @@
 
 namespace App\Infrastructure\GitLab;
 
-use App\Domain\GitLab\Member\Member;
-use App\Domain\GitLab\Member\MemberCollection;
-use App\Domain\GitLab\Member\MemberFactory;
-use App\Domain\GitLab\Member\Repository\GitLabDataBaseMemberRepositoryInterface;
+use App\Domain\GitLab\User\User;
+use App\Domain\GitLab\User\UserCollection;
+use App\Domain\GitLab\User\UserFactory;
+use App\Domain\GitLab\User\Repository\GitLabDataBaseUserRepositoryInterface;
 use PDO;
 
-final class GitLabMySqlMemberRepository implements GitLabDataBaseMemberRepositoryInterface
+final class GitLabMySqlUserRepository implements GitLabDataBaseUserRepositoryInterface
 {
     private PDO $pdo;
-    private MemberFactory $memberFactory;
+    private UserFactory $memberFactory;
 
-    public function __construct(PDO $pdo, MemberFactory $memberFactory)
+    public function __construct(PDO $pdo, UserFactory $memberFactory)
     {
         $this->pdo = $pdo;
         $this->memberFactory = $memberFactory;
     }
 
-    public function save(Member $object): void
+    public function save(User $object): void
     {
         $sql = <<<SQL
 INSERT INTO git_lab_member (id, username, name, avatar_url, web_url)
@@ -37,7 +37,7 @@ SQL;
         ]);
     }
 
-    public function getAll(): MemberCollection
+    public function getAll(): UserCollection
     {
         $sql = <<<SQL
 SELECT id, username, name, avatar_url, web_url
@@ -47,7 +47,7 @@ SQL;
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $data = $stmt->fetchAll();
-        $memberCollection = new MemberCollection();
+        $memberCollection = new UserCollection();
 
         foreach ($data as $item) {
             $project = $this->memberFactory->create($item);

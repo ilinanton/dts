@@ -3,25 +3,25 @@
 namespace App\Infrastructure\GitLab;
 
 use App\Domain\GitLab\Common\Repository\GitLabApiClientInterface;
-use App\Domain\GitLab\Member\MemberCollection;
-use App\Domain\GitLab\Member\MemberFactory;
-use App\Domain\GitLab\Member\Repository\GitLabApiMemberRepositoryInterface;
+use App\Domain\GitLab\User\UserCollection;
+use App\Domain\GitLab\User\UserFactory;
+use App\Domain\GitLab\User\Repository\GitLabApiUserRepositoryInterface;
 
-final class GitLabApiMemberRepository implements GitLabApiMemberRepositoryInterface
+final class GitLabApiUserRepository implements GitLabApiUserRepositoryInterface
 {
     private GitLabApiClientInterface $client;
-    private MemberFactory $memberFactory;
+    private UserFactory $memberFactory;
 
-    public function __construct(GitLabApiClientInterface $client, MemberFactory $memberFactory)
+    public function __construct(GitLabApiClientInterface $client, UserFactory $memberFactory)
     {
         $this->client = $client;
         $this->memberFactory = $memberFactory;
     }
 
-    public function get(array $params = []): MemberCollection
+    public function get(array $params = []): UserCollection
     {
         $data = $this->client->getGroupMembers();
-        $memberCollection = new MemberCollection();
+        $memberCollection = new UserCollection();
 
         foreach ($data as $item) {
             $project = $this->memberFactory->create($item);

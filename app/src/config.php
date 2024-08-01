@@ -11,9 +11,9 @@ use App\Domain\GitLab\Common\Repository\GitLabApiClientInterface;
 use App\Domain\GitLab\Event\EventFactory;
 use App\Domain\GitLab\Event\Repository\GitLabApiEventRepositoryInterface;
 use App\Domain\GitLab\Event\Repository\GitLabDataBaseEventRepositoryInterface;
-use App\Domain\GitLab\Member\MemberFactory;
-use App\Domain\GitLab\Member\Repository\GitLabApiMemberRepositoryInterface;
-use App\Domain\GitLab\Member\Repository\GitLabDataBaseMemberRepositoryInterface;
+use App\Domain\GitLab\User\UserFactory;
+use App\Domain\GitLab\User\Repository\GitLabApiUserRepositoryInterface;
+use App\Domain\GitLab\User\Repository\GitLabDataBaseUserRepositoryInterface;
 use App\Domain\GitLab\MergeRequest\MergeRequestFactory;
 use App\Domain\GitLab\MergeRequest\Repository\GitLabApiMergeRequestRepositoryInterface;
 use App\Domain\GitLab\MergeRequest\Repository\GitLabDataBaseMergeRequestRepositoryInterface;
@@ -22,11 +22,11 @@ use App\Domain\GitLab\Project\Repository\GitLabApiProjectRepositoryInterface;
 use App\Domain\GitLab\Project\Repository\GitLabDataBaseProjectRepositoryInterface;
 use App\Infrastructure\GitLab\GitLabApiClient;
 use App\Infrastructure\GitLab\GitLabApiEventRepository;
-use App\Infrastructure\GitLab\GitLabApiMemberRepository;
+use App\Infrastructure\GitLab\GitLabApiUserRepository;
 use App\Infrastructure\GitLab\GitLabApiMergeRequestRepository;
 use App\Infrastructure\GitLab\GitLabApiProjectRepository;
 use App\Infrastructure\GitLab\GitLabMySqlEventRepository;
-use App\Infrastructure\GitLab\GitLabMySqlMemberRepository;
+use App\Infrastructure\GitLab\GitLabMySqlUserRepository;
 use App\Infrastructure\GitLab\GitLabMySqlMergeRequestRepository;
 use App\Infrastructure\GitLab\GitLabMySqlProjectRepository;
 use Psr\Container\ContainerInterface;
@@ -89,8 +89,8 @@ return [
     },
     SyncGitLabUsersUseCase::class => function (ContainerInterface $c) {
         return new SyncGitLabUsersUseCase(
-            $c->get(GitLabApiMemberRepositoryInterface::class),
-            $c->get(GitLabDataBaseMemberRepositoryInterface::class)
+            $c->get(GitLabApiUserRepositoryInterface::class),
+            $c->get(GitLabDataBaseUserRepositoryInterface::class)
         );
     },
     SyncGitLabMergeRequestsUseCase::class => function (ContainerInterface $c) {
@@ -103,7 +103,7 @@ return [
         return new SyncGitLabUserEventsUseCase(
             $c->get(GitLabApiEventRepositoryInterface::class),
             $c->get(GitLabDataBaseEventRepositoryInterface::class),
-            $c->get(GitLabDataBaseMemberRepositoryInterface::class),
+            $c->get(GitLabDataBaseUserRepositoryInterface::class),
         );
     },
 
@@ -113,10 +113,10 @@ return [
             new ProjectFactory()
         );
     },
-    GitLabApiMemberRepositoryInterface::class => function (ContainerInterface $c) {
-        return new GitLabApiMemberRepository(
+    GitLabApiUserRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitLabApiUserRepository(
             $c->get(GitLabApiClientInterface::class),
-            new MemberFactory()
+            new UserFactory()
         );
     },
     GitLabApiMergeRequestRepositoryInterface::class => function (ContainerInterface $c) {
@@ -143,10 +143,10 @@ return [
             $c->get(PDO::class)
         );
     },
-    GitLabDataBaseMemberRepositoryInterface::class => function (ContainerInterface $c) {
-        return new GitLabMySqlMemberRepository(
+    GitLabDataBaseUserRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitLabMySqlUserRepository(
             $c->get(PDO::class),
-            new MemberFactory()
+            new UserFactory()
         );
     },
     GitLabDataBaseMergeRequestRepositoryInterface::class => function (ContainerInterface $c) {

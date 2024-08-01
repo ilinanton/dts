@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domain\GitLab\Member\ValueObject;
+namespace App\Domain\GitLab\User\ValueObject;
 
 use InvalidArgumentException;
 
-final class MemberName
+final class UserName
 {
     private string $value;
 

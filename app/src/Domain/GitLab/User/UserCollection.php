@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Domain\GitLab\Member;
+namespace App\Domain\GitLab\User;
 
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use Traversable;
 
-final class MemberCollection implements IteratorAggregate, Countable
+final class UserCollection implements IteratorAggregate, Countable
 {
-    /** @var Member[] */
+    /** @var User[] */
     private array $list = [];
 
-    public function add(Member $item): void
+    public function add(User $item): void
     {
         $this->list[] = $item;
     }
