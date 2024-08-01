@@ -33,7 +33,7 @@ final class SyncGitLabProjectMergeRequestsUseCase implements UseCaseInterface
             $page = 0;
             $projectId = $project->getId()->getValue();
             $projectName = $project->getName()->getValue();
-            echo 'Load merge requests for ' . $projectName . ' (#' . $projectId . ')';
+            echo 'Load merge requests for #' . $projectId . ' ' . $projectName;
             do {
                 ++$page;
                 if ($page > self::COUNT_PAGES) {

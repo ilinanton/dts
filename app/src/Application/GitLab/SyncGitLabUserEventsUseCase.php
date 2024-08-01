@@ -33,7 +33,7 @@ final class SyncGitLabUserEventsUseCase implements UseCaseInterface
             $page = 0;
             $userId = $user->getId()->getValue();
             $userName = $user->getName()->getValue();
-            echo 'Load events for ' . $userName . ' (' . $userId . ')';
+            echo 'Load events for #' . $userId . ' ' . $userName;
             do {
                 ++$page;
                 if ($page > self::COUNT_PAGES) {
