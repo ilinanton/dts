@@ -30,6 +30,7 @@ final class Event
         EventActionName $actionName,
         EventTargetId $targetId,
         EventTargetIid $targetIid,
+        EventTargetType $targetType,
         EventAuthorId $authorId,
         EventTargetTitle $targetTitle,
         EventCreateAt $createdAt
@@ -39,6 +40,7 @@ final class Event
         $this->actionName = $actionName;
         $this->targetId = $targetId;
         $this->targetIid = $targetIid;
+        $this->targetType = $targetType;
         $this->authorId = $authorId;
         $this->targetTitle = $targetTitle;
         $this->createdAt = $createdAt;
