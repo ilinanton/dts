@@ -10,7 +10,7 @@ use Traversable;
 final class MemberCollection implements IteratorAggregate, Countable
 {
     /** @var Member[] */
-    private array $list;
+    private array $list = [];
 
     public function add(Member $item): void
     {

@@ -10,7 +10,7 @@ use Traversable;
 final class EventCollection implements IteratorAggregate, Countable
 {
     /** @var Event[] */
-    private array $list;
+    private array $list = [];
 
     public function add(Event $item): void
     {
