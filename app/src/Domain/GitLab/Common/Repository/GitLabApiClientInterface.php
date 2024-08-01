@@ -10,4 +10,6 @@ interface GitLabApiClientInterface
     public function getGroupMembers(array $params = []): array;
     public function getGroupProjects(array $params = []): array;
     public function getGroupMergeRequests(array $params = []): array;
+    public function getProjectEvents(int $projectId, array $params = []): array;
+    public function getUserEvents(int $userId, array $params = []): array;
 }

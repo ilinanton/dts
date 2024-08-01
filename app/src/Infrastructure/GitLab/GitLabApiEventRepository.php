@@ -18,29 +18,15 @@ final class GitLabApiEventRepository implements GitLabApiEventRepositoryInterfac
         $this->eventFactory = $eventFactory;
     }
 
-    public function getByProjectId(int $projectId, int $page = 1, int $perPage = 20): EventCollection
+    public function getByProjectId(int $projectId, array $params = []): EventCollection
     {
-        $uri = 'projects/' . $projectId . '/events?' . http_build_query([
-                'page' => $page,
-                'per_page' => $perPage,
-            ]);
-        $response = $this->client->get($uri);
-        $body = (string)$response->getBody();
-        $data = json_decode($body, true);
-
+        $data = $this->client->getProjectEvents($projectId, $params);
         return $this->createCollection($data);
     }
 
-    public function getByUserId(int $userId, int $page = 1, int $perPage = 20): EventCollection
+    public function getByUserId(int $userId, array $params = []): EventCollection
     {
-        $uri = 'users/' . $userId . '/events?' . http_build_query([
-                'page' => $page,
-                'per_page' => $perPage,
-            ]);
-        $response = $this->client->get($uri);
-        $body = (string)$response->getBody();
-        $data = json_decode($body, true);
-
+        $data = $this->client->getUserEvents($userId, $params);
         return $this->createCollection($data);
     }
 

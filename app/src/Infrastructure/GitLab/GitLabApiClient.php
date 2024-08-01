@@ -56,4 +56,16 @@ final class GitLabApiClient implements GitLabApiClientInterface
         $uri = 'groups/' . $this->groupId . '/merge_requests';
         return $this->get($uri, $params);
     }
+
+    public function getProjectEvents(int $projectId, array $params = []): array
+    {
+        $uri = 'projects/' . $projectId . '/events';
+        return $this->get($uri, $params);
+    }
+
+    public function getUserEvents(int $userId, array $params = []): array
+    {
+        $uri = 'users/' . $userId . '/events';
+        return $this->get($uri, $params);
+    }
 }
