@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-final class CreateGitLabMember extends AbstractMigration
+final class CreateGitLabUser extends AbstractMigration
 {
-    private const TABLE_NAME = 'git_lab_member';
+    private const TABLE_NAME = 'git_lab_user';
 
     public function up(): void
     {

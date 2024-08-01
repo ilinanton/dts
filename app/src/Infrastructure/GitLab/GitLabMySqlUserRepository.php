@@ -22,7 +22,7 @@ final class GitLabMySqlUserRepository implements GitLabDataBaseUserRepositoryInt
     public function save(User $object): void
     {
         $sql = <<<SQL
-INSERT INTO git_lab_member (id, username, name, avatar_url, web_url)
+INSERT INTO git_lab_user (id, username, name, avatar_url, web_url)
 VALUES (:ID, :USERNAME, :NAME, :AVATAR_URL, :WEB_URL)
 ON DUPLICATE KEY UPDATE username = :USERNAME, name = :NAME, avatar_url = :AVATAR_URL, web_url = :WEB_URL
 SQL;
@@ -41,7 +41,7 @@ SQL;
     {
         $sql = <<<SQL
 SELECT id, username, name, avatar_url, web_url
-FROM git_lab_member
+FROM git_lab_user
 SQL;
 
         $stmt = $this->pdo->prepare($sql);
