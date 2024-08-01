@@ -18,13 +18,9 @@ final class GitLabApiMemberRepository implements GitLabApiMemberRepositoryInterf
         $this->memberFactory = $memberFactory;
     }
 
-    public function get(int $page = 1, int $perPage = 20): MemberCollection
+    public function get(array $params = []): MemberCollection
     {
-        $uri = 'members?' . http_build_query([
-                'page' => $page,
-                'per_page' => $perPage,
-            ]);
-        $response = $this->client->get($uri);
+        $response = $this->client->getGroupMembers();
         $body = (string)$response->getBody();
         $data = json_decode($body, true);
         $memberCollection = new MemberCollection();

@@ -18,13 +18,9 @@ final class GitLabApiProjectRepository implements GitLabApiProjectRepositoryInte
         $this->projectFactory = $projectFactory;
     }
 
-    public function get(int $page = 1, int $perPage = 20): ProjectCollection
+    public function get(array $params = []): ProjectCollection
     {
-        $uri = 'projects?' . http_build_query([
-                'page' => $page,
-                'per_page' => $perPage,
-            ]);
-        $response = $this->client->get($uri);
+        $response = $this->client->getGroupProjects($params);
         $body = (string)$response->getBody();
         $data = json_decode($body, true);
         $projectCollection = new ProjectCollection();
