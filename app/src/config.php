@@ -2,7 +2,7 @@
 
 use App\Application\Command;
 use App\Application\ExitUseCase;
-use App\Application\GitLab\SyncGitLabEventsUseCase;
+use App\Application\GitLab\SyncGitLabUserEventsUseCase;
 use App\Application\GitLab\SyncGitLabMergeRequestsUseCase;
 use App\Application\GitLab\SyncGitLabProjectsUseCase;
 use App\Application\GitLab\SyncGitLabUsersUseCase;
@@ -71,7 +71,7 @@ return [
         return $c->get(SyncGitLabMergeRequestsUseCase::class);
     },
     Command::sync_gitlab_events->diId() => function (ContainerInterface $c) {
-        return $c->get(SyncGitLabEventsUseCase::class);
+        return $c->get(SyncGitLabUserEventsUseCase::class);
     },
 
     MenuUseCase::class => function (ContainerInterface $c) {
@@ -99,10 +99,11 @@ return [
             $c->get(GitLabDataBaseMergeRequestRepositoryInterface::class),
         );
     },
-    SyncGitLabEventsUseCase::class => function (ContainerInterface $c) {
-        return new SyncGitLabEventsUseCase(
+    SyncGitLabUserEventsUseCase::class => function (ContainerInterface $c) {
+        return new SyncGitLabUserEventsUseCase(
             $c->get(GitLabApiEventRepositoryInterface::class),
             $c->get(GitLabDataBaseEventRepositoryInterface::class),
+            $c->get(GitLabDataBaseMemberRepositoryInterface::class),
         );
     },
 
@@ -144,7 +145,8 @@ return [
     },
     GitLabDataBaseMemberRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitLabMySqlMemberRepository(
-            $c->get(PDO::class)
+            $c->get(PDO::class),
+            new MemberFactory()
         );
     },
     GitLabDataBaseMergeRequestRepositoryInterface::class => function (ContainerInterface $c) {
