@@ -10,6 +10,7 @@ use App\Domain\GitLab\User\Repository\GitLabDataBaseUserRepositoryInterface;
 final class SyncGitLabUserEventsUseCase implements UseCaseInterface
 {
     private const COUNT_ITEMS_PER_PAGE = 20;
+    private const COUNT_PAGES = 5;
 
     private GitLabApiEventRepositoryInterface $gitLabApiEventRepository;
     private GitLabDataBaseEventRepositoryInterface $gitLabDataBaseEventRepository;
@@ -31,10 +32,14 @@ final class SyncGitLabUserEventsUseCase implements UseCaseInterface
         foreach ($userCollection as $user) {
             $page = 0;
             $userId = $user->getId()->getValue();
-            $name = $user->getName()->getValue();
-            echo 'Load events for ' . $name . ' (' . $userId . ')';
+            $userName = $user->getName()->getValue();
+            echo 'Load events for ' . $userName . ' (' . $userId . ')';
             do {
                 ++$page;
+                if ($page > self::COUNT_PAGES) {
+                    break;
+                }
+
                 $eventCollection = $this->gitLabApiEventRepository->getByUserId($userId, [
                     'page' => $page,
                     'per_page' => self::COUNT_ITEMS_PER_PAGE,
@@ -43,9 +48,10 @@ final class SyncGitLabUserEventsUseCase implements UseCaseInterface
                 foreach ($eventCollection as $event) {
                     $this->gitLabDataBaseEventRepository->save($event);
                 }
+
                 sleep(1);
                 echo ' .';
-            } while (self::COUNT_ITEMS_PER_PAGE === count($eventCollection) && $page <= 4);
+            } while (self::COUNT_ITEMS_PER_PAGE === count($eventCollection));
             echo ' done ' . PHP_EOL;
         }
     }
