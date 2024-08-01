@@ -97,6 +97,7 @@ return [
         return new SyncGitLabProjectMergeRequestsUseCase(
             $c->get(GitLabApiMergeRequestRepositoryInterface::class),
             $c->get(GitLabDataBaseMergeRequestRepositoryInterface::class),
+            $c->get(GitLabDataBaseProjectRepositoryInterface::class)
         );
     },
     SyncGitLabUserEventsUseCase::class => function (ContainerInterface $c) {
