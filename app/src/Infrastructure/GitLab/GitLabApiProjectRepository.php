@@ -20,9 +20,7 @@ final class GitLabApiProjectRepository implements GitLabApiProjectRepositoryInte
 
     public function get(array $params = []): ProjectCollection
     {
-        $response = $this->client->getGroupProjects($params);
-        $body = (string)$response->getBody();
-        $data = json_decode($body, true);
+        $data = $this->client->getGroupProjects($params);
         $projectCollection = new ProjectCollection();
 
         foreach ($data as $item) {

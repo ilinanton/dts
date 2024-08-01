@@ -6,8 +6,8 @@ use Psr\Http\Message\ResponseInterface;
 
 interface GitLabApiClientInterface
 {
-    public function get(string $uri, array $params = []): ResponseInterface;
-    public function getGroupMembers(array $params = []): ResponseInterface;
-    public function getGroupProjects(array $params = []): ResponseInterface;
-    public function getGroupMergeRequests(array $params = []): ResponseInterface;
+    public function get(string $uri, array $params = []): array;
+    public function getGroupMembers(array $params = []): array;
+    public function getGroupProjects(array $params = []): array;
+    public function getGroupMergeRequests(array $params = []): array;
 }

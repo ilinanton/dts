@@ -20,9 +20,7 @@ final class GitLabApiMemberRepository implements GitLabApiMemberRepositoryInterf
 
     public function get(array $params = []): MemberCollection
     {
-        $response = $this->client->getGroupMembers();
-        $body = (string)$response->getBody();
-        $data = json_decode($body, true);
+        $data = $this->client->getGroupMembers();
         $memberCollection = new MemberCollection();
 
         foreach ($data as $item) {

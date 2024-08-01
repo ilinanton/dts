@@ -28,27 +28,31 @@ final class GitLabApiClient implements GitLabApiClientInterface
         $this->groupId = $groupId;
     }
 
-    public function get(string $uri, array $params = []): ResponseInterface
+    public function get(string $uri, array $params = []): array
     {
         if (count($params) > 0) {
             $uri .= '?' . http_build_query($params);
         }
-        return $this->client->get($uri);
+
+        $response = $this->client->get($uri);
+        $body = (string)$response->getBody();
+
+        return json_decode($body, 512, JSON_THROW_ON_ERROR);
     }
 
-    public function getGroupMembers(array $params = []): ResponseInterface
+    public function getGroupMembers(array $params = []): array
     {
         $uri = 'groups/' . $this->groupId . '/members';
         return $this->get($uri, $params);
     }
 
-    public function getGroupProjects(array $params = []): ResponseInterface
+    public function getGroupProjects(array $params = []): array
     {
         $uri = 'groups/' . $this->groupId . '/projects';
         return $this->get($uri, $params);
     }
 
-    public function getGroupMergeRequests(array $params = []): ResponseInterface
+    public function getGroupMergeRequests(array $params = []): array
     {
         $uri = 'groups/' . $this->groupId . '/merge_requests';
         return $this->get($uri, $params);
