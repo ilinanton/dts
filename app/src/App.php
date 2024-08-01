@@ -25,7 +25,7 @@ final class App
                 $this->identifyCommand($input)->execute();
             } catch (Throwable $exception) {
                 $code = $exception->getCode();
-                var_dump($exception);
+                echo '#' . $code . ' ' . $exception->getMessage() . PHP_EOL;
                 return is_int($code) ? $code : 1;
             }
         }
