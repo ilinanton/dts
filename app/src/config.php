@@ -2,6 +2,7 @@
 
 use App\Application\Command;
 use App\Application\ExitUseCase;
+use App\Application\GitLab\SyncGitLabProjectEventsUseCase;
 use App\Application\GitLab\SyncGitLabUserEventsUseCase;
 use App\Application\GitLab\SyncGitLabProjectMergeRequestsUseCase;
 use App\Application\GitLab\SyncGitLabProjectsUseCase;
@@ -35,6 +36,7 @@ return [
     'GITLAB_URL' => getenv('GITLAB_URL'),
     'GITLAB_TOKEN' => getenv('GITLAB_TOKEN'),
     'GITLAB_GROUP_ID' => getenv('GITLAB_GROUP_ID'),
+    'GITLAB_SYNC_DATE_AFTER' => getenv('GITLAB_SYNC_DATE_AFTER'),
     'GITLAB_URI' => function (ContainerInterface $c) {
         return $c->get('GITLAB_URL') . '/api/v4/';
     },
@@ -64,13 +66,16 @@ return [
     Command::sync_gitlab_projects->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitLabProjectsUseCase::class);
     },
+    Command::sync_gitlab_project_events->diId() => function (ContainerInterface $c) {
+        return $c->get(SyncGitLabProjectEventsUseCase::class);
+    },
     Command::sync_gitlab_users->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitLabUsersUseCase::class);
     },
     Command::sync_gitlab_merge_requests->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitLabProjectMergeRequestsUseCase::class);
     },
-    Command::sync_gitlab_events->diId() => function (ContainerInterface $c) {
+    Command::sync_gitlab_user_events->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitLabUserEventsUseCase::class);
     },
 
@@ -87,6 +92,14 @@ return [
             $c->get(GitLabDataBaseProjectRepositoryInterface::class)
         );
     },
+    SyncGitLabProjectEventsUseCase::class => function (ContainerInterface $c) {
+        return new SyncGitLabProjectEventsUseCase(
+            $c->get('GITLAB_SYNC_DATE_AFTER'),
+            $c->get(GitLabApiEventRepositoryInterface::class),
+            $c->get(GitLabDataBaseEventRepositoryInterface::class),
+            $c->get(GitLabDataBaseProjectRepositoryInterface::class),
+        );
+    },
     SyncGitLabUsersUseCase::class => function (ContainerInterface $c) {
         return new SyncGitLabUsersUseCase(
             $c->get(GitLabApiUserRepositoryInterface::class),
@@ -95,6 +108,7 @@ return [
     },
     SyncGitLabProjectMergeRequestsUseCase::class => function (ContainerInterface $c) {
         return new SyncGitLabProjectMergeRequestsUseCase(
+            $c->get('GITLAB_SYNC_DATE_AFTER'),
             $c->get(GitLabApiMergeRequestRepositoryInterface::class),
             $c->get(GitLabDataBaseMergeRequestRepositoryInterface::class),
             $c->get(GitLabDataBaseProjectRepositoryInterface::class)
@@ -102,6 +116,7 @@ return [
     },
     SyncGitLabUserEventsUseCase::class => function (ContainerInterface $c) {
         return new SyncGitLabUserEventsUseCase(
+            $c->get('GITLAB_SYNC_DATE_AFTER'),
             $c->get(GitLabApiEventRepositoryInterface::class),
             $c->get(GitLabDataBaseEventRepositoryInterface::class),
             $c->get(GitLabDataBaseUserRepositoryInterface::class),

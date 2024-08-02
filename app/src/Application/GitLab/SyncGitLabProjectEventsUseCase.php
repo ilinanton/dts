@@ -3,28 +3,28 @@
 namespace App\Application\GitLab;
 
 use App\Application\UseCaseInterface;
-use App\Domain\GitLab\MergeRequest\Repository\GitLabApiMergeRequestRepositoryInterface;
-use App\Domain\GitLab\MergeRequest\Repository\GitLabDataBaseMergeRequestRepositoryInterface;
+use App\Domain\GitLab\Event\Repository\GitLabApiEventRepositoryInterface;
+use App\Domain\GitLab\Event\Repository\GitLabDataBaseEventRepositoryInterface;
 use App\Domain\GitLab\Project\Repository\GitLabDataBaseProjectRepositoryInterface;
 
-final class SyncGitLabProjectMergeRequestsUseCase implements UseCaseInterface
+final class SyncGitLabProjectEventsUseCase implements UseCaseInterface
 {
     private const COUNT_ITEMS_PER_PAGE = 20;
 
     private string $syncDateAfter;
-    private GitLabApiMergeRequestRepositoryInterface $gitLabApiMergeRequestRepository;
-    private GitLabDataBaseMergeRequestRepositoryInterface $gitLabDataBaseMergeRequestRepository;
+    private GitLabApiEventRepositoryInterface $gitLabApiEventRepository;
+    private GitLabDataBaseEventRepositoryInterface $gitLabDataBaseEventRepository;
     private GitLabDataBaseProjectRepositoryInterface $gitLabDataBaseProjectRepository;
 
     public function __construct(
         string $syncDateAfter,
-        GitLabApiMergeRequestRepositoryInterface $gitLabApiMergeRequestRepository,
-        GitLabDataBaseMergeRequestRepositoryInterface $gitLabDataBaseMergeRequestRepository,
+        GitLabApiEventRepositoryInterface $gitLabApiEventRepository,
+        GitLabDataBaseEventRepositoryInterface $gitLabDataBaseEventRepository,
         GitLabDataBaseProjectRepositoryInterface $gitLabDataBaseProjectRepository
     ) {
         $this->syncDateAfter = $syncDateAfter;
-        $this->gitLabApiMergeRequestRepository = $gitLabApiMergeRequestRepository;
-        $this->gitLabDataBaseMergeRequestRepository = $gitLabDataBaseMergeRequestRepository;
+        $this->gitLabApiEventRepository = $gitLabApiEventRepository;
+        $this->gitLabDataBaseEventRepository = $gitLabDataBaseEventRepository;
         $this->gitLabDataBaseProjectRepository = $gitLabDataBaseProjectRepository;
     }
 
@@ -35,23 +35,24 @@ final class SyncGitLabProjectMergeRequestsUseCase implements UseCaseInterface
             $page = 0;
             $projectId = $project->getId()->getValue();
             $projectName = $project->getName()->getValue();
-            echo 'Load merge requests for #' . $projectId . ' ' . $projectName;
+            echo 'Load events for #' . $projectId . ' ' . $projectName;
             do {
                 ++$page;
 
-                $mergeRequestCollection = $this->gitLabApiMergeRequestRepository->get($projectId, [
+                $eventCollection = $this->gitLabApiEventRepository->getByProjectId($projectId, [
                     'page' => $page,
                     'per_page' => self::COUNT_ITEMS_PER_PAGE,
                     'after' => $this->syncDateAfter,
+                    'target_type' => 'merge_request',
                 ]);
 
-                foreach ($mergeRequestCollection as $mergeRequest) {
-                    $this->gitLabDataBaseMergeRequestRepository->save($mergeRequest);
+                foreach ($eventCollection as $event) {
+                    $this->gitLabDataBaseEventRepository->save($event);
                 }
 
                 sleep(1);
                 echo ' .';
-            } while (self::COUNT_ITEMS_PER_PAGE === count($mergeRequestCollection));
+            } while (self::COUNT_ITEMS_PER_PAGE === count($eventCollection));
             echo ' done ' . PHP_EOL;
         }
     }

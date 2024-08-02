@@ -10,17 +10,19 @@ use App\Domain\GitLab\User\Repository\GitLabDataBaseUserRepositoryInterface;
 final class SyncGitLabUserEventsUseCase implements UseCaseInterface
 {
     private const COUNT_ITEMS_PER_PAGE = 20;
-    private const COUNT_PAGES = 5;
 
+    private string $syncDateAfter;
     private GitLabApiEventRepositoryInterface $gitLabApiEventRepository;
     private GitLabDataBaseEventRepositoryInterface $gitLabDataBaseEventRepository;
     private GitLabDataBaseUserRepositoryInterface $gitLabDataBaseUserRepository;
 
     public function __construct(
+        string $syncDateAfter,
         GitLabApiEventRepositoryInterface $gitLabApiEventRepository,
         GitLabDataBaseEventRepositoryInterface $gitLabDataBaseEventRepository,
         GitLabDataBaseUserRepositoryInterface $gitLabDataBaseUserRepository
     ) {
+        $this->syncDateAfter = $syncDateAfter;
         $this->gitLabApiEventRepository = $gitLabApiEventRepository;
         $this->gitLabDataBaseEventRepository = $gitLabDataBaseEventRepository;
         $this->gitLabDataBaseUserRepository = $gitLabDataBaseUserRepository;
@@ -36,13 +38,12 @@ final class SyncGitLabUserEventsUseCase implements UseCaseInterface
             echo 'Load events for #' . $userId . ' ' . $userName;
             do {
                 ++$page;
-                if ($page > self::COUNT_PAGES) {
-                    break;
-                }
 
                 $eventCollection = $this->gitLabApiEventRepository->getByUserId($userId, [
                     'page' => $page,
                     'per_page' => self::COUNT_ITEMS_PER_PAGE,
+                    'after' => $this->syncDateAfter,
+                    'target_type' => 'merge_request',
                 ]);
 
                 foreach ($eventCollection as $event) {
