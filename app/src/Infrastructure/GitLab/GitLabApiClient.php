@@ -29,6 +29,7 @@ final class GitLabApiClient implements GitLabApiClientInterface
 
     public function get(string $uri, array $params = []): array
     {
+        sleep(1);
         if (count($params) > 0) {
             $uri .= '?' . http_build_query($params);
         }

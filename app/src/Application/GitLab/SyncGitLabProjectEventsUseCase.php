@@ -49,8 +49,6 @@ final class SyncGitLabProjectEventsUseCase implements UseCaseInterface
                 foreach ($eventCollection as $event) {
                     $this->gitLabDataBaseEventRepository->save($event);
                 }
-
-                sleep(1);
                 echo ' .';
             } while (self::COUNT_ITEMS_PER_PAGE === count($eventCollection));
             echo ' done ' . PHP_EOL;

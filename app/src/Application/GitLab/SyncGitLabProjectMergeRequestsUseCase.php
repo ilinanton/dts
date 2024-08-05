@@ -48,8 +48,6 @@ final class SyncGitLabProjectMergeRequestsUseCase implements UseCaseInterface
                 foreach ($mergeRequestCollection as $mergeRequest) {
                     $this->gitLabDataBaseMergeRequestRepository->save($mergeRequest);
                 }
-
-                sleep(1);
                 echo ' .';
             } while (self::COUNT_ITEMS_PER_PAGE === count($mergeRequestCollection));
             echo ' done ' . PHP_EOL;
