@@ -6,13 +6,11 @@ use App\Domain\GitLab\Event\Event;
 use App\Domain\GitLab\Event\Repository\GitLabDataBaseEventRepositoryInterface;
 use PDO;
 
-final class GitLabMySqlEventRepository implements GitLabDataBaseEventRepositoryInterface
+final readonly class GitLabMySqlEventRepository implements GitLabDataBaseEventRepositoryInterface
 {
-    private PDO $pdo;
-
-    public function __construct(PDO $pdo)
-    {
-        $this->pdo = $pdo;
+    public function __construct(
+        private PDO $pdo,
+    ) {
     }
 
     public function save(Event $object): void

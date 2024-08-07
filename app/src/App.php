@@ -7,7 +7,7 @@ use App\Application\UseCaseInterface;
 use Psr\Container\ContainerInterface;
 use Throwable;
 
-final class App
+final readonly class App
 {
     private ContainerInterface $container;
 

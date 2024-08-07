@@ -12,7 +12,7 @@ final readonly class SyncGitLabUsersUseCase implements UseCaseInterface
 
     public function __construct(
         private GitLabApiUserRepositoryInterface $gitLabApiUserRepository,
-        private GitLabMySqlUserRepository $gitLabMySqlUserRepository
+        private GitLabMySqlUserRepository $gitLabMySqlUserRepository,
     ) {
     }
 

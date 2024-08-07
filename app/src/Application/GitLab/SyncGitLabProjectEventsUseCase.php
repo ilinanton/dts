@@ -15,7 +15,7 @@ final readonly class SyncGitLabProjectEventsUseCase implements UseCaseInterface
         private string $syncDateAfter,
         private GitLabApiEventRepositoryInterface $gitLabApiEventRepository,
         private GitLabDataBaseEventRepositoryInterface $gitLabDataBaseEventRepository,
-        private GitLabDataBaseProjectRepositoryInterface $gitLabDataBaseProjectRepository
+        private GitLabDataBaseProjectRepositoryInterface $gitLabDataBaseProjectRepository,
     ) {
     }
 

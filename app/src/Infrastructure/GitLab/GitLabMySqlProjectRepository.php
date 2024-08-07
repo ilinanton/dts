@@ -8,15 +8,12 @@ use App\Domain\GitLab\Project\ProjectFactory;
 use App\Domain\GitLab\Project\Repository\GitLabDataBaseProjectRepositoryInterface;
 use PDO;
 
-final class GitLabMySqlProjectRepository implements GitLabDataBaseProjectRepositoryInterface
+final readonly class GitLabMySqlProjectRepository implements GitLabDataBaseProjectRepositoryInterface
 {
-    private PDO $pdo;
-    private ProjectFactory $projectFactory;
-
-    public function __construct(PDO $pdo, ProjectFactory $projectFactory)
-    {
-        $this->pdo = $pdo;
-        $this->projectFactory = $projectFactory;
+    public function __construct(
+        private PDO $pdo,
+        private ProjectFactory $projectFactory,
+    ) {
     }
 
     public function save(Project $object): void

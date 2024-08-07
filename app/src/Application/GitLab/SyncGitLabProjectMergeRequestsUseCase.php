@@ -15,7 +15,7 @@ final readonly class SyncGitLabProjectMergeRequestsUseCase implements UseCaseInt
         private string $syncDateAfter,
         private GitLabApiMergeRequestRepositoryInterface $gitLabApiMergeRequestRepository,
         private GitLabDataBaseMergeRequestRepositoryInterface $gitLabDataBaseMergeRequestRepository,
-        private GitLabDataBaseProjectRepositoryInterface $gitLabDataBaseProjectRepository
+        private GitLabDataBaseProjectRepositoryInterface $gitLabDataBaseProjectRepository,
     ) {
     }
 

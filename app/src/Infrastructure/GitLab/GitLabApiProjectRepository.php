@@ -7,15 +7,12 @@ use App\Domain\GitLab\Project\ProjectCollection;
 use App\Domain\GitLab\Project\ProjectFactory;
 use App\Domain\GitLab\Project\Repository\GitLabApiProjectRepositoryInterface;
 
-final class GitLabApiProjectRepository implements GitLabApiProjectRepositoryInterface
+final readonly class GitLabApiProjectRepository implements GitLabApiProjectRepositoryInterface
 {
-    private GitLabApiClientInterface $client;
-    private ProjectFactory $projectFactory;
-
-    public function __construct(GitLabApiClientInterface $client, ProjectFactory $projectFactory)
-    {
-        $this->client = $client;
-        $this->projectFactory = $projectFactory;
+    public function __construct(
+        private GitLabApiClientInterface $client,
+        private ProjectFactory $projectFactory,
+    ) {
     }
 
     public function get(array $params = []): ProjectCollection

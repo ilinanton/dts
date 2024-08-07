@@ -8,15 +8,12 @@ use App\Domain\GitLab\User\UserFactory;
 use App\Domain\GitLab\User\Repository\GitLabDataBaseUserRepositoryInterface;
 use PDO;
 
-final class GitLabMySqlUserRepository implements GitLabDataBaseUserRepositoryInterface
+final readonly class GitLabMySqlUserRepository implements GitLabDataBaseUserRepositoryInterface
 {
-    private PDO $pdo;
-    private UserFactory $memberFactory;
-
-    public function __construct(PDO $pdo, UserFactory $memberFactory)
-    {
-        $this->pdo = $pdo;
-        $this->memberFactory = $memberFactory;
+    public function __construct(
+        private PDO $pdo,
+        private UserFactory $memberFactory,
+    ) {
     }
 
     public function save(User $object): void

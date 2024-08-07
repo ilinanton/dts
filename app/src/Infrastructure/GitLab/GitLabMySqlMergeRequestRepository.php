@@ -6,13 +6,11 @@ use App\Domain\GitLab\MergeRequest\MergeRequest;
 use App\Domain\GitLab\MergeRequest\Repository\GitLabDataBaseMergeRequestRepositoryInterface;
 use PDO;
 
-final class GitLabMySqlMergeRequestRepository implements GitLabDataBaseMergeRequestRepositoryInterface
+final readonly class GitLabMySqlMergeRequestRepository implements GitLabDataBaseMergeRequestRepositoryInterface
 {
-    private PDO $pdo;
-
-    public function __construct(PDO $pdo)
-    {
-        $this->pdo = $pdo;
+    public function __construct(
+        private PDO $pdo,
+    ) {
     }
 
     public function save(MergeRequest $object): void

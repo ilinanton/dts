@@ -5,7 +5,7 @@ namespace App\Infrastructure\GitLab;
 use App\Domain\GitLab\Common\Repository\GitLabApiClientInterface;
 use GuzzleHttp\Client;
 
-final class GitLabApiClient implements GitLabApiClientInterface
+final readonly class GitLabApiClient implements GitLabApiClientInterface
 {
     private Client $client;
     private int $groupId;

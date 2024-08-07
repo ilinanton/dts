@@ -7,15 +7,12 @@ use App\Domain\GitLab\Event\EventCollection;
 use App\Domain\GitLab\Event\EventFactory;
 use App\Domain\GitLab\Event\Repository\GitLabApiEventRepositoryInterface;
 
-final class GitLabApiEventRepository implements GitLabApiEventRepositoryInterface
+final readonly class GitLabApiEventRepository implements GitLabApiEventRepositoryInterface
 {
-    private GitLabApiClientInterface $client;
-    private EventFactory $eventFactory;
-
-    public function __construct(GitLabApiClientInterface $client, EventFactory $eventFactory)
-    {
-        $this->client = $client;
-        $this->eventFactory = $eventFactory;
+    public function __construct(
+        private GitLabApiClientInterface $client,
+        private EventFactory $eventFactory,
+    ) {
     }
 
     public function getByProjectId(int $projectId, array $params = []): EventCollection

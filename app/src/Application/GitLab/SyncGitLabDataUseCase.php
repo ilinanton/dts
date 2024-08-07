@@ -8,7 +8,7 @@ use App\Application\UseCaseInterface;
 final readonly class SyncGitLabDataUseCase implements UseCaseInterface
 {
     public function __construct(
-        private UseCaseCollection $useCaseCollection
+        private UseCaseCollection $useCaseCollection,
     ) {
     }
 
