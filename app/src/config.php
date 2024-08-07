@@ -2,12 +2,14 @@
 
 use App\Application\Command;
 use App\Application\ExitUseCase;
+use App\Application\GitLab\SyncGitLabDataUseCase;
 use App\Application\GitLab\SyncGitLabProjectEventsUseCase;
 use App\Application\GitLab\SyncGitLabUserEventsUseCase;
 use App\Application\GitLab\SyncGitLabProjectMergeRequestsUseCase;
 use App\Application\GitLab\SyncGitLabProjectsUseCase;
 use App\Application\GitLab\SyncGitLabUsersUseCase;
 use App\Application\MenuUseCase;
+use App\Application\UseCaseCollection;
 use App\Domain\GitLab\Common\Repository\GitLabApiClientInterface;
 use App\Domain\GitLab\Event\EventFactory;
 use App\Domain\GitLab\Event\Repository\GitLabApiEventRepositoryInterface;
@@ -63,6 +65,9 @@ return [
     Command::exit->diId() => function (ContainerInterface $c) {
         return $c->get(ExitUseCase::class);
     },
+    Command::sync_gitlab_data->diId() => function (ContainerInterface $c) {
+        return $c->get(SyncGitLabDataUseCase::class);
+    },
     Command::sync_gitlab_projects->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitLabProjectsUseCase::class);
     },
@@ -86,6 +91,16 @@ return [
         return new ExitUseCase();
     },
 
+    SyncGitLabDataUseCase::class => function (ContainerInterface $c) {
+        $useCaseCollection = new UseCaseCollection();
+        $useCaseCollection->add($c->get(SyncGitLabProjectsUseCase::class));
+        $useCaseCollection->add($c->get(SyncGitLabUsersUseCase::class));
+        $useCaseCollection->add($c->get(SyncGitLabProjectMergeRequestsUseCase::class));
+        $useCaseCollection->add($c->get(SyncGitLabProjectEventsUseCase::class));
+//        $useCaseCollection->add($c->get(SyncGitLabUserEventsUseCase::class));
+
+        return new SyncGitLabDataUseCase($useCaseCollection);
+    },
     SyncGitLabProjectsUseCase::class => function (ContainerInterface $c) {
         return new SyncGitLabProjectsUseCase(
             $c->get(GitLabApiProjectRepositoryInterface::class),

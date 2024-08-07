@@ -6,6 +6,7 @@ enum Command: string
 {
     case exit = 'Exit';
     case menu = 'Menu';
+    case sync_gitlab_data = 'Sync gitlab data';
     case sync_gitlab_projects = 'Sync gitlab projects';
     case sync_gitlab_merge_requests = 'Sync gitlab project merge requests';
     case sync_gitlab_project_events = 'Sync gitlab project events';
