@@ -7,25 +7,16 @@ use App\Domain\GitLab\Event\Repository\GitLabApiEventRepositoryInterface;
 use App\Domain\GitLab\Event\Repository\GitLabDataBaseEventRepositoryInterface;
 use App\Domain\GitLab\User\Repository\GitLabDataBaseUserRepositoryInterface;
 
-final class SyncGitLabUserEventsUseCase implements UseCaseInterface
+final readonly class SyncGitLabUserEventsUseCase implements UseCaseInterface
 {
     private const COUNT_ITEMS_PER_PAGE = 20;
 
-    private string $syncDateAfter;
-    private GitLabApiEventRepositoryInterface $gitLabApiEventRepository;
-    private GitLabDataBaseEventRepositoryInterface $gitLabDataBaseEventRepository;
-    private GitLabDataBaseUserRepositoryInterface $gitLabDataBaseUserRepository;
-
     public function __construct(
-        string $syncDateAfter,
-        GitLabApiEventRepositoryInterface $gitLabApiEventRepository,
-        GitLabDataBaseEventRepositoryInterface $gitLabDataBaseEventRepository,
-        GitLabDataBaseUserRepositoryInterface $gitLabDataBaseUserRepository
+        private string $syncDateAfter,
+        private GitLabApiEventRepositoryInterface $gitLabApiEventRepository,
+        private GitLabDataBaseEventRepositoryInterface $gitLabDataBaseEventRepository,
+        private GitLabDataBaseUserRepositoryInterface $gitLabDataBaseUserRepository
     ) {
-        $this->syncDateAfter = $syncDateAfter;
-        $this->gitLabApiEventRepository = $gitLabApiEventRepository;
-        $this->gitLabDataBaseEventRepository = $gitLabDataBaseEventRepository;
-        $this->gitLabDataBaseUserRepository = $gitLabDataBaseUserRepository;
     }
 
     public function execute(): void

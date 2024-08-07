@@ -7,25 +7,16 @@ use App\Domain\GitLab\MergeRequest\Repository\GitLabApiMergeRequestRepositoryInt
 use App\Domain\GitLab\MergeRequest\Repository\GitLabDataBaseMergeRequestRepositoryInterface;
 use App\Domain\GitLab\Project\Repository\GitLabDataBaseProjectRepositoryInterface;
 
-final class SyncGitLabProjectMergeRequestsUseCase implements UseCaseInterface
+final readonly class SyncGitLabProjectMergeRequestsUseCase implements UseCaseInterface
 {
     private const COUNT_ITEMS_PER_PAGE = 20;
 
-    private string $syncDateAfter;
-    private GitLabApiMergeRequestRepositoryInterface $gitLabApiMergeRequestRepository;
-    private GitLabDataBaseMergeRequestRepositoryInterface $gitLabDataBaseMergeRequestRepository;
-    private GitLabDataBaseProjectRepositoryInterface $gitLabDataBaseProjectRepository;
-
     public function __construct(
-        string $syncDateAfter,
-        GitLabApiMergeRequestRepositoryInterface $gitLabApiMergeRequestRepository,
-        GitLabDataBaseMergeRequestRepositoryInterface $gitLabDataBaseMergeRequestRepository,
-        GitLabDataBaseProjectRepositoryInterface $gitLabDataBaseProjectRepository
+        private string $syncDateAfter,
+        private GitLabApiMergeRequestRepositoryInterface $gitLabApiMergeRequestRepository,
+        private GitLabDataBaseMergeRequestRepositoryInterface $gitLabDataBaseMergeRequestRepository,
+        private GitLabDataBaseProjectRepositoryInterface $gitLabDataBaseProjectRepository
     ) {
-        $this->syncDateAfter = $syncDateAfter;
-        $this->gitLabApiMergeRequestRepository = $gitLabApiMergeRequestRepository;
-        $this->gitLabDataBaseMergeRequestRepository = $gitLabDataBaseMergeRequestRepository;
-        $this->gitLabDataBaseProjectRepository = $gitLabDataBaseProjectRepository;
     }
 
     public function execute(): void

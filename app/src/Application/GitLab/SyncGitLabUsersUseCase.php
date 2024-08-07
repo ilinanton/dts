@@ -6,20 +6,14 @@ use App\Application\UseCaseInterface;
 use App\Domain\GitLab\User\Repository\GitLabApiUserRepositoryInterface;
 use App\Infrastructure\GitLab\GitLabMySqlUserRepository;
 
-final class SyncGitLabUsersUseCase implements UseCaseInterface
+final readonly class SyncGitLabUsersUseCase implements UseCaseInterface
 {
     private const COUNT_ITEMS_PER_PAGE = 20;
 
-    private GitLabApiUserRepositoryInterface $gitLabApiUserRepository;
-    private GitLabMySqlUserRepository $gitLabMySqlUserRepository;
-
-
     public function __construct(
-        GitLabApiUserRepositoryInterface $gitLabApiUserRepository,
-        GitLabMySqlUserRepository $gitLabMySqlUserRepository
+        private GitLabApiUserRepositoryInterface $gitLabApiUserRepository,
+        private GitLabMySqlUserRepository $gitLabMySqlUserRepository
     ) {
-        $this->gitLabApiUserRepository = $gitLabApiUserRepository;
-        $this->gitLabMySqlUserRepository = $gitLabMySqlUserRepository;
     }
 
     public function execute(): void
@@ -32,7 +26,9 @@ final class SyncGitLabUsersUseCase implements UseCaseInterface
                 'per_page' => self::COUNT_ITEMS_PER_PAGE,
             ]);
             foreach ($userCollection as $user) {
+                echo 'Load user #' . $user->getId()->getValue() . ' ' . $user->getName()->getValue();
                 $this->gitLabMySqlUserRepository->save($user);
+                echo ' done ' . PHP_EOL;
             }
         } while (self::COUNT_ITEMS_PER_PAGE === count($userCollection));
     }
