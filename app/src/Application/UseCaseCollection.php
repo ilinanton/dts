@@ -7,15 +7,10 @@ use Countable;
 use IteratorAggregate;
 use Traversable;
 
-final readonly class UseCaseCollection implements IteratorAggregate, Countable
+final class UseCaseCollection implements IteratorAggregate, Countable
 {
     /** @var UseCaseInterface[] */
-    private array $list;
-
-    public function __construct()
-    {
-        $this->list = [];
-    }
+    private array $list = [];
 
     public function add(UseCaseInterface $item): void
     {
