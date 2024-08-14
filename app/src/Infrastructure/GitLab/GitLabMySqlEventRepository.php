@@ -26,7 +26,9 @@ INSERT INTO git_lab_event
      target_type,
      author_id,
      target_title,
-     created_at
+     created_at,
+     push_data,
+     note
      )
 VALUES
     (
@@ -38,7 +40,9 @@ VALUES
      :TARGET_TYPE,
      :AUTHOR_ID,
      :TARGET_TITLE,
-     :CREATED_AT
+     :CREATED_AT,
+     :PUSH_DATA,
+     :NOTE
     )
 ON DUPLICATE KEY UPDATE id = id
 SQL;
@@ -54,6 +58,8 @@ SQL;
             ':AUTHOR_ID' => $object->getAuthorId()->getValue(),
             ':TARGET_TITLE' => $object->getTargetTitle()->getValue() ?: null,
             ':CREATED_AT' => $object->getCreatedAt()->getValue(),
+            ':PUSH_DATA' => $object->getPushData()->getJsonValue() ?: null,
+            ':NOTE' => $object->getNote()->getJsonValue() ?: null,
         ]);
     }
 }

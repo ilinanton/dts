@@ -26,6 +26,8 @@ final class CreateGitLabEvent extends AbstractMigration
             ->addColumn('author_id', 'biginteger', ['signed' => false, 'null' => false])
             ->addColumn('target_title', 'string', ['length' => 255, 'null' => true])
             ->addColumn('created_at', 'datetime', ['null' => false])
+            ->addColumn('push_data', 'json', ['null' => true])
+            ->addColumn('note', 'json', ['null' => true])
             ->addIndex(['project_id'])
             ->addIndex(['action_name'])
             ->addIndex(['target_id'])

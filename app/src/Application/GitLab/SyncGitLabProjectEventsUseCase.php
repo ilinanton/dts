@@ -9,7 +9,21 @@ use App\Domain\GitLab\Project\Repository\GitLabDataBaseProjectRepositoryInterfac
 
 final readonly class SyncGitLabProjectEventsUseCase implements UseCaseInterface
 {
-    private const COUNT_ITEMS_PER_PAGE = 20;
+    private const COUNT_ITEMS_PER_PAGE = 40;
+    private const FILTERS = [
+        [
+            'param_name' => 'action',
+            'value' => 'pushed',
+        ],
+        [
+            'param_name' => 'action',
+            'value' => 'commented',
+        ],
+        [
+            'param_name' => 'target_type',
+            'value' => 'merge_request',
+        ],
+    ];
 
     public function __construct(
         private string $syncDateAfter,
@@ -23,26 +37,31 @@ final readonly class SyncGitLabProjectEventsUseCase implements UseCaseInterface
     {
         $projectCollection = $this->gitLabDataBaseProjectRepository->getAll();
         foreach ($projectCollection as $project) {
-            $page = 0;
             $projectId = $project->getId()->getValue();
             $projectName = $project->getName()->getValue();
-            echo 'Load events for #' . $projectId . ' ' . $projectName;
-            do {
-                ++$page;
+            echo 'Load events for #' . $projectId . ' ' . $projectName . PHP_EOL;
+            foreach (self::FILTERS as $filter) {
+                echo ' - ' . $filter['param_name'] . ': ' . $filter['value'];
+                $page = 0;
+                do {
+                    ++$page;
 
-                $eventCollection = $this->gitLabApiEventRepository->getByProjectId($projectId, [
-                    'page' => $page,
-                    'per_page' => self::COUNT_ITEMS_PER_PAGE,
-                    'after' => $this->syncDateAfter,
-                    'target_type' => 'merge_request',
-                ]);
+                    $params = [
+                        'page' => $page,
+                        'per_page' => self::COUNT_ITEMS_PER_PAGE,
+                        'after' => $this->syncDateAfter,
+                        $filter['param_name'] => $filter['value'],
+                    ];
 
-                foreach ($eventCollection as $event) {
-                    $this->gitLabDataBaseEventRepository->save($event);
-                }
-                echo ' .';
-            } while (self::COUNT_ITEMS_PER_PAGE === count($eventCollection));
-            echo ' done ' . PHP_EOL;
+                    $eventCollection = $this->gitLabApiEventRepository->getByProjectId($projectId, $params);
+
+                    foreach ($eventCollection as $event) {
+                        $this->gitLabDataBaseEventRepository->save($event);
+                    }
+                    echo ' .';
+                } while (self::COUNT_ITEMS_PER_PAGE === count($eventCollection));
+                echo ' done ' . PHP_EOL;
+            }
         }
     }
 }
