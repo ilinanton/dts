@@ -8,7 +8,7 @@ use App\Infrastructure\GitLab\GitLabMySqlUserRepository;
 
 final readonly class SyncGitLabUsersUseCase implements UseCaseInterface
 {
-    private const COUNT_ITEMS_PER_PAGE = 20;
+    private const COUNT_ITEMS_PER_PAGE = 40;
 
     public function __construct(
         private GitLabApiUserRepositoryInterface $gitLabApiUserRepository,

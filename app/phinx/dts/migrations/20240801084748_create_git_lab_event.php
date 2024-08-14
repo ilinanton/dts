@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Phinx\Db\Adapter\MysqlAdapter;
 use Phinx\Migration\AbstractMigration;
 
 final class CreateGitLabEvent extends AbstractMigration
@@ -26,8 +27,18 @@ final class CreateGitLabEvent extends AbstractMigration
             ->addColumn('author_id', 'biginteger', ['signed' => false, 'null' => false])
             ->addColumn('target_title', 'string', ['length' => 255, 'null' => true])
             ->addColumn('created_at', 'datetime', ['null' => false])
-            ->addColumn('push_data', 'json', ['null' => true])
-            ->addColumn('note', 'json', ['null' => true])
+
+            ->addColumn('push_data_action', 'string', ['length' => 255, 'null' => true])
+            ->addColumn('push_data_commit_title', 'string', ['length' => 255, 'null' => true])
+            ->addColumn('push_data_commit_count', 'biginteger', ['signed' => false, 'null' => true])
+            ->addColumn('push_data_commit_from', 'string', ['length' => 255, 'null' => true])
+            ->addColumn('push_data_commit_to', 'string', ['length' => 255, 'null' => true])
+            ->addColumn('push_data_ref', 'string', ['length' => 255, 'null' => true])
+            ->addColumn('push_data_ref_count', 'biginteger', ['signed' => false, 'null' => true])
+            ->addColumn('push_data_ref_type', 'string', ['length' => 255, 'null' => true])
+
+            ->addColumn('note_body', 'text', ['null' => true, 'limit' => MysqlAdapter::TEXT_MEDIUM])
+
             ->addIndex(['project_id'])
             ->addIndex(['action_name'])
             ->addIndex(['target_id'])
@@ -36,6 +47,15 @@ final class CreateGitLabEvent extends AbstractMigration
             ->addIndex(['author_id'])
             ->addIndex(['target_title'])
             ->addIndex(['created_at'])
+
+            ->addIndex(['push_data_action'])
+            ->addIndex(['push_data_commit_count'])
+            ->addIndex(['push_data_commit_from'])
+            ->addIndex(['push_data_commit_to'])
+            ->addIndex(['push_data_ref'])
+            ->addIndex(['push_data_ref_count'])
+            ->addIndex(['push_data_ref_type'])
+
             ->create();
     }
 
