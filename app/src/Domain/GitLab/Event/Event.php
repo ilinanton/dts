@@ -6,44 +6,29 @@ use App\Domain\GitLab\Event\ValueObject\EventActionName;
 use App\Domain\GitLab\Event\ValueObject\EventAuthorId;
 use App\Domain\GitLab\Event\ValueObject\EventCreateAt;
 use App\Domain\GitLab\Event\ValueObject\EventId;
+use App\Domain\GitLab\Event\ValueObject\EventNote;
 use App\Domain\GitLab\Event\ValueObject\EventProjectId;
+use App\Domain\GitLab\Event\ValueObject\EventPushData;
 use App\Domain\GitLab\Event\ValueObject\EventTargetId;
 use App\Domain\GitLab\Event\ValueObject\EventTargetIid;
 use App\Domain\GitLab\Event\ValueObject\EventTargetTitle;
 use App\Domain\GitLab\Event\ValueObject\EventTargetType;
 
-final class Event
+final readonly class Event
 {
-    private EventId $id;
-    private EventProjectId $projectId;
-    private EventActionName $actionName;
-    private EventTargetId $targetId;
-    private EventTargetIid $targetIid;
-    private EventTargetType $targetType;
-    private EventAuthorId $authorId;
-    private EventTargetTitle $targetTitle;
-    private EventCreateAt $createdAt;
-
     public function __construct(
-        EventId $id,
-        EventProjectId $projectId,
-        EventActionName $actionName,
-        EventTargetId $targetId,
-        EventTargetIid $targetIid,
-        EventTargetType $targetType,
-        EventAuthorId $authorId,
-        EventTargetTitle $targetTitle,
-        EventCreateAt $createdAt
+        private EventId $id,
+        private EventProjectId $projectId,
+        private EventActionName $actionName,
+        private EventTargetId $targetId,
+        private EventTargetIid $targetIid,
+        private EventTargetType $targetType,
+        private EventAuthorId $authorId,
+        private EventTargetTitle $targetTitle,
+        private EventCreateAt $createdAt,
+        private EventPushData $pushData,
+        private EventNote $note,
     ) {
-        $this->id = $id;
-        $this->projectId = $projectId;
-        $this->actionName = $actionName;
-        $this->targetId = $targetId;
-        $this->targetIid = $targetIid;
-        $this->targetType = $targetType;
-        $this->authorId = $authorId;
-        $this->targetTitle = $targetTitle;
-        $this->createdAt = $createdAt;
     }
 
     public function getId(): EventId
@@ -89,5 +74,15 @@ final class Event
     public function getCreatedAt(): EventCreateAt
     {
         return $this->createdAt;
+    }
+
+    public function getPushData(): EventPushData
+    {
+        return $this->pushData;
+    }
+
+    public function getNote(): EventNote
+    {
+        return $this->note;
     }
 }

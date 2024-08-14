@@ -6,7 +6,9 @@ use App\Domain\GitLab\Event\ValueObject\EventActionName;
 use App\Domain\GitLab\Event\ValueObject\EventAuthorId;
 use App\Domain\GitLab\Event\ValueObject\EventCreateAt;
 use App\Domain\GitLab\Event\ValueObject\EventId;
+use App\Domain\GitLab\Event\ValueObject\EventNote;
 use App\Domain\GitLab\Event\ValueObject\EventProjectId;
+use App\Domain\GitLab\Event\ValueObject\EventPushData;
 use App\Domain\GitLab\Event\ValueObject\EventTargetId;
 use App\Domain\GitLab\Event\ValueObject\EventTargetIid;
 use App\Domain\GitLab\Event\ValueObject\EventTargetTitle;
@@ -25,7 +27,9 @@ final class EventFactory
             new EventTargetType($data['target_type'] ?? 0),
             new EventAuthorId($data['author_id'] ?? 0),
             new EventTargetTitle($data['target_title'] ?? ''),
-            new EventCreateAt($data['created_at'] ?? '')
+            new EventCreateAt($data['created_at'] ?? ''),
+            new EventPushData($data['push_data'] ?? []),
+            new EventNote($data['note'] ?? []),
         );
     }
 }

@@ -26,7 +26,18 @@ INSERT INTO git_lab_event
      target_type,
      author_id,
      target_title,
-     created_at
+     created_at,
+     
+     push_data_action,
+     push_data_commit_title,
+     push_data_commit_count,
+     push_data_commit_from,
+     push_data_commit_to,
+     push_data_ref,
+     push_data_ref_count,
+     push_data_ref_type,
+     
+     note_body
      )
 VALUES
     (
@@ -38,12 +49,25 @@ VALUES
      :TARGET_TYPE,
      :AUTHOR_ID,
      :TARGET_TITLE,
-     :CREATED_AT
+     :CREATED_AT,
+     
+     :PUSH_DATA_ACTION,
+     :PUSH_DATA_COMMIT_TITLE,
+     :PUSH_DATA_COMMIT_COUNT,
+     :PUSH_DATA_COMMIT_FROM,
+     :PUSH_DATA_COMMIT_TO,
+     :PUSH_DATA_REF,
+     :PUSH_DATA_REF_COUNT,
+     :PUSH_DATA_REF_TYPE,
+     
+     :NOTE_BODY
     )
 ON DUPLICATE KEY UPDATE id = id
 SQL;
 
         $stmt = $this->pdo->prepare($sql);
+        $pushData = $object->getPushData()->getValue();
+        $note = $object->getNote()->getValue();
         $stmt->execute([
             ':ID' => $object->getId()->getValue(),
             ':PROJECT_ID' => $object->getProjectId()->getValue(),
@@ -54,6 +78,17 @@ SQL;
             ':AUTHOR_ID' => $object->getAuthorId()->getValue(),
             ':TARGET_TITLE' => $object->getTargetTitle()->getValue() ?: null,
             ':CREATED_AT' => $object->getCreatedAt()->getValue(),
+
+            ':PUSH_DATA_ACTION' => $pushData->getAction()->getValue() ?: null,
+            ':PUSH_DATA_COMMIT_TITLE' => $pushData->getCommitTitle()->getValue() ?: null,
+            ':PUSH_DATA_COMMIT_COUNT' => $pushData->getCommitCount()->getValue() ?: null,
+            ':PUSH_DATA_COMMIT_FROM' => $pushData->getCommitFrom()->getValue() ?: null,
+            ':PUSH_DATA_COMMIT_TO' => $pushData->getCommitTo()->getValue() ?: null,
+            ':PUSH_DATA_REF' => $pushData->getRef()->getValue() ?: null,
+            ':PUSH_DATA_REF_COUNT' => $pushData->getRefCount()->getValue() ?: null,
+            ':PUSH_DATA_REF_TYPE' => $pushData->getRefType()->getValue() ?: null,
+
+            ':NOTE_BODY' => $note->getBody()->getValue() ?: null,
         ]);
     }
 }

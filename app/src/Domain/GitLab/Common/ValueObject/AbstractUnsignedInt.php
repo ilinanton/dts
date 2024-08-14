@@ -4,24 +4,24 @@ namespace App\Domain\GitLab\Common\ValueObject;
 
 use InvalidArgumentException;
 
-abstract class AbstractWebUrl
+abstract readonly class AbstractUnsignedInt
 {
-    private string $value;
+    private int $value;
 
-    public function __construct(string $value)
+    public function __construct(int $value)
     {
         $this->assertValueIsValid($value);
         $this->value = $value;
     }
 
-    public function getValue(): string
+    public function getValue(): int
     {
         return $this->value;
     }
 
-    private function assertValueIsValid(string $value): void
+    private function assertValueIsValid(int $value): void
     {
-        if (false === filter_var($value, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
+        if ($value < 0) {
             throw new InvalidArgumentException(get_class($this) . ' is incorrect!');
         }
     }

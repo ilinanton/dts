@@ -8,7 +8,7 @@ use App\Domain\GitLab\Project\Repository\GitLabDataBaseProjectRepositoryInterfac
 
 final readonly class SyncGitLabProjectsUseCase implements UseCaseInterface
 {
-    private const COUNT_ITEMS_PER_PAGE = 20;
+    private const COUNT_ITEMS_PER_PAGE = 40;
 
     public function __construct(
         private GitLabApiProjectRepositoryInterface $gitLabApiProjectRepository,
