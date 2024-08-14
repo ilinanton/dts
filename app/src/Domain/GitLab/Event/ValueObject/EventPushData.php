@@ -2,22 +2,21 @@
 
 namespace App\Domain\GitLab\Event\ValueObject;
 
+use App\Domain\GitLab\PushData\PushData;
+use App\Domain\GitLab\PushData\PushDataFactory;
+
 final class EventPushData
 {
-    private array $value;
+    private PushData $value;
 
     public function __construct(array $value)
     {
-        $this->value = $value;
+        $PushDataFactory = new PushDataFactory();
+        $this->value = $PushDataFactory->create($value);
     }
 
-    public function getValue(): array
+    public function getValue(): PushData
     {
         return $this->value;
-    }
-
-    public function getJsonValue(): string
-    {
-        return json_encode($this->value, JSON_THROW_ON_ERROR);
     }
 }

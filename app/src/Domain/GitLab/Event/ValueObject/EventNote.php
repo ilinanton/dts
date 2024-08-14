@@ -2,22 +2,21 @@
 
 namespace App\Domain\GitLab\Event\ValueObject;
 
+use App\Domain\GitLab\Note\Note;
+use App\Domain\GitLab\Note\NoteFactory;
+
 final class EventNote
 {
-    private array $value;
+    private Note $value;
 
     public function __construct(array $value)
     {
-        $this->value = $value;
+        $noteFactory = new NoteFactory();
+        $this->value = $noteFactory->create($value);
     }
 
-    public function getValue(): array
+    public function getValue(): Note
     {
         return $this->value;
-    }
-
-    public function getJsonValue(): string
-    {
-        return json_encode($this->value, JSON_THROW_ON_ERROR);
     }
 }
