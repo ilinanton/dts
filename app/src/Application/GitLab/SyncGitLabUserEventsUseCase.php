@@ -22,11 +22,12 @@ final readonly class SyncGitLabUserEventsUseCase implements UseCaseInterface
     public function execute(): void
     {
         $userCollection = $this->gitLabDataBaseUserRepository->getAll();
+        echo 'Load events that happened after ' . $this->syncDateAfter . PHP_EOL;
         foreach ($userCollection as $user) {
             $page = 0;
             $userId = $user->getId()->getValue();
             $userName = $user->getName()->getValue();
-            echo 'Load events for #' . $userId . ' ' . $userName;
+            echo ' - #' . $userId . ' ' . $userName;
             do {
                 ++$page;
 

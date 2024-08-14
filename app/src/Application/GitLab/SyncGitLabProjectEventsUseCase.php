@@ -36,6 +36,7 @@ final readonly class SyncGitLabProjectEventsUseCase implements UseCaseInterface
 
     public function execute(): void
     {
+        echo 'Load project events that happened after ' . $this->syncDateAfter . PHP_EOL;
         $projectCollection = $this->gitLabDataBaseProjectRepository->getAll();
         foreach ($projectCollection as $project) {
             $this->syncProject($project);
@@ -46,9 +47,9 @@ final readonly class SyncGitLabProjectEventsUseCase implements UseCaseInterface
     {
         $projectId = $project->getId()->getValue();
         $projectName = $project->getName()->getValue();
-        echo 'Load events for #' . $projectId . ' ' . $projectName . PHP_EOL;
+        echo ' - #' . $projectId . ' ' . $projectName . PHP_EOL;
         foreach (self::FILTERS as $filter) {
-            echo ' - ' . $filter['param_name'] . ': ' . $filter['value'];
+            echo '   - ' . $filter['param_name'] . ': ' . $filter['value'];
             $page = 0;
             do {
                 ++$page;

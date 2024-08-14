@@ -21,12 +21,13 @@ final readonly class SyncGitLabProjectMergeRequestsUseCase implements UseCaseInt
 
     public function execute(): void
     {
+        echo 'Load merge requests that created after ' . $this->syncDateAfter . PHP_EOL;
         $projectCollection = $this->gitLabDataBaseProjectRepository->getAll();
         foreach ($projectCollection as $project) {
             $page = 0;
             $projectId = $project->getId()->getValue();
             $projectName = $project->getName()->getValue();
-            echo 'Load merge requests for #' . $projectId . ' ' . $projectName;
+            echo ' - #' . $projectId . ' ' . $projectName;
             do {
                 ++$page;
 
