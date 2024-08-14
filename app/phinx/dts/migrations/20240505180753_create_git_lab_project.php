@@ -21,6 +21,8 @@ final class CreateGitLabProject extends AbstractMigration
             ->addColumn('name', 'string', ['length' => 255, 'null' => false])
             ->addColumn('default_branch', 'string', ['length' => 255, 'null' => false])
             ->addColumn('web_url', 'string', ['length' => 500, 'null' => false])
+            ->addIndex(['name'])
+            ->addIndex(['default_branch'])
             ->create();
     }
 

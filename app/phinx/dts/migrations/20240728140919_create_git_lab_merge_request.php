@@ -32,6 +32,15 @@ final class CreateGitLabMergeRequest extends AbstractMigration
             ->addColumn('source_branch', 'string', ['length' => 63, 'null' => false])
             ->addColumn('author_id', 'biginteger', ['signed' => false, 'null' => false])
             ->addColumn('web_url', 'string', ['length' => 500, 'null' => false])
+            ->addIndex(['iid'])
+            ->addIndex(['project_id'])
+            ->addIndex(['state'])
+            ->addIndex(['merged_at'])
+            ->addIndex(['created_at'])
+            ->addIndex(['updated_at'])
+            ->addIndex(['target_branch'])
+            ->addIndex(['source_branch'])
+            ->addIndex(['author_id'])
             ->create();
     }
 
