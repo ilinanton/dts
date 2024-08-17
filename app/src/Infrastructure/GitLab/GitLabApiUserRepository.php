@@ -18,13 +18,13 @@ final readonly class GitLabApiUserRepository implements GitLabApiUserRepositoryI
     public function get(array $params = []): UserCollection
     {
         $data = $this->client->getGroupMembers();
-        $memberCollection = new UserCollection();
+        $userCollection = new UserCollection();
 
         foreach ($data as $item) {
-            $project = $this->memberFactory->create($item);
-            $memberCollection->add($project);
+            $user = $this->memberFactory->create($item);
+            $userCollection->add($user);
         }
 
-        return $memberCollection;
+        return $userCollection;
     }
 }
