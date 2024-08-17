@@ -2,8 +2,8 @@
 
 namespace App\Domain\GitLab\MergeRequest\ValueObject;
 
-use App\Domain\GitLab\Common\ValueObject\AbstractRequiredId;
+use App\Domain\GitLab\Common\ValueObject\AbstractRequiredUnsignedInt;
 
-final readonly class MergeRequestProjectId extends AbstractRequiredId
+final readonly class MergeRequestProjectId extends AbstractRequiredUnsignedInt
 {
 }

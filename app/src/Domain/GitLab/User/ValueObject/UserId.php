@@ -2,8 +2,8 @@
 
 namespace App\Domain\GitLab\User\ValueObject;
 
-use App\Domain\GitLab\Common\ValueObject\AbstractRequiredId;
+use App\Domain\GitLab\Common\ValueObject\AbstractRequiredUnsignedInt;
 
-final readonly class UserId extends AbstractRequiredId
+final readonly class UserId extends AbstractRequiredUnsignedInt
 {
 }
