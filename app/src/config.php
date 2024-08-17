@@ -3,6 +3,7 @@
 use App\Application\Command;
 use App\Application\ExitUseCase;
 use App\Application\GitLab\SyncGitLabDataUseCase;
+use App\Application\GitLab\SyncGitLabProjectCommitsUseCase;
 use App\Application\GitLab\SyncGitLabProjectEventsUseCase;
 use App\Application\GitLab\SyncGitLabUserEventsUseCase;
 use App\Application\GitLab\SyncGitLabProjectMergeRequestsUseCase;
@@ -10,6 +11,9 @@ use App\Application\GitLab\SyncGitLabProjectsUseCase;
 use App\Application\GitLab\SyncGitLabUsersUseCase;
 use App\Application\MenuUseCase;
 use App\Application\UseCaseCollection;
+use App\Domain\GitLab\Commit\CommitFactory;
+use App\Domain\GitLab\Commit\Repository\GitLabApiCommitRepositoryInterface;
+use App\Domain\GitLab\Commit\Repository\GitLabDataBaseCommitRepositoryInterface;
 use App\Domain\GitLab\Common\Repository\GitLabApiClientInterface;
 use App\Domain\GitLab\Event\EventFactory;
 use App\Domain\GitLab\Event\Repository\GitLabApiEventRepositoryInterface;
@@ -24,10 +28,12 @@ use App\Domain\GitLab\Project\ProjectFactory;
 use App\Domain\GitLab\Project\Repository\GitLabApiProjectRepositoryInterface;
 use App\Domain\GitLab\Project\Repository\GitLabDataBaseProjectRepositoryInterface;
 use App\Infrastructure\GitLab\GitLabApiClient;
+use App\Infrastructure\GitLab\GitLabApiCommitRepository;
 use App\Infrastructure\GitLab\GitLabApiEventRepository;
 use App\Infrastructure\GitLab\GitLabApiUserRepository;
 use App\Infrastructure\GitLab\GitLabApiMergeRequestRepository;
 use App\Infrastructure\GitLab\GitLabApiProjectRepository;
+use App\Infrastructure\GitLab\GitLabMySqlCommitRepository;
 use App\Infrastructure\GitLab\GitLabMySqlEventRepository;
 use App\Infrastructure\GitLab\GitLabMySqlUserRepository;
 use App\Infrastructure\GitLab\GitLabMySqlMergeRequestRepository;
@@ -74,6 +80,9 @@ return [
     Command::sync_gitlab_project_events->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitLabProjectEventsUseCase::class);
     },
+    Command::sync_gitlab_project_commits->diId() => function (ContainerInterface $c) {
+        return $c->get(SyncGitLabProjectCommitsUseCase::class);
+    },
     Command::sync_gitlab_users->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitLabUsersUseCase::class);
     },
@@ -97,6 +106,7 @@ return [
         $useCaseCollection->add($c->get(SyncGitLabUsersUseCase::class));
         $useCaseCollection->add($c->get(SyncGitLabProjectMergeRequestsUseCase::class));
         $useCaseCollection->add($c->get(SyncGitLabProjectEventsUseCase::class));
+        $useCaseCollection->add($c->get(SyncGitLabProjectCommitsUseCase::class));
 //        $useCaseCollection->add($c->get(SyncGitLabUserEventsUseCase::class));
 
         return new SyncGitLabDataUseCase($useCaseCollection);
@@ -113,6 +123,14 @@ return [
             $c->get(GitLabDataBaseProjectRepositoryInterface::class),
             $c->get(GitLabApiEventRepositoryInterface::class),
             $c->get(GitLabDataBaseEventRepositoryInterface::class),
+        );
+    },
+    SyncGitLabProjectCommitsUseCase::class => function (ContainerInterface $c) {
+        return new SyncGitLabProjectCommitsUseCase(
+            $c->get('GITLAB_SYNC_DATE_AFTER'),
+            $c->get(GitLabDataBaseProjectRepositoryInterface::class),
+            $c->get(GitLabApiCommitRepositoryInterface::class),
+            $c->get(GitLabDataBaseCommitRepositoryInterface::class),
         );
     },
     SyncGitLabUsersUseCase::class => function (ContainerInterface $c) {
@@ -132,9 +150,9 @@ return [
     SyncGitLabUserEventsUseCase::class => function (ContainerInterface $c) {
         return new SyncGitLabUserEventsUseCase(
             $c->get('GITLAB_SYNC_DATE_AFTER'),
+            $c->get(GitLabDataBaseUserRepositoryInterface::class),
             $c->get(GitLabApiEventRepositoryInterface::class),
             $c->get(GitLabDataBaseEventRepositoryInterface::class),
-            $c->get(GitLabDataBaseUserRepositoryInterface::class),
         );
     },
 
@@ -160,6 +178,12 @@ return [
         return new GitLabApiEventRepository(
             $c->get(GitLabApiClientInterface::class),
             new EventFactory()
+        );
+    },
+    GitLabApiCommitRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitLabApiCommitRepository(
+            $c->get(GitLabApiClientInterface::class),
+            new CommitFactory()
         );
     },
     GitLabApiClientInterface::class => function (ContainerInterface $c) {
@@ -190,5 +214,10 @@ return [
         return new GitLabMySqlEventRepository(
             $c->get(PDO::class)
         );
-    }
+    },
+    GitLabDataBaseCommitRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitLabMySqlCommitRepository(
+            $c->get(PDO::class)
+        );
+    },
 ];
