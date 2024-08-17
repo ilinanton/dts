@@ -110,9 +110,9 @@ return [
     SyncGitLabProjectEventsUseCase::class => function (ContainerInterface $c) {
         return new SyncGitLabProjectEventsUseCase(
             $c->get('GITLAB_SYNC_DATE_AFTER'),
+            $c->get(GitLabDataBaseProjectRepositoryInterface::class),
             $c->get(GitLabApiEventRepositoryInterface::class),
             $c->get(GitLabDataBaseEventRepositoryInterface::class),
-            $c->get(GitLabDataBaseProjectRepositoryInterface::class),
         );
     },
     SyncGitLabUsersUseCase::class => function (ContainerInterface $c) {
