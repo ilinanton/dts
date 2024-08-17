@@ -9,7 +9,7 @@ use App\Domain\GitLab\User\ValueObject\UserName;
 use App\Domain\GitLab\User\ValueObject\UserUsername;
 use App\Domain\GitLab\User\ValueObject\UserWebUrl;
 
-final class User extends AbstractEntity
+final readonly class User extends AbstractEntity
 {
     private UserId $id;
     private UserUsername $username;

@@ -2,6 +2,6 @@
 
 namespace App\Domain\GitLab\Common;
 
-abstract class AbstractEntity
+abstract readonly class AbstractEntity
 {
 }
