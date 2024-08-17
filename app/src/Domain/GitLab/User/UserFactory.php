@@ -8,7 +8,7 @@ use App\Domain\GitLab\User\ValueObject\UserName;
 use App\Domain\GitLab\User\ValueObject\UserUsername;
 use App\Domain\GitLab\User\ValueObject\UserWebUrl;
 
-final class UserFactory
+final readonly class UserFactory
 {
     public function create(array $data): User
     {

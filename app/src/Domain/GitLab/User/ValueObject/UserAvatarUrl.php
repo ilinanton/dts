@@ -2,27 +2,8 @@
 
 namespace App\Domain\GitLab\User\ValueObject;
 
-use InvalidArgumentException;
+use App\Domain\GitLab\Common\ValueObject\AbstractWebUrl;
 
-final class UserAvatarUrl
+final readonly class UserAvatarUrl extends AbstractWebUrl
 {
-    private string $value;
-
-    public function __construct(string $value)
-    {
-        $this->assertValueIsValid($value);
-        $this->value = $value;
-    }
-
-    public function getValue(): string
-    {
-        return $this->value;
-    }
-
-    private function assertValueIsValid(string $value): void
-    {
-        if (false === filter_var($value, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
-            throw new InvalidArgumentException('Avatar url is incorrect!');
-        }
-    }
 }
