@@ -4,7 +4,7 @@ namespace App\Domain\GitLab\Event;
 
 use App\Domain\GitLab\Event\ValueObject\EventActionName;
 use App\Domain\GitLab\Event\ValueObject\EventAuthorId;
-use App\Domain\GitLab\Event\ValueObject\EventCreateAt;
+use App\Domain\GitLab\Event\ValueObject\EventCreatedAt;
 use App\Domain\GitLab\Event\ValueObject\EventId;
 use App\Domain\GitLab\Event\ValueObject\EventNote;
 use App\Domain\GitLab\Event\ValueObject\EventProjectId;
@@ -25,7 +25,7 @@ final readonly class Event
         private EventTargetType $targetType,
         private EventAuthorId $authorId,
         private EventTargetTitle $targetTitle,
-        private EventCreateAt $createdAt,
+        private EventCreatedAt $createdAt,
         private EventPushData $pushData,
         private EventNote $note,
     ) {
@@ -71,7 +71,7 @@ final readonly class Event
         return $this->targetTitle;
     }
 
-    public function getCreatedAt(): EventCreateAt
+    public function getCreatedAt(): EventCreatedAt
     {
         return $this->createdAt;
     }

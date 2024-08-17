@@ -4,7 +4,7 @@ namespace App\Domain\GitLab\Event;
 
 use App\Domain\GitLab\Event\ValueObject\EventActionName;
 use App\Domain\GitLab\Event\ValueObject\EventAuthorId;
-use App\Domain\GitLab\Event\ValueObject\EventCreateAt;
+use App\Domain\GitLab\Event\ValueObject\EventCreatedAt;
 use App\Domain\GitLab\Event\ValueObject\EventId;
 use App\Domain\GitLab\Event\ValueObject\EventNote;
 use App\Domain\GitLab\Event\ValueObject\EventProjectId;
@@ -27,7 +27,7 @@ final class EventFactory
             new EventTargetType($data['target_type'] ?? 0),
             new EventAuthorId($data['author_id'] ?? 0),
             new EventTargetTitle($data['target_title'] ?? ''),
-            new EventCreateAt($data['created_at'] ?? ''),
+            new EventCreatedAt($data['created_at'] ?? ''),
             new EventPushData($data['push_data'] ?? []),
             new EventNote($data['note'] ?? []),
         );

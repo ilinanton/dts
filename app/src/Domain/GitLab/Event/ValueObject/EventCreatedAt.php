@@ -5,7 +5,7 @@ namespace App\Domain\GitLab\Event\ValueObject;
 use DateTimeImmutable;
 use InvalidArgumentException;
 
-final class EventCreateAt
+final class EventCreatedAt
 {
     private DateTimeImmutable $value;
 
