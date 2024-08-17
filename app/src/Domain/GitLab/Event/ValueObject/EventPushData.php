@@ -11,8 +11,8 @@ final class EventPushData
 
     public function __construct(array $value)
     {
-        $PushDataFactory = new PushDataFactory();
-        $this->value = $PushDataFactory->create($value);
+        $pushDataFactory = new PushDataFactory();
+        $this->value = $pushDataFactory->create($value);
     }
 
     public function getValue(): PushData
