@@ -4,7 +4,7 @@ namespace App\Domain\GitLab\Common\ValueObject;
 
 use InvalidArgumentException;
 
-abstract class AbstractRequiredId
+abstract readonly class AbstractRequiredId
 {
     private int $value;
 

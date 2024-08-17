@@ -4,6 +4,6 @@ namespace App\Domain\GitLab\User\ValueObject;
 
 use App\Domain\GitLab\Common\ValueObject\AbstractWebUrl;
 
-final class UserWebUrl extends AbstractWebUrl
+final readonly class UserWebUrl extends AbstractWebUrl
 {
 }

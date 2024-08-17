@@ -4,7 +4,7 @@ namespace App\Domain\GitLab\Common\ValueObject;
 
 use InvalidArgumentException;
 
-abstract class AbstractWebUrl
+abstract readonly class AbstractWebUrl
 {
     private string $value;
 
