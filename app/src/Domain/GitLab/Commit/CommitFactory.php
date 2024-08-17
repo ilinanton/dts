@@ -24,7 +24,6 @@ final readonly class CommitFactory
             new CommitId($data['id'] ?? ''),
             new CommitShortId($data['short_id'] ?? ''),
             new CommitTitle($data['title'] ?? ''),
-            new CommitMessage($data['message'] ?? ''),
             new CommitCreatedAt($data['created_at'] ?? ''),
             new CommitWebUrl($data['web_url'] ?? ''),
             new CommitAuthorName($data['author_name'] ?? ''),

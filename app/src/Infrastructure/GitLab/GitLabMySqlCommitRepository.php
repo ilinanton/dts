@@ -21,7 +21,6 @@ INSERT INTO git_lab_commit
      id,
      short_id,
      title,
-     message,
      created_at,
      web_url,
      
@@ -42,7 +41,6 @@ VALUES
      :ID,
      :SHORT_ID,
      :TITLE,
-     :MESSAGE,
      :CREATED_AT,
      :WEB_URL,
      
@@ -67,7 +65,6 @@ SQL;
             ':ID' => $object->getId()->getValue(),
             ':SHORT_ID' => $object->getShortId()->getValue(),
             ':TITLE' => $object->getTitle()->getValue(),
-            ':MESSAGE' => $object->getMessage()->getValue() ?: null,
             ':CREATED_AT' => $object->getCreatedAt()->getValue() ?: null,
             ':WEB_URL' => $object->getWebUrl()->getValue() ?: null,
 
