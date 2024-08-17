@@ -42,7 +42,7 @@ final readonly class SyncGitLabProjectCommitsUseCase implements UseCaseInterface
             $params = [
                 'page' => $page,
                 'per_page' => self::COUNT_ITEMS_PER_PAGE,
-                'after' => $this->syncDateAfter,
+                'since' => $this->syncDateAfter,
                 'ref_name' => $refName,
                 'with_stats' => true,
             ];
