@@ -2,7 +2,6 @@
 
 namespace App\Domain\GitLab\Note;
 
-
 use App\Domain\GitLab\Note\ValueObject\NoteBody;
 
 final readonly class Note
