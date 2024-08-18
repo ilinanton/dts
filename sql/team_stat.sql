@@ -76,7 +76,7 @@ FROM (
                       AND e.push_data_ref_type = 'branch'
                       AND e.push_data_commit_title NOT LIKE 'Merge branch%'
                 ) AS committed_to_default_branch, 0 AS committed_to_default_branch_point,
-                (
+                IFNULL((
                     SELECT SUM(stats_additions)
                     FROM git_lab_event e
                     INNER JOIN git_lab_commit c ON c.id = e.push_data_commit_to
@@ -85,8 +85,8 @@ FROM (
                       AND e.push_data_ref = p.default_branch
                       AND e.push_data_action = 'pushed'
                       AND e.created_at > d.date
-                ) AS loc_add, 0.01 AS loc_add_point,
-                (
+                ), 0) AS loc_add, 0.01 AS loc_add_point,
+                IFNULL((
                     SELECT SUM(stats_deletions)
                     FROM git_lab_event e
                     INNER JOIN git_lab_commit c ON c.id = e.push_data_commit_to
@@ -95,13 +95,13 @@ FROM (
                       AND e.push_data_ref = p.default_branch
                       AND e.push_data_action = 'pushed'
                       AND e.created_at > d.date
-                ) AS loc_del, 0.01 AS loc_del_point
+                ), 0) AS loc_del, 0.01 AS loc_del_point
 
          FROM git_lab_user u
          LEFT JOIN (
 #            SELECT DATE_FORMAT(NOW() - INTERVAL 6 DAY, '%Y.%m.%d') AS date
 #            SELECT DATE_FORMAT(LAST_DAY(NOW()) - INTERVAL 10 MONTH , '%Y.%m.%d') + INTERVAL 1 DAY AS date
-             SELECT '2024.07.01 00:00:00' AS date
+             SELECT '2024.01.01 00:00:00' AS date
              FROM DUAL
          ) d ON 1 = 1
          GROUP BY u.id
