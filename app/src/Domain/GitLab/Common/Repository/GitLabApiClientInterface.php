@@ -16,5 +16,7 @@ interface GitLabApiClientInterface
 
     public function getProjectEvents(int $projectId, array $params = []): array;
 
+    public function getProjectRepositoryCommits(int $projectId, array $params = []): array;
+
     public function getUserEvents(int $userId, array $params = []): array;
 }

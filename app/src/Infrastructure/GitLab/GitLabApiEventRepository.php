@@ -31,8 +31,8 @@ final readonly class GitLabApiEventRepository implements GitLabApiEventRepositor
     {
         $eventCollection = new EventCollection();
         foreach ($data as $item) {
-            $project = $this->eventFactory->create($item);
-            $eventCollection->add($project);
+            $event = $this->eventFactory->create($item);
+            $eventCollection->add($event);
         }
 
         return $eventCollection;

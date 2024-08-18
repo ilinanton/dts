@@ -13,9 +13,9 @@ final readonly class SyncGitLabUserEventsUseCase implements UseCaseInterface
 
     public function __construct(
         private string $syncDateAfter,
+        private GitLabDataBaseUserRepositoryInterface $gitLabDataBaseUserRepository,
         private GitLabApiEventRepositoryInterface $gitLabApiEventRepository,
         private GitLabDataBaseEventRepositoryInterface $gitLabDataBaseEventRepository,
-        private GitLabDataBaseUserRepositoryInterface $gitLabDataBaseUserRepository,
     ) {
     }
 

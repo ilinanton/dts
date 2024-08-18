@@ -1,6 +1,3 @@
-
-
-
 SELECT d_day,
     (
         SELECT COUNT(*)
@@ -62,7 +59,17 @@ SELECT d_day,
          AND e.action_name = 'pushed to'
          AND e.push_data_ref_type = 'branch'
          AND e.push_data_commit_title NOT LIKE 'Merge branch%'
-   ) AS committed_to_default_branch
+   ) AS committed_to_default_branch,
+   IFNULL((
+       SELECT SUM(stats_total)
+       FROM git_lab_event e
+       INNER JOIN git_lab_commit c ON c.id = e.push_data_commit_to
+       INNER JOIN git_lab_project p ON p.id = e.project_id
+       WHERE e.author_id = u.id
+         AND e.push_data_ref = p.default_branch
+         AND e.push_data_action = 'pushed'
+         AND DATE_FORMAT(e.created_at, '%Y-%m-%d') = d_day
+   ), 0) AS loc_total
 FROM (
     SELECT d_day
     FROM (

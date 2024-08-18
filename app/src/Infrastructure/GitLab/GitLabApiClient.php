@@ -70,6 +70,12 @@ final readonly class GitLabApiClient implements GitLabApiClientInterface
         return $this->get($uri, $params);
     }
 
+    public function getProjectRepositoryCommits(int $projectId, array $params = []): array
+    {
+        $uri = 'projects/' . $projectId . '/repository/commits';
+        return $this->get($uri, $params);
+    }
+
     public function getUserEvents(int $userId, array $params = []): array
     {
         $uri = 'users/' . $userId . '/events';
