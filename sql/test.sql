@@ -5,3 +5,13 @@ WHERE e.author_id = :AUTHOR_ID
   AND push_data_ref = 'release'
   AND push_data_action = 'pushed'
 ORDER BY e.created_at DESC;
+
+SELECT COUNT(*)
+FROM git_lab_commit
+-- WHERE committer_name IN ('Anton Ilin')
+-- WHERE committer_email IN ('ilin.antonio@gmail.com', '736770-ilin.antonio@users.noreply.gitlab.com')
+WHERE 1 = 1
+--   AND id = '00515b4ed09d0fd6faac8fadd8052dccd1874ee7'
+--    AND NOT REGEXP_LIKE(title, '^(breaking|feat|revert|refactor|perf|fix|test|style|docs)\\((DEV|IDEA|BUG|AT)-[0-9]+')
+  AND NOT REGEXP_LIKE(title, '^(chore|merge|revert )')
+--  AND NOT REGEXP_LIKE(title, '^(fix:|DEV-|BUG-|ci:|feat:|fix\\()')
