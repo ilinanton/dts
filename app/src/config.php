@@ -2,6 +2,7 @@
 
 use App\Application\Command;
 use App\Application\ExitUseCase;
+use App\Application\Git\SyncGitDataUseCase;
 use App\Application\Gitlab\SyncGitlabDataUseCase;
 use App\Application\Gitlab\SyncGitlabProjectCommitsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectEventsUseCase;
@@ -92,6 +93,9 @@ return [
     Command::sync_gitlab_user_events->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitlabUserEventsUseCase::class);
     },
+    Command::sync_git_data->diId() => function (ContainerInterface $c) {
+        return $c->get(SyncGitDataUseCase::class);
+    },
 
     MenuUseCase::class => function (ContainerInterface $c) {
         return new MenuUseCase();
@@ -151,6 +155,11 @@ return [
             $c->get(GitlabDataBaseUserRepositoryInterface::class),
             $c->get(GitlabApiEventRepositoryInterface::class),
             $c->get(GitlabDataBaseEventRepositoryInterface::class),
+        );
+    },
+    SyncGitDataUseCase::class => function (ContainerInterface $c) {
+        return new SyncGitDataUseCase(
+            $c->get('GITLAB_SYNC_DATE_AFTER'),
         );
     },
 
