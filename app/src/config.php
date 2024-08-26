@@ -2,42 +2,42 @@
 
 use App\Application\Command;
 use App\Application\ExitUseCase;
-use App\Application\GitLab\SyncGitLabDataUseCase;
-use App\Application\GitLab\SyncGitLabProjectCommitsUseCase;
-use App\Application\GitLab\SyncGitLabProjectEventsUseCase;
-use App\Application\GitLab\SyncGitLabUserEventsUseCase;
-use App\Application\GitLab\SyncGitLabProjectMergeRequestsUseCase;
-use App\Application\GitLab\SyncGitLabProjectsUseCase;
-use App\Application\GitLab\SyncGitLabUsersUseCase;
+use App\Application\Gitlab\SyncGitlabDataUseCase;
+use App\Application\Gitlab\SyncGitlabProjectCommitsUseCase;
+use App\Application\Gitlab\SyncGitlabProjectEventsUseCase;
+use App\Application\Gitlab\SyncGitlabUserEventsUseCase;
+use App\Application\Gitlab\SyncGitlabProjectMergeRequestsUseCase;
+use App\Application\Gitlab\SyncGitlabProjectsUseCase;
+use App\Application\Gitlab\SyncGitlabUsersUseCase;
 use App\Application\MenuUseCase;
 use App\Application\UseCaseCollection;
-use App\Domain\GitLab\Commit\CommitFactory;
-use App\Domain\GitLab\Commit\Repository\GitLabApiCommitRepositoryInterface;
-use App\Domain\GitLab\Commit\Repository\GitLabDataBaseCommitRepositoryInterface;
-use App\Domain\GitLab\Common\Repository\GitLabApiClientInterface;
-use App\Domain\GitLab\Event\EventFactory;
-use App\Domain\GitLab\Event\Repository\GitLabApiEventRepositoryInterface;
-use App\Domain\GitLab\Event\Repository\GitLabDataBaseEventRepositoryInterface;
-use App\Domain\GitLab\User\UserFactory;
-use App\Domain\GitLab\User\Repository\GitLabApiUserRepositoryInterface;
-use App\Domain\GitLab\User\Repository\GitLabDataBaseUserRepositoryInterface;
-use App\Domain\GitLab\MergeRequest\MergeRequestFactory;
-use App\Domain\GitLab\MergeRequest\Repository\GitLabApiMergeRequestRepositoryInterface;
-use App\Domain\GitLab\MergeRequest\Repository\GitLabDataBaseMergeRequestRepositoryInterface;
-use App\Domain\GitLab\Project\ProjectFactory;
-use App\Domain\GitLab\Project\Repository\GitLabApiProjectRepositoryInterface;
-use App\Domain\GitLab\Project\Repository\GitLabDataBaseProjectRepositoryInterface;
-use App\Infrastructure\GitLab\GitLabApiClient;
-use App\Infrastructure\GitLab\GitLabApiCommitRepository;
-use App\Infrastructure\GitLab\GitLabApiEventRepository;
-use App\Infrastructure\GitLab\GitLabApiUserRepository;
-use App\Infrastructure\GitLab\GitLabApiMergeRequestRepository;
-use App\Infrastructure\GitLab\GitLabApiProjectRepository;
-use App\Infrastructure\GitLab\GitLabMySqlCommitRepository;
-use App\Infrastructure\GitLab\GitLabMySqlEventRepository;
-use App\Infrastructure\GitLab\GitLabMySqlUserRepository;
-use App\Infrastructure\GitLab\GitLabMySqlMergeRequestRepository;
-use App\Infrastructure\GitLab\GitLabMySqlProjectRepository;
+use App\Domain\Gitlab\Commit\CommitFactory;
+use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;
+use App\Domain\Gitlab\Commit\Repository\GitlabDataBaseCommitRepositoryInterface;
+use App\Domain\Gitlab\Common\Repository\GitlabApiClientInterface;
+use App\Domain\Gitlab\Event\EventFactory;
+use App\Domain\Gitlab\Event\Repository\GitlabApiEventRepositoryInterface;
+use App\Domain\Gitlab\Event\Repository\GitlabDataBaseEventRepositoryInterface;
+use App\Domain\Gitlab\User\UserFactory;
+use App\Domain\Gitlab\User\Repository\GitlabApiUserRepositoryInterface;
+use App\Domain\Gitlab\User\Repository\GitlabDataBaseUserRepositoryInterface;
+use App\Domain\Gitlab\MergeRequest\MergeRequestFactory;
+use App\Domain\Gitlab\MergeRequest\Repository\GitlabApiMergeRequestRepositoryInterface;
+use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
+use App\Domain\Gitlab\Project\ProjectFactory;
+use App\Domain\Gitlab\Project\Repository\GitlabApiProjectRepositoryInterface;
+use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterface;
+use App\Infrastructure\Gitlab\GitlabApiClient;
+use App\Infrastructure\Gitlab\GitlabApiCommitRepository;
+use App\Infrastructure\Gitlab\GitlabApiEventRepository;
+use App\Infrastructure\Gitlab\GitlabApiUserRepository;
+use App\Infrastructure\Gitlab\GitlabApiMergeRequestRepository;
+use App\Infrastructure\Gitlab\GitlabApiProjectRepository;
+use App\Infrastructure\Gitlab\GitlabMySqlCommitRepository;
+use App\Infrastructure\Gitlab\GitlabMySqlEventRepository;
+use App\Infrastructure\Gitlab\GitlabMySqlUserRepository;
+use App\Infrastructure\Gitlab\GitlabMySqlMergeRequestRepository;
+use App\Infrastructure\Gitlab\GitlabMySqlProjectRepository;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -72,25 +72,25 @@ return [
         return $c->get(ExitUseCase::class);
     },
     Command::sync_gitlab_data->diId() => function (ContainerInterface $c) {
-        return $c->get(SyncGitLabDataUseCase::class);
+        return $c->get(SyncGitlabDataUseCase::class);
     },
     Command::sync_gitlab_projects->diId() => function (ContainerInterface $c) {
-        return $c->get(SyncGitLabProjectsUseCase::class);
+        return $c->get(SyncGitlabProjectsUseCase::class);
     },
     Command::sync_gitlab_project_events->diId() => function (ContainerInterface $c) {
-        return $c->get(SyncGitLabProjectEventsUseCase::class);
+        return $c->get(SyncGitlabProjectEventsUseCase::class);
     },
     Command::sync_gitlab_project_commits->diId() => function (ContainerInterface $c) {
-        return $c->get(SyncGitLabProjectCommitsUseCase::class);
+        return $c->get(SyncGitlabProjectCommitsUseCase::class);
     },
     Command::sync_gitlab_users->diId() => function (ContainerInterface $c) {
-        return $c->get(SyncGitLabUsersUseCase::class);
+        return $c->get(SyncGitlabUsersUseCase::class);
     },
     Command::sync_gitlab_merge_requests->diId() => function (ContainerInterface $c) {
-        return $c->get(SyncGitLabProjectMergeRequestsUseCase::class);
+        return $c->get(SyncGitlabProjectMergeRequestsUseCase::class);
     },
     Command::sync_gitlab_user_events->diId() => function (ContainerInterface $c) {
-        return $c->get(SyncGitLabUserEventsUseCase::class);
+        return $c->get(SyncGitlabUserEventsUseCase::class);
     },
 
     MenuUseCase::class => function (ContainerInterface $c) {
@@ -100,123 +100,121 @@ return [
         return new ExitUseCase();
     },
 
-    SyncGitLabDataUseCase::class => function (ContainerInterface $c) {
+    SyncGitlabDataUseCase::class => function (ContainerInterface $c) {
         $useCaseCollection = new UseCaseCollection();
-        $useCaseCollection->add($c->get(SyncGitLabProjectsUseCase::class));
-        $useCaseCollection->add($c->get(SyncGitLabUsersUseCase::class));
-        $useCaseCollection->add($c->get(SyncGitLabProjectMergeRequestsUseCase::class));
-        $useCaseCollection->add($c->get(SyncGitLabProjectEventsUseCase::class));
-        $useCaseCollection->add($c->get(SyncGitLabProjectCommitsUseCase::class));
-//        $useCaseCollection->add($c->get(SyncGitLabUserEventsUseCase::class));
+        $useCaseCollection->add($c->get(SyncGitlabProjectsUseCase::class));
+        $useCaseCollection->add($c->get(SyncGitlabUsersUseCase::class));
+        $useCaseCollection->add($c->get(SyncGitlabProjectMergeRequestsUseCase::class));
+        $useCaseCollection->add($c->get(SyncGitlabProjectEventsUseCase::class));
 
-        return new SyncGitLabDataUseCase($useCaseCollection);
+        return new SyncGitlabDataUseCase($useCaseCollection);
     },
-    SyncGitLabProjectsUseCase::class => function (ContainerInterface $c) {
-        return new SyncGitLabProjectsUseCase(
-            $c->get(GitLabApiProjectRepositoryInterface::class),
-            $c->get(GitLabDataBaseProjectRepositoryInterface::class)
+    SyncGitlabProjectsUseCase::class => function (ContainerInterface $c) {
+        return new SyncGitlabProjectsUseCase(
+            $c->get(GitlabApiProjectRepositoryInterface::class),
+            $c->get(GitlabDataBaseProjectRepositoryInterface::class)
         );
     },
-    SyncGitLabProjectEventsUseCase::class => function (ContainerInterface $c) {
-        return new SyncGitLabProjectEventsUseCase(
+    SyncGitlabProjectEventsUseCase::class => function (ContainerInterface $c) {
+        return new SyncGitlabProjectEventsUseCase(
             $c->get('GITLAB_SYNC_DATE_AFTER'),
-            $c->get(GitLabDataBaseProjectRepositoryInterface::class),
-            $c->get(GitLabApiEventRepositoryInterface::class),
-            $c->get(GitLabDataBaseEventRepositoryInterface::class),
+            $c->get(GitlabDataBaseProjectRepositoryInterface::class),
+            $c->get(GitlabApiEventRepositoryInterface::class),
+            $c->get(GitlabDataBaseEventRepositoryInterface::class),
         );
     },
-    SyncGitLabProjectCommitsUseCase::class => function (ContainerInterface $c) {
-        return new SyncGitLabProjectCommitsUseCase(
+    SyncGitlabProjectCommitsUseCase::class => function (ContainerInterface $c) {
+        return new SyncGitlabProjectCommitsUseCase(
             $c->get('GITLAB_SYNC_DATE_AFTER'),
-            $c->get(GitLabDataBaseProjectRepositoryInterface::class),
-            $c->get(GitLabApiCommitRepositoryInterface::class),
-            $c->get(GitLabDataBaseCommitRepositoryInterface::class),
+            $c->get(GitlabDataBaseProjectRepositoryInterface::class),
+            $c->get(GitlabApiCommitRepositoryInterface::class),
+            $c->get(GitlabDataBaseCommitRepositoryInterface::class),
         );
     },
-    SyncGitLabUsersUseCase::class => function (ContainerInterface $c) {
-        return new SyncGitLabUsersUseCase(
-            $c->get(GitLabApiUserRepositoryInterface::class),
-            $c->get(GitLabDataBaseUserRepositoryInterface::class)
+    SyncGitlabUsersUseCase::class => function (ContainerInterface $c) {
+        return new SyncGitlabUsersUseCase(
+            $c->get(GitlabApiUserRepositoryInterface::class),
+            $c->get(GitlabDataBaseUserRepositoryInterface::class)
         );
     },
-    SyncGitLabProjectMergeRequestsUseCase::class => function (ContainerInterface $c) {
-        return new SyncGitLabProjectMergeRequestsUseCase(
+    SyncGitlabProjectMergeRequestsUseCase::class => function (ContainerInterface $c) {
+        return new SyncGitlabProjectMergeRequestsUseCase(
             $c->get('GITLAB_SYNC_DATE_AFTER'),
-            $c->get(GitLabApiMergeRequestRepositoryInterface::class),
-            $c->get(GitLabDataBaseMergeRequestRepositoryInterface::class),
-            $c->get(GitLabDataBaseProjectRepositoryInterface::class)
+            $c->get(GitlabApiMergeRequestRepositoryInterface::class),
+            $c->get(GitlabDataBaseMergeRequestRepositoryInterface::class),
+            $c->get(GitlabDataBaseProjectRepositoryInterface::class)
         );
     },
-    SyncGitLabUserEventsUseCase::class => function (ContainerInterface $c) {
-        return new SyncGitLabUserEventsUseCase(
+    SyncGitlabUserEventsUseCase::class => function (ContainerInterface $c) {
+        return new SyncGitlabUserEventsUseCase(
             $c->get('GITLAB_SYNC_DATE_AFTER'),
-            $c->get(GitLabDataBaseUserRepositoryInterface::class),
-            $c->get(GitLabApiEventRepositoryInterface::class),
-            $c->get(GitLabDataBaseEventRepositoryInterface::class),
+            $c->get(GitlabDataBaseUserRepositoryInterface::class),
+            $c->get(GitlabApiEventRepositoryInterface::class),
+            $c->get(GitlabDataBaseEventRepositoryInterface::class),
         );
     },
 
-    GitLabApiProjectRepositoryInterface::class => function (ContainerInterface $c) {
-        return new GitLabApiProjectRepository(
-            $c->get(GitLabApiClientInterface::class),
+    GitlabApiProjectRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitlabApiProjectRepository(
+            $c->get(GitlabApiClientInterface::class),
             new ProjectFactory()
         );
     },
-    GitLabApiUserRepositoryInterface::class => function (ContainerInterface $c) {
-        return new GitLabApiUserRepository(
-            $c->get(GitLabApiClientInterface::class),
+    GitlabApiUserRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitlabApiUserRepository(
+            $c->get(GitlabApiClientInterface::class),
             new UserFactory()
         );
     },
-    GitLabApiMergeRequestRepositoryInterface::class => function (ContainerInterface $c) {
-        return new GitLabApiMergeRequestRepository(
-            $c->get(GitLabApiClientInterface::class),
+    GitlabApiMergeRequestRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitlabApiMergeRequestRepository(
+            $c->get(GitlabApiClientInterface::class),
             new MergeRequestFactory()
         );
     },
-    GitLabApiEventRepositoryInterface::class => function (ContainerInterface $c) {
-        return new GitLabApiEventRepository(
-            $c->get(GitLabApiClientInterface::class),
+    GitlabApiEventRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitlabApiEventRepository(
+            $c->get(GitlabApiClientInterface::class),
             new EventFactory()
         );
     },
-    GitLabApiCommitRepositoryInterface::class => function (ContainerInterface $c) {
-        return new GitLabApiCommitRepository(
-            $c->get(GitLabApiClientInterface::class),
+    GitlabApiCommitRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitlabApiCommitRepository(
+            $c->get(GitlabApiClientInterface::class),
             new CommitFactory()
         );
     },
-    GitLabApiClientInterface::class => function (ContainerInterface $c) {
-        return new GitLabApiClient(
+    GitlabApiClientInterface::class => function (ContainerInterface $c) {
+        return new GitlabApiClient(
             $c->get('GITLAB_URI'),
             $c->get('GITLAB_TOKEN'),
             $c->get('GITLAB_GROUP_ID')
         );
     },
-    GitLabDataBaseProjectRepositoryInterface::class => function (ContainerInterface $c) {
-        return new GitLabMySqlProjectRepository(
+    GitlabDataBaseProjectRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitlabMySqlProjectRepository(
             $c->get(PDO::class),
             new ProjectFactory()
         );
     },
-    GitLabDataBaseUserRepositoryInterface::class => function (ContainerInterface $c) {
-        return new GitLabMySqlUserRepository(
+    GitlabDataBaseUserRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitlabMySqlUserRepository(
             $c->get(PDO::class),
             new UserFactory()
         );
     },
-    GitLabDataBaseMergeRequestRepositoryInterface::class => function (ContainerInterface $c) {
-        return new GitLabMySqlMergeRequestRepository(
+    GitlabDataBaseMergeRequestRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitlabMySqlMergeRequestRepository(
             $c->get(PDO::class)
         );
     },
-    GitLabDataBaseEventRepositoryInterface::class => function (ContainerInterface $c) {
-        return new GitLabMySqlEventRepository(
+    GitlabDataBaseEventRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitlabMySqlEventRepository(
             $c->get(PDO::class)
         );
     },
-    GitLabDataBaseCommitRepositoryInterface::class => function (ContainerInterface $c) {
-        return new GitLabMySqlCommitRepository(
+    GitlabDataBaseCommitRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitlabMySqlCommitRepository(
             $c->get(PDO::class)
         );
     },
