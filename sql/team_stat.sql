@@ -17,16 +17,16 @@ FROM (
                 d.date AS after_at,
                 (
                     SELECT COUNT(*)
-                    FROM git_lab_merge_request mr
-                    INNER JOIN git_lab_project p ON p.id = mr.project_id
+                    FROM gitlab_merge_request mr
+                    INNER JOIN gitlab_project p ON p.id = mr.project_id
                     WHERE mr.author_id = u.id
                       AND mr.created_at > d.date
                       AND mr.source_branch <> p.default_branch
                 ) AS mr_created, 0.5 AS mr_created_point,
                 (
                     SELECT COUNT(*)
-                    FROM git_lab_merge_request mr
-                    INNER JOIN git_lab_project p ON p.id = mr.project_id
+                    FROM gitlab_merge_request mr
+                    INNER JOIN gitlab_project p ON p.id = mr.project_id
                     WHERE mr.author_id = u.id
                       AND mr.state = 'merged'
                       AND mr.merged_at > d.date
@@ -34,30 +34,30 @@ FROM (
                 ) AS mr_merged, 1 AS mr_merged_point,
                 (
                     SELECT COUNT(*)
-                    FROM git_lab_merge_request mr
-                    INNER JOIN git_lab_project p ON p.id = mr.project_id
+                    FROM gitlab_merge_request mr
+                    INNER JOIN gitlab_project p ON p.id = mr.project_id
                     WHERE mr.author_id = u.id
                       AND mr.state = 'merged'
                       AND mr.merged_at > d.date
                       AND mr.target_branch = p.default_branch
                       AND NOT EXISTS(
                         SELECT 'x'
-                        FROM git_lab_event e
+                        FROM gitlab_event e
                         WHERE e.target_id = mr.id
                           AND e.action_name = 'approved'
                     )
                 ) AS mr_merged_without_approv, -0.5 AS mr_merged_without_approv_point,
                 (
                     SELECT COUNT(*)
-                    FROM git_lab_event e
+                    FROM gitlab_event e
                     WHERE e.author_id = u.id
                       AND e.created_at > d.date
                       AND e.action_name = 'approved'
                 ) AS mr_approved, 1 AS mr_approved_point,
                 (
                     SELECT COUNT(*)
-                    FROM git_lab_event e
-                    INNER JOIN git_lab_merge_request mr
+                    FROM gitlab_event e
+                    INNER JOIN gitlab_merge_request mr
                             ON mr.author_id = e.author_id
                            AND mr.id = e.target_id
                     WHERE e.author_id = u.id
@@ -66,8 +66,8 @@ FROM (
                 ) AS mr_self_approved, 0 AS mr_self_approved_point,
                 (
                     SELECT COUNT(*)
-                    FROM git_lab_event e
-                    INNER JOIN git_lab_project p
+                    FROM gitlab_event e
+                    INNER JOIN gitlab_project p
                             ON p.id = e.project_id
                            AND p.default_branch = e.push_data_ref
                     WHERE e.author_id = u.id
@@ -79,9 +79,9 @@ FROM (
 #                 ,
 #                 IFNULL((
 #                     SELECT SUM(stats_additions)
-#                     FROM git_lab_event e
-#                     INNER JOIN git_lab_commit c ON c.id = e.push_data_commit_to
-#                     INNER JOIN git_lab_project p ON p.id = e.project_id
+#                     FROM gitlab_event e
+#                     INNER JOIN gitlab_commit c ON c.id = e.push_data_commit_to
+#                     INNER JOIN gitlab_project p ON p.id = e.project_id
 #                     WHERE e.author_id = u.id
 #                       AND e.push_data_ref = p.default_branch
 #                       AND e.push_data_action = 'pushed'
@@ -89,16 +89,16 @@ FROM (
 #                 ), 0) AS loc_add, 0.01 AS loc_add_point,
 #                 IFNULL((
 #                     SELECT SUM(stats_deletions)
-#                     FROM git_lab_event e
-#                     INNER JOIN git_lab_commit c ON c.id = e.push_data_commit_to
-#                     INNER JOIN git_lab_project p ON p.id = e.project_id
+#                     FROM gitlab_event e
+#                     INNER JOIN gitlab_commit c ON c.id = e.push_data_commit_to
+#                     INNER JOIN gitlab_project p ON p.id = e.project_id
 #                     WHERE e.author_id = u.id
 #                       AND e.push_data_ref = p.default_branch
 #                       AND e.push_data_action = 'pushed'
 #                       AND e.created_at > d.date
 #                 ), 0) AS loc_del, 0.01 AS loc_del_point
 
-         FROM git_lab_user u
+         FROM gitlab_user u
          LEFT JOIN (
 #            SELECT DATE_FORMAT(NOW() - INTERVAL 6 DAY, '%Y.%m.%d') AS date
 #            SELECT DATE_FORMAT(LAST_DAY(NOW()) - INTERVAL 10 MONTH , '%Y.%m.%d') + INTERVAL 1 DAY AS date
@@ -111,9 +111,9 @@ ORDER BY score DESC
 ;
 
 SELECT COUNT(*) AS cnt, e.author_id, u.name
-FROM git_lab_event e
-INNER JOIN git_lab_user u ON u.id = e.author_id
-INNER JOIN git_lab_project p ON p.id = e.project_id AND p.default_branch = e.push_data_ref
+FROM gitlab_event e
+INNER JOIN gitlab_user u ON u.id = e.author_id
+INNER JOIN gitlab_project p ON p.id = e.project_id AND p.default_branch = e.push_data_ref
 WHERE 1 = 1
   AND e.action_name = 'pushed to'
   AND e.push_data_ref_type = 'branch'
