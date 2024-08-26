@@ -11,8 +11,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Install non-dev dependencies
 RUN set -eux \
   && apk add --no-cache \
-  bash
-#    git vim zip unzip curl tzdata icu-libs \
+  bash git
+#  vim zip unzip curl tzdata icu-libs \
 #  c-client make ca-certificates imap gmp gettext libssh2 \
 #  libintl libxslt libpng libwebp libjpeg-turbo freetype imap \
 #  linux-headers oniguruma libxslt libpq vips \
