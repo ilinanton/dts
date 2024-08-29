@@ -2,7 +2,7 @@
 
 namespace App\Domain\Gitlab\Project;
 
-use App\Domain\Gitlab\Common\AbstractEntity;
+use App\Domain\Common\AbstractEntity;
 use App\Domain\Gitlab\Project\ValueObject\ProjectDefaultBranch;
 use App\Domain\Gitlab\Project\ValueObject\ProjectId;
 use App\Domain\Gitlab\Project\ValueObject\ProjectName;

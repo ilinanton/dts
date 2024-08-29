@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Gitlab\Common\ValueObject;
+namespace App\Domain\Common\ValueObject;
 
 abstract readonly class AbstractString
 {

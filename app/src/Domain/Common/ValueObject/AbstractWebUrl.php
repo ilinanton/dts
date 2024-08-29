@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domain\Gitlab\Common\ValueObject;
+namespace App\Domain\Common\ValueObject;
 
 use InvalidArgumentException;
 
-abstract readonly class AbstractRequiredString
+abstract readonly class AbstractWebUrl
 {
     private string $value;
 
@@ -21,8 +21,8 @@ abstract readonly class AbstractRequiredString
 
     private function assertValueIsValid(string $value): void
     {
-        if (0 === strlen($value)) {
-            throw new InvalidArgumentException(get_class($this) . ' is empty!');
+        if (false === filter_var($value, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
+            throw new InvalidArgumentException(get_class($this) . ' is incorrect!');
         }
     }
 }

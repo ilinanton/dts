@@ -2,10 +2,10 @@
 
 namespace App\Domain\Gitlab\Stats;
 
+use App\Domain\Common\AbstractEntity;
 use App\Domain\Gitlab\Stats\ValueObject\StatsAdditions;
 use App\Domain\Gitlab\Stats\ValueObject\StatsDeletions;
 use App\Domain\Gitlab\Stats\ValueObject\StatsTotal;
-use App\Domain\Gitlab\Common\AbstractEntity;
 
 final readonly class Stats extends AbstractEntity
 {

@@ -2,7 +2,7 @@
 
 namespace App\Domain\Gitlab\PushData\ValueObject;
 
-use App\Domain\Gitlab\Common\ValueObject\AbstractString;
+use App\Domain\Common\ValueObject\AbstractString;
 
 final readonly class PushDataCommitFrom extends AbstractString
 {

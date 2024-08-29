@@ -2,9 +2,12 @@
 
 namespace App\Domain\Git\Commit;
 
-class Commit
+use App\Domain\Git\Commit\ValueObject\CommitId;
+
+final readonly class Commit
 {
-    public function __construct()
-    {
+    public function __construct(
+        public CommitId $commitId
+    ) {
     }
 }

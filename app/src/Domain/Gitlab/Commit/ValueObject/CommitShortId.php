@@ -2,7 +2,7 @@
 
 namespace App\Domain\Gitlab\Commit\ValueObject;
 
-use App\Domain\Gitlab\Common\ValueObject\AbstractRequiredString;
+use App\Domain\Common\ValueObject\AbstractRequiredString;
 
 final readonly class CommitShortId extends AbstractRequiredString
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Gitlab\Common;
+namespace App\Domain\Common;
 
 abstract readonly class AbstractEntity
 {

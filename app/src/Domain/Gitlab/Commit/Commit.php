@@ -2,6 +2,7 @@
 
 namespace App\Domain\Gitlab\Commit;
 
+use App\Domain\Common\AbstractEntity;
 use App\Domain\Gitlab\Commit\ValueObject\CommitAuthoredDate;
 use App\Domain\Gitlab\Commit\ValueObject\CommitAuthorEmail;
 use App\Domain\Gitlab\Commit\ValueObject\CommitAuthorName;
@@ -14,7 +15,6 @@ use App\Domain\Gitlab\Commit\ValueObject\CommitShortId;
 use App\Domain\Gitlab\Commit\ValueObject\CommitStats;
 use App\Domain\Gitlab\Commit\ValueObject\CommitTitle;
 use App\Domain\Gitlab\Commit\ValueObject\CommitWebUrl;
-use App\Domain\Gitlab\Common\AbstractEntity;
 
 final readonly class Commit extends AbstractEntity
 {

@@ -2,7 +2,7 @@
 
 namespace App\Domain\Gitlab\User;
 
-use App\Domain\Gitlab\Common\AbstractEntity;
+use App\Domain\Common\AbstractEntity;
 use App\Domain\Gitlab\User\ValueObject\UserAvatarUrl;
 use App\Domain\Gitlab\User\ValueObject\UserId;
 use App\Domain\Gitlab\User\ValueObject\UserName;
