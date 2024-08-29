@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Gitlab\Stats\ValueObject;
+namespace App\Domain\Gitlab\CommitStats\ValueObject;
 
 use App\Domain\Common\ValueObject\AbstractUnsignedInt;
 

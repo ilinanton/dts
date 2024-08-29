@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domain\Gitlab\Stats;
+namespace App\Domain\Gitlab\CommitStats;
 
-use App\Domain\Gitlab\Stats\ValueObject\StatsAdditions;
-use App\Domain\Gitlab\Stats\ValueObject\StatsDeletions;
-use App\Domain\Gitlab\Stats\ValueObject\StatsTotal;
+use App\Domain\Gitlab\CommitStats\ValueObject\StatsAdditions;
+use App\Domain\Gitlab\CommitStats\ValueObject\StatsDeletions;
+use App\Domain\Gitlab\CommitStats\ValueObject\StatsTotal;
 
 final class StatsFactory
 {
