@@ -4,6 +4,7 @@ use App\Application\Command;
 use App\Application\ExitUseCase;
 use App\Application\Git\SyncGitDataUseCase;
 use App\Application\Gitlab\SyncGitlabDataUseCase;
+use App\Application\Gitlab\SyncGitlabProjectCommitStatsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectCommitsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectEventsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectMergeRequestsUseCase;
@@ -15,6 +16,7 @@ use App\Application\UseCaseCollection;
 use App\Domain\Gitlab\Commit\CommitFactory;
 use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;
 use App\Domain\Gitlab\Commit\Repository\GitlabDataBaseCommitRepositoryInterface;
+use App\Domain\Gitlab\CommitStats\Repository\GitlabDataBaseCommitStatsRepositoryInterface;
 use App\Domain\Gitlab\Common\Repository\GitlabApiClientInterface;
 use App\Domain\Gitlab\Event\EventFactory;
 use App\Domain\Gitlab\Event\Repository\GitlabApiEventRepositoryInterface;
@@ -84,6 +86,9 @@ return [
     Command::sync_gitlab_project_commits->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitlabProjectCommitsUseCase::class);
     },
+    Command::sync_gitlab_project_commits->diId() => function (ContainerInterface $c) {
+        return $c->get(SyncGitlabProjectCommitStatsUseCase::class);
+    },
     Command::sync_gitlab_users->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitlabUsersUseCase::class);
     },
@@ -132,6 +137,13 @@ return [
             $c->get('GITLAB_SYNC_DATE_AFTER'),
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
             $c->get(GitlabApiCommitRepositoryInterface::class),
+            $c->get(GitlabDataBaseCommitRepositoryInterface::class),
+        );
+    },
+    SyncGitlabProjectCommitStatsUseCase::class => function (ContainerInterface $c) {
+        return new SyncGitlabProjectCommitStatsUseCase(
+            $c->get('GITLAB_SYNC_DATE_AFTER'),
+            $c->get(GitlabDataBaseProjectRepositoryInterface::class),
             $c->get(GitlabDataBaseCommitRepositoryInterface::class),
         );
     },
@@ -223,6 +235,11 @@ return [
         );
     },
     GitlabDataBaseCommitRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitlabMySqlCommitRepository(
+            $c->get(PDO::class)
+        );
+    },
+    GitlabDataBaseCommitStatsRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitlabMySqlCommitRepository(
             $c->get(PDO::class)
         );
