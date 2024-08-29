@@ -62,7 +62,7 @@ VALUES
      
      :NOTE_BODY
     )
-ON DUPLICATE KEY UPDATE id = :ID AND project_id = :PROJECT_ID
+ON DUPLICATE KEY UPDATE id = id
 SQL;
 
         $stmt = $this->pdo->prepare($sql);
