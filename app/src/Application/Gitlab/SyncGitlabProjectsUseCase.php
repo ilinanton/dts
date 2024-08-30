@@ -26,7 +26,7 @@ final readonly class SyncGitlabProjectsUseCase implements UseCaseInterface
                 'per_page' => self::COUNT_ITEMS_PER_PAGE,
             ]);
             foreach ($projectCollection as $project) {
-                echo 'Load project #' . $project->getId()->getValue() . ' ' . $project->getName()->getValue();
+                echo 'Load project #' . $project->id->getValue() . ' ' . $project->name->getValue();
                 $this->gitlabDataBaseProjectRepository->save($project);
                 echo ' done ' . PHP_EOL;
             }

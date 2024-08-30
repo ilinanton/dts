@@ -20,6 +20,8 @@ final class CreateGitlabProject extends AbstractMigration
             ->addColumn('id', 'biginteger', ['signed' => false, 'null' => false])
             ->addColumn('name', 'string', ['length' => 255, 'null' => false])
             ->addColumn('default_branch', 'string', ['length' => 255, 'null' => false])
+            ->addColumn('ssh_url_to_repo', 'string', ['length' => 500, 'null' => false])
+            ->addColumn('http_url_to_repo', 'string', ['length' => 500, 'null' => false])
             ->addColumn('web_url', 'string', ['length' => 500, 'null' => false])
             ->addIndex(['name'])
             ->addIndex(['default_branch'])

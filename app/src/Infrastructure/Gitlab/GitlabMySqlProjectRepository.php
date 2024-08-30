@@ -19,24 +19,31 @@ final readonly class GitlabMySqlProjectRepository implements GitlabDataBaseProje
     public function save(Project $object): void
     {
         $sql = <<<SQL
-INSERT INTO gitlab_project (id, name, default_branch, web_url)
-VALUES (:ID, :NAME, :DEFAULT_BRANCH, :WEB_URL)
-ON DUPLICATE KEY UPDATE name = :NAME, default_branch = :DEFAULT_BRANCH
+INSERT INTO gitlab_project (id, name, default_branch, ssh_url_to_repo, http_url_to_repo, web_url)
+VALUES (:ID, :NAME, :DEFAULT_BRANCH, :SSH_URL_TO_REPO, :HTTP_URL_TO_REPO, :WEB_URL)
+ON DUPLICATE KEY UPDATE
+    name = :NAME,
+    default_branch = :DEFAULT_BRANCH,
+    ssh_url_to_repo = :SSH_URL_TO_REPO,
+    http_url_to_repo = :HTTP_URL_TO_REPO,
+    web_url = :WEB_URL
 SQL;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            ':ID' => $object->getId()->getValue(),
-            ':NAME' => $object->getName()->getValue(),
-            ':DEFAULT_BRANCH' => $object->getDefaultBranch()->getValue(),
-            ':WEB_URL' => $object->getWebUrl()->getValue(),
+            ':ID' => $object->id->getValue(),
+            ':NAME' => $object->name->getValue(),
+            ':DEFAULT_BRANCH' => $object->defaultBranch->getValue(),
+            ':SSH_URL_TO_REPO' => $object->sshUrlToRepo->getValue(),
+            ':HTTP_URL_TO_REPO' => $object->httpUrlToRepo->getValue(),
+            ':WEB_URL' => $object->webUrl->getValue(),
         ]);
     }
 
     public function getAll(): ProjectCollection
     {
         $sql = <<<SQL
-SELECT id, name, default_branch, web_url
+SELECT id, name, default_branch, ssh_url_to_repo, http_url_to_repo, web_url
 FROM gitlab_project
 SQL;
         $stmt = $this->pdo->prepare($sql);
