@@ -195,7 +195,10 @@ return [
         );
     },
     GitRepositoryInterface::class => function () {
-        return new GitRepository();
+        return new GitRepository(
+            new \App\Domain\Git\Project\ProjectFactory(),
+            new \App\Domain\Git\Commit\CommitFactory(),
+        );
     },
     GitlabApiCommitRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitlabApiCommitRepository(
