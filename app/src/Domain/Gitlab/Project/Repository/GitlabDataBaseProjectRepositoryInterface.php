@@ -9,4 +9,5 @@ interface GitlabDataBaseProjectRepositoryInterface
 {
     public function save(Project $object): void;
     public function getAll(): ProjectCollection;
+    public function findByUrlToRepo(string $url): ProjectCollection;
 }

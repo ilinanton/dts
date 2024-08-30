@@ -58,4 +58,27 @@ SQL;
 
         return $projectCollection;
     }
+
+    public function findByUrlToRepo(string $url): ProjectCollection
+    {
+        $sql = <<<SQL
+SELECT id, name, default_branch, ssh_url_to_repo, http_url_to_repo, web_url
+FROM gitlab_project
+WHERE ssh_url_to_repo = :URL or http_url_to_repo = :URL
+SQL;
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':URL' => $url,
+        ]);
+
+        $data = $stmt->fetchAll();
+        $projectCollection = new ProjectCollection();
+
+        foreach ($data as $item) {
+            $project = $this->projectFactory->create($item);
+            $projectCollection->add($project);
+        }
+
+        return $projectCollection;
+    }
 }
