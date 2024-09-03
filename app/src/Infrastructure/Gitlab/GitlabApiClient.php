@@ -36,7 +36,7 @@ final readonly class GitlabApiClient implements GitlabApiClientInterface
 
         $response = $this->client->get($uri);
         $body = (string)$response->getBody();
-
+        //todo #token_is_expired
         return json_decode($body, 512, JSON_THROW_ON_ERROR);
     }
 
