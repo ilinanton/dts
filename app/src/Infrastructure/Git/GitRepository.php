@@ -42,13 +42,13 @@ final readonly class GitRepository implements GitRepositoryInterface
 
     public function getCommits(Project $project, string $since): CommitCollection
     {
-        $result = shell_exec("cd {$project->path->getValue()} " .
-            "&& git log --shortstat --no-merges --format='{|c|}commit: %H{|p|}date: %aD{|p|}email: %aE{|p|}stat:' " .
-            "--since='{$since}' | tr '\n' ' '");
-        $commits = explode('{|c|}', $result);
-        foreach ($commits as $commit) {
-            $commit = explode('{|p|}', $commit);
-            var_dump($commit);
+        $log = shell_exec("cd {$project->path->getValue()} " .
+            "&& git log --shortstat --no-merges --date=iso-local" .
+            " --format='{|c|}{|p|}commit: %H{|p|}date: %aI{|p|}email: %aE{|p|}stat:' --since='{$since}' | tr '\n' ' '");
+        $logItems = explode('{|c|}', $log);
+        foreach ($logItems as $logItem) {
+            $this->commitFactory->create($logItem);
+            var_dump($logItem);
         }
     }
 }
