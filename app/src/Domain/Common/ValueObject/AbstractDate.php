@@ -8,11 +8,13 @@ use InvalidArgumentException;
 readonly class AbstractDate
 {
     private DateTimeImmutable $value;
+    private string $format;
 
-    public function __construct(string $value)
+    public function __construct(string $value, string $format = DATE_RFC3339_EXTENDED)
     {
+        $this->format = $format;
         $this->assertValueIsValid($value);
-        $this->value = DateTimeImmutable::createFromFormat(DATE_RFC3339_EXTENDED, $value);
+        $this->value = DateTimeImmutable::createFromFormat($this->format, $value);
     }
 
     public function getValue(): string
@@ -20,11 +22,16 @@ readonly class AbstractDate
         return $this->value->format('Y-m-d H:i:s');
     }
 
+    public function getValueInMainFormat(): string
+    {
+        return $this->value->format($this->format);
+    }
+
     private function assertValueIsValid(string $value): void
     {
-        $dateTime = DateTimeImmutable::createFromFormat(DATE_RFC3339_EXTENDED, $value);
+        $dateTime = DateTimeImmutable::createFromFormat($this->format, $value);
         if (false === $dateTime) {
-            throw new InvalidArgumentException('Created at is incorrect!');
+            throw new InvalidArgumentException(get_class($this) . ' is incorrect!');
         }
     }
 }
