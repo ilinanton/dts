@@ -38,9 +38,6 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
         }
 
         $gitCommitCollection = $this->gitRepository->getCommits($gitProject, $this->syncDateAfter);
-//        foreach () {
-//
-//        }
 
         echo PHP_EOL;
     }
