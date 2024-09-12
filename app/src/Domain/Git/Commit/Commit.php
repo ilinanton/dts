@@ -7,13 +7,11 @@ use App\Domain\Git\Commit\ValueObject\CommitAuthorEmail;
 use App\Domain\Git\Commit\ValueObject\CommitAuthorName;
 use App\Domain\Git\Commit\ValueObject\CommitId;
 use App\Domain\Git\Commit\ValueObject\CommitStats;
-use App\Domain\Git\Commit\ValueObject\CommitProjectId;
 
 final readonly class Commit
 {
     public function __construct(
         public CommitId $id,
-        public CommitProjectId $projectId,
         public CommitAuthorName $authorName,
         public CommitAuthorEmail $authorEmail,
         public CommitAuthoredDate $authoredDate,
