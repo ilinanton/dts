@@ -25,7 +25,8 @@ final readonly class App
                 $this->identifyCommand($input)->execute();
             } catch (Throwable $exception) {
                 $code = $exception->getCode();
-                echo '#' . $code . ' ' . $exception->getMessage() . PHP_EOL;
+                echo PHP_EOL . '#' . $code . ' ' . $exception->getMessage() . PHP_EOL;
+                echo $exception->getTraceAsString() . PHP_EOL;
                 return is_int($code) ? $code : 1;
             }
         }
