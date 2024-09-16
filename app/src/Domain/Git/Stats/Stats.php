@@ -10,7 +10,7 @@ use App\Domain\Common\AbstractEntity;
 final readonly class Stats extends AbstractEntity
 {
     public function __construct(
-        public StatsFiles $total,
+        public StatsFiles $files,
         public StatsAdditions $additions,
         public StatsDeletions $deletions,
     ) {
