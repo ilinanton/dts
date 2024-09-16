@@ -2,7 +2,7 @@
 
 namespace App\Domain\Git\Commit;
 
-use App\Domain\Git\Commit\ValueObject\CommitAuthoredDate;
+use App\Domain\Git\Commit\ValueObject\CommitAuthorDate;
 use App\Domain\Git\Commit\ValueObject\CommitAuthorEmail;
 use App\Domain\Git\Commit\ValueObject\CommitAuthorName;
 use App\Domain\Git\Commit\ValueObject\CommitId;
@@ -14,7 +14,7 @@ final readonly class Commit
         public CommitId $id,
         public CommitAuthorName $authorName,
         public CommitAuthorEmail $authorEmail,
-        public CommitAuthoredDate $authoredDate,
+        public CommitAuthorDate $authorDate,
         public CommitStats $stats,
     ) {
     }

@@ -2,7 +2,7 @@
 
 namespace App\Domain\Git\Commit;
 
-use App\Domain\Git\Commit\ValueObject\CommitAuthoredDate;
+use App\Domain\Git\Commit\ValueObject\CommitAuthorDate;
 use App\Domain\Git\Commit\ValueObject\CommitAuthorEmail;
 use App\Domain\Git\Commit\ValueObject\CommitAuthorName;
 use App\Domain\Git\Commit\ValueObject\CommitId;
@@ -16,7 +16,7 @@ final readonly class CommitFactory
             $this->parseCommitId($data),
             new CommitAuthorName(),
             new CommitAuthorEmail(),
-            $this->parseCommitAuthoredDate($data),
+            $this->parseCommitAuthorDate($data),
             new CommitStats(),
         );
     }
@@ -28,10 +28,10 @@ final readonly class CommitFactory
         return new CommitId($result['value'] ?? '');
     }
 
-    public function parseCommitAuthoredDate(string $data): CommitAuthoredDate
+    public function parseCommitAuthorDate(string $data): CommitAuthorDate
     {
         $result = [];
         preg_match('/(?P<date>\{\|p\|}date: (?P<value>.+?(?={)))/', $data, $result);
-        return new CommitAuthoredDate($result['value'] ?? '', DATE_ISO8601_EXPANDED);
+        return new CommitAuthorDate($result['value'] ?? '', DATE_ISO8601_EXPANDED);
     }
 }

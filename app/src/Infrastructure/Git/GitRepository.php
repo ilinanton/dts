@@ -46,7 +46,11 @@ final readonly class GitRepository implements GitRepositoryInterface
             "&& git log --shortstat --no-merges --date=iso-local" .
             " --format='{|c|}{|p|}commit: %H{|p|}date: %aI{|p|}email: %aE{|p|}stat:' --since='{$since}' | tr '\n' ' '");
         $logItems = explode('{|c|}', $log);
+
         foreach ($logItems as $logItem) {
+            if (0 === strlen($logItem)) {
+                continue;
+            }
             $this->commitFactory->create($logItem);
             var_dump($logItem);
         }
