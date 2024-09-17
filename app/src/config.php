@@ -16,6 +16,7 @@ use App\Domain\Git\Common\GitRepositoryInterface;
 use App\Domain\Gitlab\Commit\CommitFactory;
 use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;
 use App\Domain\Gitlab\Commit\Repository\GitlabDataBaseCommitRepositoryInterface;
+use App\Domain\Gitlab\CommitStats\CommitStatsFactory;
 use App\Domain\Gitlab\CommitStats\Repository\GitlabDataBaseCommitStatsRepositoryInterface;
 use App\Domain\Gitlab\Common\Repository\GitlabApiClientInterface;
 use App\Domain\Gitlab\Event\EventFactory;
@@ -144,6 +145,7 @@ return [
             $c->get('GITLAB_SYNC_DATE_AFTER'),
             $c->get(GitRepositoryInterface::class),
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
+            new CommitStatsFactory(),
             $c->get(GitlabDataBaseCommitStatsRepositoryInterface::class),
         );
     },

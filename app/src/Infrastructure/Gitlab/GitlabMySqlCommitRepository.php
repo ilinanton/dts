@@ -60,7 +60,7 @@ SQL;
             ':WEB_URL' => $object->webUrl->getValue() ?: null,
 
             ':AUTHOR_NAME' => $object->authorName->getValue(),
-            ':AUTHOR_EMAIL' => $object->authorName->getValue() ?: null,
+            ':AUTHOR_EMAIL' => $object->authorEmail->getValue() ?: null,
             ':AUTHORED_DATE' => $object->authoredDate->getValue(),
 
             ':COMMITTER_NAME' => $object->committerName->getValue() ?: null,

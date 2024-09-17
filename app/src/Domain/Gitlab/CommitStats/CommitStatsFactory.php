@@ -13,9 +13,9 @@ final class CommitStatsFactory
     public function create(int $projectId, array $data): CommitStats
     {
         return new CommitStats(
-            new CommitStatsId($data['additions'] ?? 0),
+            new CommitStatsId($data['id'] ?? 0),
             new CommitStatsProjectId($projectId),
-            new CommitStatsFiles($data['additions'] ?? 0),
+            new CommitStatsFiles($data['files'] ?? 0),
             new CommitStatsAdditions($data['additions'] ?? 0),
             new CommitStatsDeletions($data['deletions'] ?? 0),
         );
