@@ -14,10 +14,10 @@ final class CreateTableGitlabCommitStats extends AbstractMigration
             self::TABLE_NAME,
             [
                 'id' => false,
-                'primary_key' => ['id', 'project_id'],
+                'primary_key' => ['git_commit_id', 'project_id'],
             ]
         )
-            ->addColumn('id', 'string', ['length' => 128, 'null' => false])
+            ->addColumn('git_commit_id', 'string', ['length' => 128, 'null' => false])
             ->addColumn('project_id', 'biginteger', ['signed' => false, 'null' => false])
             ->addColumn('files', 'integer', ['signed' => false, 'null' => true])
             ->addColumn('additions', 'integer', ['signed' => false, 'null' => true])
