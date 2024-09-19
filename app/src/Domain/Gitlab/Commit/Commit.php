@@ -10,6 +10,7 @@ use App\Domain\Gitlab\Commit\ValueObject\CommitCommittedDate;
 use App\Domain\Gitlab\Commit\ValueObject\CommitCommitterEmail;
 use App\Domain\Gitlab\Commit\ValueObject\CommitCommitterName;
 use App\Domain\Gitlab\Commit\ValueObject\CommitCreatedAt;
+use App\Domain\Gitlab\Commit\ValueObject\CommitGitCommitId;
 use App\Domain\Gitlab\Commit\ValueObject\CommitId;
 use App\Domain\Gitlab\Commit\ValueObject\CommitProjectId;
 use App\Domain\Gitlab\Commit\ValueObject\CommitTitle;
@@ -20,6 +21,7 @@ final readonly class Commit extends AbstractEntity
     public function __construct(
         public CommitId $id,
         public CommitProjectId $projectId,
+        public CommitGitCommitId $gitCommitId,
         public CommitTitle $title,
         public CommitCreatedAt $createdAt,
         public CommitWebUrl $webUrl,

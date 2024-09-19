@@ -20,6 +20,7 @@ INSERT INTO gitlab_commit
     (
      id,
      project_id,
+     git_commit_id,
      title,
      created_at,
      web_url,
@@ -36,6 +37,7 @@ VALUES
     (
      :ID,
      :PROJECT_ID,
+     :GIT_COMMIT_ID,
      :TITLE,
      :CREATED_AT,
      :WEB_URL,
@@ -55,6 +57,7 @@ SQL;
         $stmt->execute([
             ':ID' => $object->id->getValue(),
             ':PROJECT_ID' => $object->projectId->getValue(),
+            ':GIT_COMMIT_ID' => $object->gitCommitId->getValue(),
             ':TITLE' => $object->title->getValue(),
             ':CREATED_AT' => $object->createdAt->getValue() ?: null,
             ':WEB_URL' => $object->webUrl->getValue() ?: null,

@@ -18,7 +18,7 @@ final readonly class GitlabMySqlCommitStatsRepository implements GitlabDataBaseC
         $sql = <<<SQL
 INSERT INTO gitlab_commit_stats
     (
-     id,
+     git_commit_id,
      project_id,
      files,
      additions,
@@ -26,18 +26,18 @@ INSERT INTO gitlab_commit_stats
      )
 VALUES
     (
-     :ID,
+     :GIT_COMMIT_ID,
      :PROJECT_ID,
      :FILES,
      :ADDITIONS,
      :DELETIONS
     )
-ON DUPLICATE KEY UPDATE id = id
+ON DUPLICATE KEY UPDATE git_commit_id = git_commit_id
 SQL;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            ':ID' => $object->id->getValue(),
+            ':GIT_COMMIT_ID' => $object->gitCommitId->getValue(),
             ':PROJECT_ID' => $object->projectId->getValue(),
             ':FILES' => $object->files->getValue(),
             ':ADDITIONS' => $object->additions->getValue(),

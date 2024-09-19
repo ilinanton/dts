@@ -9,6 +9,7 @@ use App\Domain\Gitlab\Commit\ValueObject\CommitCommittedDate;
 use App\Domain\Gitlab\Commit\ValueObject\CommitCommitterEmail;
 use App\Domain\Gitlab\Commit\ValueObject\CommitCommitterName;
 use App\Domain\Gitlab\Commit\ValueObject\CommitCreatedAt;
+use App\Domain\Gitlab\Commit\ValueObject\CommitGitCommitId;
 use App\Domain\Gitlab\Commit\ValueObject\CommitId;
 use App\Domain\Gitlab\Commit\ValueObject\CommitProjectId;
 use App\Domain\Gitlab\Commit\ValueObject\CommitTitle;
@@ -18,9 +19,11 @@ final readonly class CommitFactory
 {
     public function create(int $projectId, array $data): Commit
     {
+        $commitId = new CommitId($data['id'] ?? '');
         return new Commit(
-            new CommitId($data['id'] ?? ''),
+            $commitId,
             new CommitProjectId($projectId),
+            new CommitGitCommitId(substr($commitId->getValue(), 0, 32)),
             new CommitTitle($data['title'] ?? ''),
             new CommitCreatedAt($data['created_at'] ?? ''),
             new CommitWebUrl($data['web_url'] ?? ''),
