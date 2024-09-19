@@ -15,3 +15,10 @@ WHERE 1 = 1
 --    AND NOT REGEXP_LIKE(title, '^(breaking|feat|revert|refactor|perf|fix|test|style|docs)\\((DEV|IDEA|BUG|AT)-[0-9]+')
   AND NOT REGEXP_LIKE(title, '^(chore|merge|revert )')
 --  AND NOT REGEXP_LIKE(title, '^(fix:|DEV-|BUG-|ci:|feat:|fix\\()')
+;
+
+SELECT *
+FROM gitlab_event
+WHERE author_id = 20794388
+ORDER BY created_at DESC
+

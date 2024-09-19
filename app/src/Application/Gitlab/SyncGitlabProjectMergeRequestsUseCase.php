@@ -25,8 +25,8 @@ final readonly class SyncGitlabProjectMergeRequestsUseCase implements UseCaseInt
         $projectCollection = $this->gitlabDataBaseProjectRepository->getAll();
         foreach ($projectCollection as $project) {
             $page = 0;
-            $projectId = $project->getId()->getValue();
-            $projectName = $project->getName()->getValue();
+            $projectId = $project->id->getValue();
+            $projectName = $project->name->getValue();
             echo ' - #' . $projectId . ' ' . $projectName;
             do {
                 ++$page;

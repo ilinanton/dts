@@ -17,3 +17,17 @@ WHERE NOT REGEXP_LIKE(title, '^(chore|merge|revert )')
 #   AND created_at >= '2024-07-01'
 GROUP BY x.gitlab_user_id
 ORDER BY x.gitlab_user_id
+;
+
+SELECT DISTINCT committer_email
+FROM gitlab_commit;
+
+SELECT COUNT(*), u.id, u.name
+FROM gitlab_user u
+INNER JOIN gitlab_user_x_git_user x ON x.gitlab_user_id = u.id
+INNER JOIN gitlab_commit c ON c.committer_email = x.committer_email
+INNER JOIN gitlab_commit_stats s ON s.id = c.id
+GROUP BY u.id
+
+
+

@@ -2,7 +2,7 @@
 
 namespace App\Domain\Gitlab\MergeRequest\ValueObject;
 
-use App\Domain\Gitlab\Common\ValueObject\AbstractWebUrl;
+use App\Domain\Common\ValueObject\AbstractWebUrl;
 
 final readonly class MergeRequestWebUrl extends AbstractWebUrl
 {

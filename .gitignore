@@ -5,3 +5,4 @@
 /**/.phpcs-cache
 /data
 /app/vendor
+/app/projects/**/

@@ -3,9 +3,9 @@
 namespace App\Infrastructure\Gitlab;
 
 use App\Domain\Gitlab\Common\Repository\GitlabApiClientInterface;
+use App\Domain\Gitlab\User\Repository\GitlabApiUserRepositoryInterface;
 use App\Domain\Gitlab\User\UserCollection;
 use App\Domain\Gitlab\User\UserFactory;
-use App\Domain\Gitlab\User\Repository\GitlabApiUserRepositoryInterface;
 
 final readonly class GitlabApiUserRepository implements GitlabApiUserRepositoryInterface
 {

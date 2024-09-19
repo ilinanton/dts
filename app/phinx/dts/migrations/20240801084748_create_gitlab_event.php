@@ -15,7 +15,7 @@ final class CreateGitlabEvent extends AbstractMigration
             self::TABLE_NAME,
             [
                 'id' => false,
-                'primary_key' => ['id'],
+                'primary_key' => ['id', 'project_id'],
             ]
         )
             ->addColumn('id', 'biginteger', ['signed' => false, 'null' => false])
@@ -39,7 +39,6 @@ final class CreateGitlabEvent extends AbstractMigration
 
             ->addColumn('note_body', 'text', ['null' => true, 'limit' => MysqlAdapter::TEXT_MEDIUM])
 
-            ->addIndex(['project_id'])
             ->addIndex(['action_name'])
             ->addIndex(['target_id'])
             ->addIndex(['target_iid'])

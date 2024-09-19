@@ -2,8 +2,8 @@
 
 namespace App\Domain\Gitlab\Project\ValueObject;
 
-use App\Domain\Gitlab\Common\ValueObject\AbstractUnsignedInt;
+use App\Domain\Common\ValueObject\AbstractRequiredUnsignedInt;
 
-final readonly class ProjectId extends AbstractUnsignedInt
+final readonly class ProjectId extends AbstractRequiredUnsignedInt
 {
 }

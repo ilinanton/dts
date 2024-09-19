@@ -19,7 +19,8 @@ final readonly class GitlabMySqlCommitRepository implements GitlabDataBaseCommit
 INSERT INTO gitlab_commit
     (
      id,
-     short_id,
+     project_id,
+     git_commit_id,
      title,
      created_at,
      web_url,
@@ -30,16 +31,13 @@ INSERT INTO gitlab_commit
      
      committer_name,
      committer_email,
-     committed_date,
-     
-     stats_additions,
-     stats_deletions,
-     stats_total
+     committed_date
      )
 VALUES
     (
      :ID,
-     :SHORT_ID,
+     :PROJECT_ID,
+     :GIT_COMMIT_ID,
      :TITLE,
      :CREATED_AT,
      :WEB_URL,
@@ -50,35 +48,27 @@ VALUES
      
      :COMMITTER_NAME,
      :COMMITTER_EMAIL,
-     :COMMITTED_DATE,
-     
-     :STATS_ADDITIONS,
-     :STATS_DELETIONS,
-     :STATS_TOTAL
+     :COMMITTED_DATE     
     )
 ON DUPLICATE KEY UPDATE id = id
 SQL;
 
         $stmt = $this->pdo->prepare($sql);
-        $stats = $object->getStats()->getValue();
         $stmt->execute([
-            ':ID' => $object->getId()->getValue(),
-            ':SHORT_ID' => $object->getShortId()->getValue(),
-            ':TITLE' => $object->getTitle()->getValue(),
-            ':CREATED_AT' => $object->getCreatedAt()->getValue() ?: null,
-            ':WEB_URL' => $object->getWebUrl()->getValue() ?: null,
+            ':ID' => $object->id->getValue(),
+            ':PROJECT_ID' => $object->projectId->getValue(),
+            ':GIT_COMMIT_ID' => $object->gitCommitId->getValue(),
+            ':TITLE' => $object->title->getValue(),
+            ':CREATED_AT' => $object->createdAt->getValue() ?: null,
+            ':WEB_URL' => $object->webUrl->getValue() ?: null,
 
-            ':AUTHOR_NAME' => $object->getAuthorName()->getValue(),
-            ':AUTHOR_EMAIL' => $object->getAuthorEmail()->getValue() ?: null,
-            ':AUTHORED_DATE' => $object->getAuthoredDate()->getValue(),
+            ':AUTHOR_NAME' => $object->authorName->getValue(),
+            ':AUTHOR_EMAIL' => $object->authorEmail->getValue() ?: null,
+            ':AUTHORED_DATE' => $object->authoredDate->getValue(),
 
-            ':COMMITTER_NAME' => $object->getCommitterName()->getValue() ?: null,
-            ':COMMITTER_EMAIL' => $object->getCommitterEmail()->getValue() ?: null,
-            ':COMMITTED_DATE' => $object->getCommittedDate()->getValue() ?: null,
-
-            ':STATS_ADDITIONS' => $stats->getAdditions()->getValue(),
-            ':STATS_DELETIONS' => $stats->getDeletions()->getValue(),
-            ':STATS_TOTAL' => $stats->getTotal()->getValue(),
+            ':COMMITTER_NAME' => $object->committerName->getValue() ?: null,
+            ':COMMITTER_EMAIL' => $object->committerEmail->getValue() ?: null,
+            ':COMMITTED_DATE' => $object->committedDate->getValue() ?: null,
         ]);
     }
 }
