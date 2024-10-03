@@ -5,6 +5,9 @@
 git_clear:
 	git branch --merged | egrep -v "(master|release|main)" | xargs git branch -d
 
+git_projects_pull:
+	find ./projects/ -mindepth 1 -maxdepth 1 -type d -print -exec git -C {} pull \;
+
 ##################
 # DOCKER COMPOSE #
 ##################
