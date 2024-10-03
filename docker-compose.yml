@@ -37,6 +37,7 @@ services:
           - dts_php
     volumes:
       - ./app:/var/www/app
+      - ${PROJECTS_PATH}:/var/www/projects
     logging: *default-logging
 
   mysql:

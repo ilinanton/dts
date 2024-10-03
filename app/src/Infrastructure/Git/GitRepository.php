@@ -11,6 +11,8 @@ use App\Domain\Git\Project\ProjectFactory;
 
 final readonly class GitRepository implements GitRepositoryInterface
 {
+    private const PROJECTS_PATH = '../projects';
+
     public function __construct(
         private ProjectFactory $projectFactory,
         private CommitFactory $commitFactory,
@@ -19,13 +21,13 @@ final readonly class GitRepository implements GitRepositoryInterface
 
     public function getProjects(): ProjectCollection
     {
-        $result = trim(shell_exec("cd ./projects && ls -d */"));
+        $result = trim(shell_exec("cd " . self::PROJECTS_PATH . " && ls -d */"));
         $directories = explode(PHP_EOL, $result);
         $projectCollection = new ProjectCollection();
 
         foreach ($directories as $directory) {
-            $path = "./projects/{$directory}";
-            $name = rtrim($directory, '/');
+            $path = self::PROJECTS_PATH . DS . $directory;
+            $name = rtrim($directory, DS);
             $branch = ltrim(trim(shell_exec("cd {$path} && git branch | grep '*'")), '* ');
             $url = trim(shell_exec("cd {$path} && git config --get remote.origin.url"));
 
