@@ -22,12 +22,13 @@ ORDER BY x.gitlab_user_id
 SELECT DISTINCT committer_email
 FROM gitlab_commit;
 
-SELECT COUNT(*), u.id, u.name
+SELECT COUNT(*) AS cnt, u.id, u.name
 FROM gitlab_user u
 INNER JOIN gitlab_user_x_git_user x ON x.gitlab_user_id = u.id
 INNER JOIN gitlab_commit c ON c.committer_email = x.committer_email
-INNER JOIN gitlab_commit_stats s ON s.id = c.id
+INNER JOIN gitlab_commit_stats s ON s.project_id = c.project_id AND s.git_commit_id = c.git_commit_id
 GROUP BY u.id
+ORDER BY cnt DESC
 
 
 
