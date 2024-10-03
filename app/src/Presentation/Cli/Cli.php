@@ -20,8 +20,11 @@ final readonly class Cli
         while (true) {
             try {
                 $this->identifyCommand(Command::menu->id())->execute();
-                $input = (int) readline("Command id: ");
-                $this->identifyCommand($input)->execute();
+                $input = trim(readline("Command id: "));
+                $inputCommands = explode(",", $input);
+                foreach ($inputCommands as $inputCommand) {
+                    $this->identifyCommand((int)$inputCommand)->execute();
+                }
             } catch (Throwable $exception) {
                 $code = $exception->getCode();
                 echo PHP_EOL . '#' . $code . ' ' . $exception->getMessage() . PHP_EOL;
