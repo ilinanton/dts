@@ -1,7 +1,7 @@
 <?php
 
-use App\Application\Command;
-use App\Application\ExitUseCase;
+use App\Application\Cli\ExitUseCase;
+use App\Application\Cli\MenuUseCase;
 use App\Application\Gitlab\SyncGitlabDataUseCase;
 use App\Application\Gitlab\SyncGitlabProjectCommitStatsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectCommitsUseCase;
@@ -10,7 +10,6 @@ use App\Application\Gitlab\SyncGitlabProjectMergeRequestsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectsUseCase;
 use App\Application\Gitlab\SyncGitlabUserEventsUseCase;
 use App\Application\Gitlab\SyncGitlabUsersUseCase;
-use App\Application\MenuUseCase;
 use App\Application\UseCaseCollection;
 use App\Domain\Git\Common\GitRepositoryInterface;
 use App\Domain\Gitlab\Commit\CommitFactory;
@@ -44,6 +43,7 @@ use App\Infrastructure\Gitlab\GitlabMySqlEventRepository;
 use App\Infrastructure\Gitlab\GitlabMySqlMergeRequestRepository;
 use App\Infrastructure\Gitlab\GitlabMySqlProjectRepository;
 use App\Infrastructure\Gitlab\GitlabMySqlUserRepository;
+use App\Presentation\Cli\Command;
 use Psr\Container\ContainerInterface;
 
 return [

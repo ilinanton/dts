@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Application;
+namespace App\Application\Cli;
+
+use App\Application\UseCaseInterface;
+use App\Presentation\Cli\Command;
 
 final readonly class MenuUseCase implements UseCaseInterface
 {

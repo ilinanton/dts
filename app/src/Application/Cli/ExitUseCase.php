@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Application;
+namespace App\Application\Cli;
+
+use App\Application\UseCaseInterface;
 
 final readonly class ExitUseCase implements UseCaseInterface
 {

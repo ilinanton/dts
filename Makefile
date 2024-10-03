@@ -28,4 +28,4 @@ phpcbf:
 #      APP       #
 ##################
 app_run:
-	${DC} exec php php console.php
+	${DC} exec php php cli.php

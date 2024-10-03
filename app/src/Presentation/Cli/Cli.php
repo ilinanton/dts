@@ -1,13 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Presentation\Cli;
 
-use App\Application\Command;
 use App\Application\UseCaseInterface;
 use Psr\Container\ContainerInterface;
 use Throwable;
 
-final readonly class App
+final readonly class Cli
 {
     private ContainerInterface $container;
 
