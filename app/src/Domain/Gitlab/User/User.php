@@ -12,36 +12,11 @@ use App\Domain\Gitlab\User\ValueObject\UserWebUrl;
 final readonly class User extends AbstractEntity
 {
     public function __construct(
-        private UserId $id,
-        private UserUsername $username,
-        private UserName $name,
-        private UserAvatarUrl $avatarUrl,
-        private UserWebUrl $webUrl,
+        public UserId $id,
+        public UserUsername $username,
+        public UserName $name,
+        public UserAvatarUrl $avatarUrl,
+        public UserWebUrl $webUrl,
     ) {
-    }
-
-    public function getId(): UserId
-    {
-        return $this->id;
-    }
-
-    public function getUsername(): UserUsername
-    {
-        return $this->username;
-    }
-
-    public function getName(): UserName
-    {
-        return $this->name;
-    }
-
-    public function getAvatarUrl(): UserAvatarUrl
-    {
-        return $this->avatarUrl;
-    }
-
-    public function getWebUrl(): UserWebUrl
-    {
-        return $this->webUrl;
     }
 }

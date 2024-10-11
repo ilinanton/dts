@@ -26,11 +26,11 @@ SQL;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            ':ID' => $object->getId()->getValue(),
-            ':USERNAME' => $object->getUsername()->getValue(),
-            ':NAME' => $object->getName()->getValue(),
-            ':AVATAR_URL' => $object->getAvatarUrl()->getValue(),
-            ':WEB_URL' => $object->getWebUrl()->getValue(),
+            ':ID' => $object->id->getValue(),
+            ':USERNAME' => $object->username->getValue(),
+            ':NAME' => $object->name->getValue(),
+            ':AVATAR_URL' => $object->avatarUrl->getValue(),
+            ':WEB_URL' => $object->webUrl->getValue(),
         ]);
     }
 
