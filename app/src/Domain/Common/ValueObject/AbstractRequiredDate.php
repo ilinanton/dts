@@ -8,8 +8,8 @@ use InvalidArgumentException;
 
 readonly class AbstractRequiredDate
 {
-    private DateTime $value;
-    private string $format;
+    protected DateTime $value;
+    protected string $format;
 
     public function __construct(string $value, string $format = DATE_RFC3339_EXTENDED)
     {
