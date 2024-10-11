@@ -79,16 +79,16 @@ SQL;
             ':TARGET_TITLE' => $object->targetTitle->getValue() ?: null,
             ':CREATED_AT' => $object->createdAt->getValue(),
 
-            ':PUSH_DATA_ACTION' => $pushData->action->getValue() ?: null,
-            ':PUSH_DATA_COMMIT_TITLE' => $pushData->commitTitle->getValue() ?: null,
+            ':PUSH_DATA_ACTION' => $pushData->action->value ?: null,
+            ':PUSH_DATA_COMMIT_TITLE' => $pushData->commitTitle->value ?: null,
             ':PUSH_DATA_COMMIT_COUNT' => $pushData->commitCount->getValue() ?: null,
-            ':PUSH_DATA_COMMIT_FROM' => $pushData->commitFrom->getValue() ?: null,
-            ':PUSH_DATA_COMMIT_TO' => $pushData->commitTo->getValue() ?: null,
-            ':PUSH_DATA_REF' => $pushData->ref->getValue() ?: null,
+            ':PUSH_DATA_COMMIT_FROM' => $pushData->commitFrom->value ?: null,
+            ':PUSH_DATA_COMMIT_TO' => $pushData->commitTo->value ?: null,
+            ':PUSH_DATA_REF' => $pushData->ref->value ?: null,
             ':PUSH_DATA_REF_COUNT' => $pushData->refCount->getValue() ?: null,
-            ':PUSH_DATA_REF_TYPE' => $pushData->refType->getValue() ?: null,
+            ':PUSH_DATA_REF_TYPE' => $pushData->refType->value ?: null,
 
-            ':NOTE_BODY' => $note->body->getValue() ?: null,
+            ':NOTE_BODY' => $note->body->value ?: null,
         ]);
     }
 }

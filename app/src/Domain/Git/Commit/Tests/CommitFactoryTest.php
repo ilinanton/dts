@@ -79,7 +79,7 @@ final class CommitFactoryTest extends TestCase
     {
         $commitFactory = new CommitFactory();
         $authorName = $commitFactory->parseAuthorName($commitData);
-        $this->assertContains($authorName->getValue(), self::NAMES);
+        $this->assertContains($authorName->value, self::NAMES);
     }
 
     /**
@@ -89,7 +89,7 @@ final class CommitFactoryTest extends TestCase
     {
         $commitFactory = new CommitFactory();
         $authorEmail = $commitFactory->parseAuthorEmail($commitData);
-        $this->assertContains($authorEmail->getValue(), self::EMAILS);
+        $this->assertContains($authorEmail->value, self::EMAILS);
     }
 
     /**

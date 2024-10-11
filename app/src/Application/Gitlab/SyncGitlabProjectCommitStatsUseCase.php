@@ -33,7 +33,7 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
     {
         echo ' - Git project ' . $gitProject->name->getValue();
         $gitlabProjectCollection =
-            $this->gitlabDataBaseProjectRepository->findByUrlToRepo($gitProject->url->getValue());
+            $this->gitlabDataBaseProjectRepository->findByUrlToRepo($gitProject->url->value);
 
         if (0 === $gitlabProjectCollection->count()) {
             echo ' gitlab projects not found!' . PHP_EOL;
