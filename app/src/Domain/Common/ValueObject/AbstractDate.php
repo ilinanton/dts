@@ -2,23 +2,25 @@
 
 namespace App\Domain\Common\ValueObject;
 
-use DateTimeImmutable;
+use DateTime;
+use DateTimeZone;
 use InvalidArgumentException;
 
 readonly class AbstractDate
 {
-    private DateTimeImmutable $value;
+    private DateTime $value;
     private string $format;
 
     public function __construct(string $value, string $format = DATE_RFC3339_EXTENDED)
     {
         $this->format = $format;
         $this->assertValueIsValid($value);
-        $this->value = DateTimeImmutable::createFromFormat($this->format, $value);
+        $this->value = DateTime::createFromFormat($this->format, $value);
     }
 
-    public function getValue(): string
+    public function getValue(DateTimeZone $timeZone = new DateTimeZone('Etc/GMT+0')): string
     {
+        $this->value->setTimezone($timeZone);
         return $this->value->format('Y-m-d H:i:s');
     }
 
@@ -29,7 +31,7 @@ readonly class AbstractDate
 
     private function assertValueIsValid(string $value): void
     {
-        $dateTime = DateTimeImmutable::createFromFormat($this->format, $value);
+        $dateTime = DateTime::createFromFormat($this->format, $value);
         if (false === $dateTime) {
             throw new InvalidArgumentException(get_class($this) . ' is incorrect!');
         }
