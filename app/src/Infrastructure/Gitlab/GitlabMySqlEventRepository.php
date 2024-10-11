@@ -66,29 +66,29 @@ ON DUPLICATE KEY UPDATE id = id
 SQL;
 
         $stmt = $this->pdo->prepare($sql);
-        $pushData = $object->getPushData()->getValue();
-        $note = $object->getNote()->getValue();
+        $pushData = $object->pushData->getValue();
+        $note = $object->note->getValue();
         $stmt->execute([
-            ':ID' => $object->getId()->getValue(),
-            ':PROJECT_ID' => $object->getProjectId()->getValue(),
-            ':ACTION_NAME' => $object->getActionName()->getValue(),
-            ':TARGET_ID' => $object->getTargetId()->getValue() ?: null,
-            ':TARGET_IID' => $object->getTargetIid()->getValue() ?: null,
-            ':TARGET_TYPE' => $object->getTargetType()->getValue() ?: null,
-            ':AUTHOR_ID' => $object->getAuthorId()->getValue(),
-            ':TARGET_TITLE' => $object->getTargetTitle()->getValue() ?: null,
-            ':CREATED_AT' => $object->getCreatedAt()->getValue(),
+            ':ID' => $object->id->getValue(),
+            ':PROJECT_ID' => $object->projectId->getValue(),
+            ':ACTION_NAME' => $object->actionName->getValue(),
+            ':TARGET_ID' => $object->targetId->getValue() ?: null,
+            ':TARGET_IID' => $object->targetIid->getValue() ?: null,
+            ':TARGET_TYPE' => $object->targetType->getValue() ?: null,
+            ':AUTHOR_ID' => $object->authorId->getValue(),
+            ':TARGET_TITLE' => $object->targetTitle->getValue() ?: null,
+            ':CREATED_AT' => $object->createdAt->getValue(),
 
-            ':PUSH_DATA_ACTION' => $pushData->getAction()->getValue() ?: null,
-            ':PUSH_DATA_COMMIT_TITLE' => $pushData->getCommitTitle()->getValue() ?: null,
-            ':PUSH_DATA_COMMIT_COUNT' => $pushData->getCommitCount()->getValue() ?: null,
-            ':PUSH_DATA_COMMIT_FROM' => $pushData->getCommitFrom()->getValue() ?: null,
-            ':PUSH_DATA_COMMIT_TO' => $pushData->getCommitTo()->getValue() ?: null,
-            ':PUSH_DATA_REF' => $pushData->getRef()->getValue() ?: null,
-            ':PUSH_DATA_REF_COUNT' => $pushData->getRefCount()->getValue() ?: null,
-            ':PUSH_DATA_REF_TYPE' => $pushData->getRefType()->getValue() ?: null,
+            ':PUSH_DATA_ACTION' => $pushData->action->getValue() ?: null,
+            ':PUSH_DATA_COMMIT_TITLE' => $pushData->commitTitle->getValue() ?: null,
+            ':PUSH_DATA_COMMIT_COUNT' => $pushData->commitCount->getValue() ?: null,
+            ':PUSH_DATA_COMMIT_FROM' => $pushData->commitFrom->getValue() ?: null,
+            ':PUSH_DATA_COMMIT_TO' => $pushData->commitTo->getValue() ?: null,
+            ':PUSH_DATA_REF' => $pushData->ref->getValue() ?: null,
+            ':PUSH_DATA_REF_COUNT' => $pushData->refCount->getValue() ?: null,
+            ':PUSH_DATA_REF_TYPE' => $pushData->refType->getValue() ?: null,
 
-            ':NOTE_BODY' => $note->getBody()->getValue() ?: null,
+            ':NOTE_BODY' => $note->body->getValue() ?: null,
         ]);
     }
 }
