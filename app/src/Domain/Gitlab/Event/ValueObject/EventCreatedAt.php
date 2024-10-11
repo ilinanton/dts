@@ -2,8 +2,8 @@
 
 namespace App\Domain\Gitlab\Event\ValueObject;
 
-use App\Domain\Common\ValueObject\AbstractDate;
+use App\Domain\Common\ValueObject\AbstractRequiredDate;
 
-final readonly class EventCreatedAt extends AbstractDate
+final readonly class EventCreatedAt extends AbstractRequiredDate
 {
 }

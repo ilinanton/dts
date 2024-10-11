@@ -2,8 +2,8 @@
 
 namespace App\Domain\Gitlab\Commit\ValueObject;
 
-use App\Domain\Common\ValueObject\AbstractDate;
+use App\Domain\Common\ValueObject\AbstractRequiredDate;
 
-final readonly class CommitAuthoredDate extends AbstractDate
+final readonly class CommitAuthoredDate extends AbstractRequiredDate
 {
 }

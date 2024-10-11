@@ -6,7 +6,7 @@ use DateTime;
 use DateTimeZone;
 use InvalidArgumentException;
 
-readonly class AbstractDate
+readonly class AbstractRequiredDate
 {
     private DateTime $value;
     private string $format;

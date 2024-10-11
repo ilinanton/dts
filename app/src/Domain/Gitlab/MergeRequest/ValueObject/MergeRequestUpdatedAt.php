@@ -2,8 +2,8 @@
 
 namespace App\Domain\Gitlab\MergeRequest\ValueObject;
 
-use App\Domain\Common\ValueObject\AbstractDate;
+use App\Domain\Common\ValueObject\AbstractRequiredDate;
 
-final readonly class MergeRequestUpdatedAt extends AbstractDate
+final readonly class MergeRequestUpdatedAt extends AbstractRequiredDate
 {
 }

@@ -2,8 +2,8 @@
 
 namespace App\Domain\Git\Commit\ValueObject;
 
-use App\Domain\Common\ValueObject\AbstractDate;
+use App\Domain\Common\ValueObject\AbstractRequiredDate;
 
-final readonly class CommitAuthorDate extends AbstractDate
+final readonly class CommitAuthorDate extends AbstractRequiredDate
 {
 }
