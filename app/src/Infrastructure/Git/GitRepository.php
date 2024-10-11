@@ -49,6 +49,7 @@ final readonly class GitRepository implements GitRepositoryInterface
         $log = shell_exec("cd {$project->path->getValue()} " .
             "&& git log --shortstat --no-merges --date=iso-local --since='{$since}'" .
             " --format='{|c|}{|p|}commit: %H{|p|}date: %aI{|p|}name: %aN{|p|}email: %aE{|p|}stat:'" .
+            " -- ':(exclude)composer.lock' ':(exclude)package-lock.json'" .
             " | tr '\n' ' '") ?? '';
         $logItems = explode('{|c|}', $log);
 
