@@ -57,18 +57,18 @@ SQL;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            ':ID' => $object->getId()->getValue(),
-            ':IID' => $object->getIid()->getValue(),
-            ':PROJECT_ID' => $object->getProjectId()->getValue(),
-            ':TITLE' => $object->getTitle()->getValue(),
-            ':STATE' => $object->getState()->getValue(),
-            ':MERGED_AT' => $object->getMergedAt()->getValue(),
-            ':CREATED_AT' => $object->getCreatedAt()->getValue(),
-            ':UPDATED_AT' => $object->getUpdatedAt()->getValue(),
-            ':TARGET_BRANCH' => $object->getTargetBranch()->getValue(),
-            ':SOURCE_BRANCH' => $object->getSourceBranch()->getValue(),
-            ':AUTHOR_ID' => $object->getAuthorId()->getValue(),
-            ':WEB_URL' => $object->getWebUrl()->getValue(),
+            ':ID' => $object->id->getValue(),
+            ':IID' => $object->iid->getValue(),
+            ':PROJECT_ID' => $object->projectId->getValue(),
+            ':TITLE' => $object->title->getValue(),
+            ':STATE' => $object->state->getValue(),
+            ':MERGED_AT' => empty($object->mergedAt->getValue()) ? null : $object->mergedAt->getValue(),
+            ':CREATED_AT' => $object->createdAt->getValue(),
+            ':UPDATED_AT' => empty($object->updatedAt->getValue()) ? null : $object->updatedAt->getValue(),
+            ':TARGET_BRANCH' => $object->targetBranch->getValue(),
+            ':SOURCE_BRANCH' => $object->sourceBranch->getValue(),
+            ':AUTHOR_ID' => $object->authorId->getValue(),
+            ':WEB_URL' => $object->webUrl->getValue(),
         ]);
     }
 }

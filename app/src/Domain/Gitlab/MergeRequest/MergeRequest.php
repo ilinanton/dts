@@ -15,20 +15,20 @@ use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestTitle;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestUpdatedAt;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestWebUrl;
 
-final class MergeRequest
+final readonly class MergeRequest
 {
-    private MergeRequestId $id;
-    private MergeRequestIid $iid;
-    private MergeRequestProjectId $projectId;
-    private MergeRequestTitle $title;
-    private MergeRequestState $state;
-    private MergeRequestMergedAt $mergedAt;
-    private MergeRequestCreatedAt $createdAt;
-    private MergeRequestUpdatedAt $updatedAt;
-    private MergeRequestTargetBranch $targetBranch;
-    private MergeRequestSourceBranch $sourceBranch;
-    private MergeRequestAuthorId $authorId;
-    private MergeRequestWebUrl $webUrl;
+    public MergeRequestId $id;
+    public MergeRequestIid $iid;
+    public MergeRequestProjectId $projectId;
+    public MergeRequestTitle $title;
+    public MergeRequestState $state;
+    public MergeRequestMergedAt $mergedAt;
+    public MergeRequestCreatedAt $createdAt;
+    public MergeRequestUpdatedAt $updatedAt;
+    public MergeRequestTargetBranch $targetBranch;
+    public MergeRequestSourceBranch $sourceBranch;
+    public MergeRequestAuthorId $authorId;
+    public MergeRequestWebUrl $webUrl;
 
     public function __construct(
         MergeRequestId $id,
@@ -56,65 +56,5 @@ final class MergeRequest
         $this->sourceBranch = $sourceBranch;
         $this->authorId = $authorId;
         $this->webUrl = $webUrl;
-    }
-
-    public function getId(): MergeRequestId
-    {
-        return $this->id;
-    }
-
-    public function getIid(): MergeRequestIid
-    {
-        return $this->iid;
-    }
-
-    public function getProjectId(): MergeRequestProjectId
-    {
-        return $this->projectId;
-    }
-
-    public function getTitle(): MergeRequestTitle
-    {
-        return $this->title;
-    }
-
-    public function getState(): MergeRequestState
-    {
-        return $this->state;
-    }
-
-    public function getMergedAt(): MergeRequestMergedAt
-    {
-        return $this->mergedAt;
-    }
-
-    public function getCreatedAt(): MergeRequestCreatedAt
-    {
-        return $this->createdAt;
-    }
-
-    public function getUpdatedAt(): MergeRequestUpdatedAt
-    {
-        return $this->updatedAt;
-    }
-
-    public function getTargetBranch(): MergeRequestTargetBranch
-    {
-        return $this->targetBranch;
-    }
-
-    public function getSourceBranch(): MergeRequestSourceBranch
-    {
-        return $this->sourceBranch;
-    }
-
-    public function getAuthorId(): MergeRequestAuthorId
-    {
-        return $this->authorId;
-    }
-
-    public function getWebUrl(): MergeRequestWebUrl
-    {
-        return $this->webUrl;
     }
 }

@@ -59,16 +59,16 @@ SQL;
             ':PROJECT_ID' => $object->projectId->getValue(),
             ':GIT_COMMIT_ID' => $object->gitCommitId->getValue(),
             ':TITLE' => $object->title->getValue(),
-            ':CREATED_AT' => $object->createdAt->getValue() ?: null,
-            ':WEB_URL' => $object->webUrl->getValue() ?: null,
+            ':CREATED_AT' => $object->createdAt->getValue(),
+            ':WEB_URL' => $object->webUrl->getValue(),
 
             ':AUTHOR_NAME' => $object->authorName->getValue(),
-            ':AUTHOR_EMAIL' => $object->authorEmail->getValue() ?: null,
+            ':AUTHOR_EMAIL' => $object->authorEmail->getValue(),
             ':AUTHORED_DATE' => $object->authoredDate->getValue(),
 
-            ':COMMITTER_NAME' => $object->committerName->getValue() ?: null,
-            ':COMMITTER_EMAIL' => $object->committerEmail->getValue() ?: null,
-            ':COMMITTED_DATE' => $object->committedDate->getValue() ?: null,
+            ':COMMITTER_NAME' => $object->committerName->getValue(),
+            ':COMMITTER_EMAIL' => $object->committerEmail->getValue(),
+            ':COMMITTED_DATE' => $object->committedDate->getValue(),
         ]);
     }
 }

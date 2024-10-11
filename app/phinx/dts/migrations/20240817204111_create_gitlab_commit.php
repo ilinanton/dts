@@ -24,12 +24,12 @@ final class CreateGitlabCommit extends AbstractMigration
             ->addColumn('created_at', 'datetime', ['null' => false])
             ->addColumn('web_url', 'string', ['length' => 255, 'null' => false])
 
-            ->addColumn('author_name', 'string', ['length' => 255, 'null' => true])
-            ->addColumn('author_email', 'string', ['length' => 255, 'null' => true])
+            ->addColumn('author_name', 'string', ['length' => 255, 'null' => false])
+            ->addColumn('author_email', 'string', ['length' => 255, 'null' => false])
             ->addColumn('authored_date', 'datetime', ['null' => false])
 
-            ->addColumn('committer_name', 'string', ['length' => 255, 'null' => true])
-            ->addColumn('committer_email', 'string', ['length' => 255, 'null' => true])
+            ->addColumn('committer_name', 'string', ['length' => 255, 'null' => false])
+            ->addColumn('committer_email', 'string', ['length' => 255, 'null' => false])
             ->addColumn('committed_date', 'datetime', ['null' => false])
 
             ->addIndex(['created_at'])
