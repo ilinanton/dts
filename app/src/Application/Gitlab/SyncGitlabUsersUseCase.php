@@ -26,7 +26,7 @@ final readonly class SyncGitlabUsersUseCase implements UseCaseInterface
                 'per_page' => self::COUNT_ITEMS_PER_PAGE,
             ]);
             foreach ($userCollection as $user) {
-                echo 'Load user #' . $user->id->getValue() . ' ' . $user->name->getValue();
+                echo 'Load user #' . $user->id->value . ' ' . $user->name->value;
                 $this->gitlabMySqlUserRepository->save($user);
                 echo ' done ' . PHP_EOL;
             }

@@ -25,8 +25,8 @@ final readonly class SyncGitlabUserEventsUseCase implements UseCaseInterface
         echo 'Load events that happened after ' . $this->syncDateAfter . PHP_EOL;
         foreach ($userCollection as $user) {
             $page = 0;
-            $userId = $user->getId()->getValue();
-            $userName = $user->getName()->getValue();
+            $userId = $user->getId()->value;
+            $userName = $user->getName()->value;
             echo ' - #' . $userId . ' ' . $userName;
             do {
                 ++$page;

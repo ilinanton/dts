@@ -66,17 +66,17 @@ ON DUPLICATE KEY UPDATE id = id
 SQL;
 
         $stmt = $this->pdo->prepare($sql);
-        $pushData = $object->pushData->getValue();
-        $note = $object->note->getValue();
+        $pushData = $object->pushData->value;
+        $note = $object->note->value;
         $stmt->execute([
             ':ID' => $object->id->value,
             ':PROJECT_ID' => $object->projectId->value,
-            ':ACTION_NAME' => $object->actionName->getValue(),
+            ':ACTION_NAME' => $object->actionName->value,
             ':TARGET_ID' => $object->targetId->value ?: null,
             ':TARGET_IID' => $object->targetIid->value ?: null,
-            ':TARGET_TYPE' => $object->targetType->getValue() ?: null,
+            ':TARGET_TYPE' => $object->targetType->value ?: null,
             ':AUTHOR_ID' => $object->authorId->value,
-            ':TARGET_TITLE' => $object->targetTitle->getValue() ?: null,
+            ':TARGET_TITLE' => $object->targetTitle->value ?: null,
             ':CREATED_AT' => $object->createdAt->getValue(),
 
             ':PUSH_DATA_ACTION' => $pushData->action->value ?: null,
