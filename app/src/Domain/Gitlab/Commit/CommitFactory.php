@@ -23,7 +23,7 @@ final readonly class CommitFactory
         return new Commit(
             $commitId,
             new CommitProjectId($projectId),
-            new CommitGitCommitId(substr($commitId->getValue(), 0, 32)),
+            new CommitGitCommitId(substr($commitId->value, 0, 32)),
             new CommitTitle($data['title'] ?? ''),
             new CommitCreatedAt($data['created_at'] ?? ''),
             new CommitWebUrl($data['web_url'] ?? ''),

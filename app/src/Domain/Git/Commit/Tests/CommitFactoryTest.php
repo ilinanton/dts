@@ -68,8 +68,8 @@ final class CommitFactoryTest extends TestCase
     {
         $commitFactory = new CommitFactory();
         $commitId = $commitFactory->parseCommitId($commitData);
-        $this->assertTrue(32 === strlen($commitId->getValue()));
-        $this->assertStringContainsString($commitId->getValue(), $commitData);
+        $this->assertTrue(32 === strlen($commitId->value));
+        $this->assertStringContainsString($commitId->value, $commitData);
     }
 
     /**
@@ -114,12 +114,12 @@ final class CommitFactoryTest extends TestCase
         $commitFactory = new CommitFactory();
         $commitStats = $commitFactory->parseCommitStats($commitData);
 
-        var_dump($commitStats->value->files->getValue());
-        var_dump($commitStats->value->additions->getValue());
-        var_dump($commitStats->value->deletions->getValue());
+        var_dump($commitStats->value->files->value);
+        var_dump($commitStats->value->additions->value);
+        var_dump($commitStats->value->deletions->value);
 
-        $this->assertIsInt($commitStats->value->files->getValue());
-        $this->assertIsInt($commitStats->value->additions->getValue());
-        $this->assertIsInt($commitStats->value->deletions->getValue());
+        $this->assertIsInt($commitStats->value->files->value);
+        $this->assertIsInt($commitStats->value->additions->value);
+        $this->assertIsInt($commitStats->value->deletions->value);
     }
 }

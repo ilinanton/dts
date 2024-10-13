@@ -57,9 +57,9 @@ SQL;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            ':ID' => $object->id->getValue(),
-            ':IID' => $object->iid->getValue(),
-            ':PROJECT_ID' => $object->projectId->getValue(),
+            ':ID' => $object->id->value,
+            ':IID' => $object->iid->value,
+            ':PROJECT_ID' => $object->projectId->value,
             ':TITLE' => $object->title->getValue(),
             ':STATE' => $object->state->getValue(),
             ':MERGED_AT' => empty($object->mergedAt->getValue()) ? null : $object->mergedAt->getValue(),
@@ -68,7 +68,7 @@ SQL;
             ':TARGET_BRANCH' => $object->targetBranch->getValue(),
             ':SOURCE_BRANCH' => $object->sourceBranch->getValue(),
             ':AUTHOR_ID' => $object->authorId->getValue(),
-            ':WEB_URL' => $object->webUrl->getValue(),
+            ':WEB_URL' => $object->webUrl->value,
         ]);
     }
 }

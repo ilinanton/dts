@@ -31,9 +31,9 @@ final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
 
     private function syncProject(Project $project): void
     {
-        $projectId = $project->id->getValue();
-        $projectName = $project->name->getValue();
-        $refName = $project->defaultBranch->getValue();
+        $projectId = $project->id->value;
+        $projectName = $project->name->value;
+        $refName = $project->defaultBranch->value;
         echo ' - #' . $projectId . ' ' . $projectName;
         $page = 0;
         do {

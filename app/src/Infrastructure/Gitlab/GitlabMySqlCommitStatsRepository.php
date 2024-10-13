@@ -37,11 +37,11 @@ SQL;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            ':GIT_COMMIT_ID' => $object->gitCommitId->getValue(),
-            ':PROJECT_ID' => $object->projectId->getValue(),
-            ':FILES' => $object->files->getValue(),
-            ':ADDITIONS' => $object->additions->getValue(),
-            ':DELETIONS' => $object->deletions->getValue(),
+            ':GIT_COMMIT_ID' => $object->gitCommitId->value,
+            ':PROJECT_ID' => $object->projectId->value,
+            ':FILES' => $object->files->value,
+            ':ADDITIONS' => $object->additions->value,
+            ':DELETIONS' => $object->deletions->value,
         ]);
     }
 }

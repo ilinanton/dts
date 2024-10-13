@@ -31,12 +31,12 @@ SQL;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            ':ID' => $object->id->getValue(),
-            ':NAME' => $object->name->getValue(),
-            ':DEFAULT_BRANCH' => $object->defaultBranch->getValue(),
-            ':SSH_URL_TO_REPO' => $object->sshUrlToRepo->getValue(),
-            ':HTTP_URL_TO_REPO' => $object->httpUrlToRepo->getValue(),
-            ':WEB_URL' => $object->webUrl->getValue(),
+            ':ID' => $object->id->value,
+            ':NAME' => $object->name->value,
+            ':DEFAULT_BRANCH' => $object->defaultBranch->value,
+            ':SSH_URL_TO_REPO' => $object->sshUrlToRepo->value,
+            ':HTTP_URL_TO_REPO' => $object->httpUrlToRepo->value,
+            ':WEB_URL' => $object->webUrl->value,
         ]);
     }
 

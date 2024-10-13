@@ -69,23 +69,23 @@ SQL;
         $pushData = $object->pushData->getValue();
         $note = $object->note->getValue();
         $stmt->execute([
-            ':ID' => $object->id->getValue(),
-            ':PROJECT_ID' => $object->projectId->getValue(),
+            ':ID' => $object->id->value,
+            ':PROJECT_ID' => $object->projectId->value,
             ':ACTION_NAME' => $object->actionName->getValue(),
-            ':TARGET_ID' => $object->targetId->getValue() ?: null,
-            ':TARGET_IID' => $object->targetIid->getValue() ?: null,
+            ':TARGET_ID' => $object->targetId->value ?: null,
+            ':TARGET_IID' => $object->targetIid->value ?: null,
             ':TARGET_TYPE' => $object->targetType->getValue() ?: null,
-            ':AUTHOR_ID' => $object->authorId->getValue(),
+            ':AUTHOR_ID' => $object->authorId->value,
             ':TARGET_TITLE' => $object->targetTitle->getValue() ?: null,
             ':CREATED_AT' => $object->createdAt->getValue(),
 
             ':PUSH_DATA_ACTION' => $pushData->action->value ?: null,
             ':PUSH_DATA_COMMIT_TITLE' => $pushData->commitTitle->value ?: null,
-            ':PUSH_DATA_COMMIT_COUNT' => $pushData->commitCount->getValue() ?: null,
+            ':PUSH_DATA_COMMIT_COUNT' => $pushData->commitCount->value ?: null,
             ':PUSH_DATA_COMMIT_FROM' => $pushData->commitFrom->value ?: null,
             ':PUSH_DATA_COMMIT_TO' => $pushData->commitTo->value ?: null,
             ':PUSH_DATA_REF' => $pushData->ref->value ?: null,
-            ':PUSH_DATA_REF_COUNT' => $pushData->refCount->getValue() ?: null,
+            ':PUSH_DATA_REF_COUNT' => $pushData->refCount->value ?: null,
             ':PUSH_DATA_REF_TYPE' => $pushData->refType->value ?: null,
 
             ':NOTE_BODY' => $note->body->value ?: null,

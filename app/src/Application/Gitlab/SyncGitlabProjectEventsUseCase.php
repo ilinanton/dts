@@ -45,8 +45,8 @@ final readonly class SyncGitlabProjectEventsUseCase implements UseCaseInterface
 
     private function syncProject(Project $project): void
     {
-        $projectId = $project->id->getValue();
-        $projectName = $project->name->getValue();
+        $projectId = $project->id->value;
+        $projectName = $project->name->value;
         echo ' - #' . $projectId . ' ' . $projectName . PHP_EOL;
         foreach (self::FILTERS as $filter) {
             echo '   - ' . $filter['param_name'] . ': ' . $filter['value'];

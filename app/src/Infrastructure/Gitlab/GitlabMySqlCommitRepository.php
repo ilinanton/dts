@@ -55,12 +55,12 @@ SQL;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            ':ID' => $object->id->getValue(),
-            ':PROJECT_ID' => $object->projectId->getValue(),
-            ':GIT_COMMIT_ID' => $object->gitCommitId->getValue(),
+            ':ID' => $object->id->value,
+            ':PROJECT_ID' => $object->projectId->value,
+            ':GIT_COMMIT_ID' => $object->gitCommitId->value,
             ':TITLE' => $object->title->value,
             ':CREATED_AT' => $object->createdAt->getValue(),
-            ':WEB_URL' => $object->webUrl->getValue(),
+            ':WEB_URL' => $object->webUrl->value,
 
             ':AUTHOR_NAME' => $object->authorName->value,
             ':AUTHOR_EMAIL' => $object->authorEmail->value,

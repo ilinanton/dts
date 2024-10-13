@@ -6,17 +6,12 @@ use InvalidArgumentException;
 
 abstract readonly class AbstractUnsignedInt
 {
-    private int $value;
+    public int $value;
 
     public function __construct(int $value)
     {
         $this->assertValueIsValid($value);
         $this->value = $value;
-    }
-
-    public function getValue(): int
-    {
-        return $this->value;
     }
 
     private function assertValueIsValid(int $value): void
