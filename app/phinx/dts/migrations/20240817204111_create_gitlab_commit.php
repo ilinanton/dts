@@ -20,7 +20,7 @@ final class CreateGitlabCommit extends AbstractMigration
             ->addColumn('id', 'string', ['length' => 128, 'null' => false])
             ->addColumn('project_id', 'biginteger', ['signed' => false, 'null' => false])
             ->addColumn('git_commit_id', 'string', ['length' => 128, 'null' => false])
-            ->addColumn('title', 'string', ['length' => 1024, 'null' => true])
+            ->addColumn('title', 'string', ['length' => 1024, 'null' => false])
             ->addColumn('created_at', 'datetime', ['null' => false])
             ->addColumn('web_url', 'string', ['length' => 255, 'null' => false])
 
