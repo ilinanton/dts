@@ -55,6 +55,10 @@ return [
         return $c->get('GITLAB_URL') . '/api/v4/';
     },
 
+    'GIT_LOG_EXCLUDE_PATH' => function () {
+        return explode(',', getenv('GIT_LOG_EXCLUDE_PATH'));
+    },
+
     'MYSQL_URL' => getenv('MYSQL_URL'),
     'MYSQL_DATABASE' => getenv('MYSQL_DATABASE'),
     'MYSQL_USER' => getenv('MYSQL_USER'),
@@ -196,10 +200,11 @@ return [
             new EventFactory()
         );
     },
-    GitRepositoryInterface::class => function () {
+    GitRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitRepository(
             new \App\Domain\Git\Project\ProjectFactory(),
             new \App\Domain\Git\Commit\CommitFactory(),
+            $c->get('GIT_LOG_EXCLUDE_PATH'),
         );
     },
     GitlabApiCommitRepositoryInterface::class => function (ContainerInterface $c) {

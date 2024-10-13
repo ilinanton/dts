@@ -31,6 +31,8 @@ services:
       GITLAB_TOKEN: ${GITLAB_TOKEN}
       GITLAB_GROUP_ID: ${GITLAB_GROUP_ID}
       GITLAB_SYNC_DATE_AFTER: ${GITLAB_SYNC_DATE_AFTER}
+
+      GIT_LOG_EXCLUDE_PATH: ${GIT_LOG_EXCLUDE_PATH}
     networks:
       dts_network:
         aliases:

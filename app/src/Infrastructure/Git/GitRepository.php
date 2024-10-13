@@ -16,6 +16,7 @@ final readonly class GitRepository implements GitRepositoryInterface
     public function __construct(
         private ProjectFactory $projectFactory,
         private CommitFactory $commitFactory,
+        private array $logExcludePath,
     ) {
     }
 
@@ -46,11 +47,17 @@ final readonly class GitRepository implements GitRepositoryInterface
     {
         $commitCollection = new CommitCollection();
 
-        $log = shell_exec("cd {$project->path->getValue()} " .
+        $exclude = "";
+        if (count($this->logExcludePath) > 0) {
+            $exclude = " -- ':(exclude)" .
+                implode("' ':(exclude)", $this->logExcludePath) .
+                "'";
+        }
+
+        $log = shell_exec("cd {$project->path->value} " .
             "&& git log --shortstat --no-merges --date=iso-local --since='{$since}'" .
             " --format='{|c|}{|p|}commit: %H{|p|}date: %aI{|p|}name: %aN{|p|}email: %aE{|p|}stat:'" .
-            " -- ':(exclude)composer.lock' ':(exclude)package-lock.json'" .
-            " | tr '\n' ' '") ?? '';
+            "{$exclude} | tr '\n' ' '") ?? '';
         $logItems = explode('{|c|}', $log);
 
         foreach ($logItems as $logItem) {
