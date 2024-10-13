@@ -19,9 +19,9 @@ final class CreateTableGitlabCommitStats extends AbstractMigration
         )
             ->addColumn('git_commit_id', 'string', ['length' => 128, 'null' => false])
             ->addColumn('project_id', 'biginteger', ['signed' => false, 'null' => false])
-            ->addColumn('files', 'integer', ['signed' => false, 'null' => true])
-            ->addColumn('additions', 'integer', ['signed' => false, 'null' => true])
-            ->addColumn('deletions', 'integer', ['signed' => false, 'null' => true])
+            ->addColumn('files', 'integer', ['signed' => false, 'null' => false])
+            ->addColumn('additions', 'integer', ['signed' => false, 'null' => false])
+            ->addColumn('deletions', 'integer', ['signed' => false, 'null' => false])
 
             ->addIndex(['files'])
             ->addIndex(['additions'])

@@ -58,7 +58,7 @@ SQL;
             ':ID' => $object->id->value,
             ':PROJECT_ID' => $object->projectId->value,
             ':GIT_COMMIT_ID' => $object->gitCommitId->value,
-            ':TITLE' => $object->title->value,
+            ':TITLE' => empty($object->title->value) ? null : $object->title->value,
             ':CREATED_AT' => $object->createdAt->getValue(),
             ':WEB_URL' => $object->webUrl->value,
 
