@@ -1,5 +1,5 @@
 SELECT id, name, mr_created, mr_merged, mr_merged_without_approv, mr_approved, mr_self_approved,
-       committed_to_default_branch, -- loc_add, loc_del, (loc_add + loc_del) AS total_loc,
+       committed_to_default_branch, loc_add, loc_del, (loc_add + loc_del) AS total_loc,
        (
            mr_created * mr_created_point +
            mr_merged * mr_merged_point +
@@ -7,8 +7,8 @@ SELECT id, name, mr_created, mr_merged, mr_merged_without_approv, mr_approved, m
            mr_approved * mr_approved_point +
            mr_self_approved * mr_self_approved_point +
            committed_to_default_branch * committed_to_default_branch_point
-#           + loc_add * loc_add_point +
-#            loc_del * loc_del_point
+          + loc_add * loc_point +
+           loc_del * loc_point
        ) AS score,
        after_at
 
@@ -20,7 +20,7 @@ FROM (
                     FROM gitlab_merge_request mr
                     INNER JOIN gitlab_project p ON p.id = mr.project_id
                     WHERE mr.author_id = u.id
-                      AND mr.created_at > d.date
+                      AND mr.created_at >= d.date
                       AND mr.source_branch <> p.default_branch
                 ) AS mr_created, 0.5 AS mr_created_point,
                 (
@@ -29,7 +29,7 @@ FROM (
                     INNER JOIN gitlab_project p ON p.id = mr.project_id
                     WHERE mr.author_id = u.id
                       AND mr.state = 'merged'
-                      AND mr.merged_at > d.date
+                      AND mr.merged_at >= d.date
                       AND mr.source_branch <> p.default_branch
                 ) AS mr_merged, 1 AS mr_merged_point,
                 (
@@ -38,7 +38,7 @@ FROM (
                     INNER JOIN gitlab_project p ON p.id = mr.project_id
                     WHERE mr.author_id = u.id
                       AND mr.state = 'merged'
-                      AND mr.merged_at > d.date
+                      AND mr.merged_at >= d.date
                       AND mr.target_branch = p.default_branch
                       AND NOT EXISTS(
                         SELECT 'x'
@@ -51,7 +51,7 @@ FROM (
                     SELECT COUNT(*)
                     FROM gitlab_event e
                     WHERE e.author_id = u.id
-                      AND e.created_at > d.date
+                      AND e.created_at >= d.date
                       AND e.action_name = 'approved'
                 ) AS mr_approved, 1 AS mr_approved_point,
                 (
@@ -61,7 +61,7 @@ FROM (
                             ON mr.author_id = e.author_id
                            AND mr.id = e.target_id
                     WHERE e.author_id = u.id
-                      AND e.created_at > d.date
+                      AND e.created_at >= d.date
                       AND e.action_name = 'approved'
                 ) AS mr_self_approved, 0 AS mr_self_approved_point,
                 (
@@ -71,32 +71,34 @@ FROM (
                             ON p.id = e.project_id
                            AND p.default_branch = e.push_data_ref
                     WHERE e.author_id = u.id
-                      AND e.created_at > d.date
+                      AND e.created_at >= d.date
                       AND e.action_name = 'pushed to'
                       AND e.push_data_ref_type = 'branch'
                       AND e.push_data_commit_title NOT LIKE 'Merge branch%'
-                ) AS committed_to_default_branch, 0 AS committed_to_default_branch_point
-#                 ,
-#                 IFNULL((
-#                     SELECT SUM(stats_additions)
-#                     FROM gitlab_event e
-#                     INNER JOIN gitlab_commit c ON c.id = e.push_data_commit_to
-#                     INNER JOIN gitlab_project p ON p.id = e.project_id
-#                     WHERE e.author_id = u.id
-#                       AND e.push_data_ref = p.default_branch
-#                       AND e.push_data_action = 'pushed'
-#                       AND e.created_at > d.date
-#                 ), 0) AS loc_add, 0.01 AS loc_add_point,
-#                 IFNULL((
-#                     SELECT SUM(stats_deletions)
-#                     FROM gitlab_event e
-#                     INNER JOIN gitlab_commit c ON c.id = e.push_data_commit_to
-#                     INNER JOIN gitlab_project p ON p.id = e.project_id
-#                     WHERE e.author_id = u.id
-#                       AND e.push_data_ref = p.default_branch
-#                       AND e.push_data_action = 'pushed'
-#                       AND e.created_at > d.date
-#                 ), 0) AS loc_del, 0.01 AS loc_del_point
+                ) AS committed_to_default_branch, 0 AS committed_to_default_branch_point,
+                IFNULL((
+                    SELECT SUM(s.additions)
+                    FROM gitlab_user_x_git_user x
+                    INNER JOIN gitlab_commit c
+                            ON c.author_email = x.git_email
+                           AND c.created_at >= d.date
+                    INNER JOIN gitlab_commit_stats s
+                            ON s.project_id = c.project_id
+                           AND s.git_commit_id = c.git_commit_id
+                    WHERE x.gitlab_user_id = u.id
+                ), 0) AS loc_add,
+                IFNULL((
+                    SELECT SUM(s.deletions)
+                    FROM gitlab_user_x_git_user x
+                    INNER JOIN gitlab_commit c
+                            ON c.author_email = x.git_email
+                           AND c.created_at >= d.date
+                    INNER JOIN gitlab_commit_stats s
+                            ON s.project_id = c.project_id
+                           AND s.git_commit_id = c.git_commit_id
+                    WHERE x.gitlab_user_id = u.id
+                ), 0) AS loc_del,
+                0.01 AS loc_point
 
          FROM gitlab_user u
          LEFT JOIN (
