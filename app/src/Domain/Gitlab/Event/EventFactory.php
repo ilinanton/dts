@@ -26,7 +26,7 @@ final class EventFactory
             new EventActionName($data['action_name'] ?? ''),
             new EventTargetId($data['target_id'] ?? 0),
             new EventTargetIid($data['target_iid'] ?? 0),
-            new EventTargetType($data['target_type'] ?? 0),
+            new EventTargetType($data['target_type'] ?? ''),
             new EventAuthorId($data['author_id'] ?? 0),
             new EventTargetTitle($data['target_title'] ?? ''),
             new EventCreatedAt($data['created_at'] ?? ''),
