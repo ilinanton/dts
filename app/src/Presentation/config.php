@@ -51,7 +51,7 @@ use Psr\Container\ContainerInterface;
 return [
     'GITLAB_URL' => getenv('GITLAB_URL'),
     'GITLAB_TOKEN' => getenv('GITLAB_TOKEN'),
-    'GITLAB_GROUP_ID' => getenv('GITLAB_GROUP_ID'),
+    'GITLAB_GROUP_ID' => (int)getenv('GITLAB_GROUP_ID'),
     'GITLAB_SYNC_DATE_AFTER' => getenv('GITLAB_SYNC_DATE_AFTER'),
     'GITLAB_URI' => function (ContainerInterface $c) {
         return $c->get('GITLAB_URL') . '/api/v4/';
