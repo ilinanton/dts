@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Gitlab\User;
 
 use App\Domain\Gitlab\User\ValueObject\UserAvatarUrl;

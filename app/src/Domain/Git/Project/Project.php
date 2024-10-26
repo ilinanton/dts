@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Git\Project;
 
 use App\Domain\Git\Project\ValueObject\ProjectName;

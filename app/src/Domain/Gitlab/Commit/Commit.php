@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Gitlab\Commit;
 
 use App\Domain\Common\AbstractEntity;

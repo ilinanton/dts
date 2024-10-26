@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Git\Commit;
 
 use App\Domain\Git\Commit\ValueObject\CommitAuthorDate;
@@ -57,7 +59,8 @@ final readonly class CommitFactory
     public function parseCommitStats(string $date): CommitStats
     {
         $result = [];
-        preg_match('/\{\|p\|}stat:( +(?P<files>\d+) files? changed)?(,? +(?P<insertions>\d+).+\(\+\))?(,? +(?P<deletions>\d+).+\(\-\))?/',
+        preg_match(
+            '/\{\|p\|}stat:( +(?P<files>\d+) files? changed)?(,? +(?P<insertions>\d+).+\(\+\))?(,? +(?P<deletions>\d+).+\(\-\))?/',
             $date,
             $result,
         );

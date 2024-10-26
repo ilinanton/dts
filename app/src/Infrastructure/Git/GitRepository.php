@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Git;
 
 use App\Domain\Git\Commit\CommitCollection;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Gitlab;
 
 use App\Domain\Gitlab\CommitStats\CommitStats;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Git\Stats;
 
 use App\Domain\Git\Stats\ValueObject\StatsAdditions;

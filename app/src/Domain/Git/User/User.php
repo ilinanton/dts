@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Git\User;
 
 use App\Domain\Git\User\ValueObject\UserEmail;

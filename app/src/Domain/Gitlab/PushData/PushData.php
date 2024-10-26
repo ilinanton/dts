@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Gitlab\PushData;
 
 use App\Domain\Gitlab\PushData\ValueObject\PushDataAction;

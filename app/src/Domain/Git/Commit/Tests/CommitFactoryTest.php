@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Git\Commit\Tests;
 
 use App\Domain\Git\Commit\CommitFactory;

@@ -11,6 +11,7 @@
 
     <rule ref="PSR12"/>
 
+    <rule ref="Generic.PHP.RequireStrictTypes"/>
     <rule ref="Generic.Metrics.CyclomaticComplexity">
         <properties>
             <property name="complexity" value="10"/>
@@ -29,7 +30,6 @@
         </properties>
     </rule>
 
-    <file>console.php</file>
+    <file>cli.php</file>
     <file>src/</file>
-    <file>phinx/</file>
 </ruleset>
