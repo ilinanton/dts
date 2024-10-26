@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Gitlab;
 
 use App\Domain\Gitlab\Common\Repository\GitlabApiClientInterface;
+use Exception;
 use GuzzleHttp\Client;
 
 final readonly class GitlabApiClient implements GitlabApiClientInterface
@@ -38,7 +39,9 @@ final readonly class GitlabApiClient implements GitlabApiClientInterface
 
         $response = $this->client->get($uri);
         $body = (string)$response->getBody();
-        //todo #token_is_expired
+        if (200 !== $response->getStatusCode()) {
+            throw new Exception('Gitlab api error: ' . $body);
+        }
         return json_decode($body, true, 512, JSON_THROW_ON_ERROR);
     }
 
