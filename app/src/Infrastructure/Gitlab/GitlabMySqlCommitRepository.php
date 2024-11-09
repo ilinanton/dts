@@ -64,12 +64,12 @@ SQL;
             ':CREATED_AT' => $object->createdAt->getValue(),
             ':WEB_URL' => $object->webUrl->value,
 
-            ':AUTHOR_NAME' => $object->authorName->getDbValue(),
-            ':AUTHOR_EMAIL' => $object->authorEmail->getDbValue(),
+            ':AUTHOR_NAME' => $object->authorName->value,
+            ':AUTHOR_EMAIL' => $object->authorEmail->value,
             ':AUTHORED_DATE' => $object->authoredDate->getValue(),
 
-            ':COMMITTER_NAME' => $object->committerName->getDbValue(),
-            ':COMMITTER_EMAIL' => $object->committerEmail->getDbValue(),
+            ':COMMITTER_NAME' => $object->committerName->value,
+            ':COMMITTER_EMAIL' => $object->committerEmail->value,
             ':COMMITTED_DATE' => $object->committedDate->getValue(),
         ]);
     }

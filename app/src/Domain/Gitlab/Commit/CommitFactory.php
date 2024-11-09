@@ -15,7 +15,7 @@ use App\Domain\Gitlab\Commit\ValueObject\CommitGitCommitId;
 use App\Domain\Gitlab\Commit\ValueObject\CommitId;
 use App\Domain\Gitlab\Commit\ValueObject\CommitProjectId;
 use App\Domain\Gitlab\Commit\ValueObject\CommitTitle;
-use App\Domain\Gitlab\Commit\ValueObject\CommitRequiredWebUrl;
+use App\Domain\Gitlab\Commit\ValueObject\CommitWebUrl;
 
 final readonly class CommitFactory
 {
@@ -27,14 +27,14 @@ final readonly class CommitFactory
             new CommitProjectId($projectId),
             new CommitGitCommitId(substr($commitId->value, 0, 32)),
             new CommitTitle($data['title'] ?? ''),
-            new CommitCreatedAt($data['created_at'] ?? ''),
-            new CommitRequiredWebUrl($data['web_url'] ?? ''),
-            new CommitAuthorName($data['author_name'] ?? ''),
-            new CommitAuthorEmail($data['author_email'] ?? ''),
-            new CommitAuthoredDate($data['authored_date'] ?? ''),
-            new CommitCommitterName($data['committer_name'] ?? ''),
-            new CommitCommitterEmail($data['committer_email'] ?? ''),
-            new CommitCommittedDate($data['committed_date'] ?? ''),
+            new CommitCreatedAt($data['created_at']),
+            new CommitWebUrl($data['web_url']),
+            new CommitAuthorName($data['author_name']),
+            new CommitAuthorEmail($data['author_email']),
+            new CommitAuthoredDate($data['authored_date']),
+            new CommitCommitterName($data['committer_name']),
+            new CommitCommitterEmail($data['committer_email']),
+            new CommitCommittedDate($data['committed_date']),
         );
     }
 }

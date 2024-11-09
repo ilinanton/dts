@@ -6,6 +6,6 @@ namespace App\Domain\Gitlab\Commit\ValueObject;
 
 use App\Domain\Common\ValueObject\AbstractRequiredWebUrl;
 
-final readonly class CommitRequiredWebUrl extends AbstractRequiredWebUrl
+final readonly class CommitWebUrl extends AbstractRequiredWebUrl
 {
 }

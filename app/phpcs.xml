@@ -26,7 +26,7 @@
     </rule>
     <rule ref="CognitiveComplexity">
         <properties>
-            <property name="maxCognitiveComplexity" value="13"/>
+            <property name="maxCognitiveComplexity" value="10"/>
         </properties>
     </rule>
 

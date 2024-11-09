@@ -16,7 +16,7 @@ use App\Domain\Gitlab\Commit\ValueObject\CommitGitCommitId;
 use App\Domain\Gitlab\Commit\ValueObject\CommitId;
 use App\Domain\Gitlab\Commit\ValueObject\CommitProjectId;
 use App\Domain\Gitlab\Commit\ValueObject\CommitTitle;
-use App\Domain\Gitlab\Commit\ValueObject\CommitRequiredWebUrl;
+use App\Domain\Gitlab\Commit\ValueObject\CommitWebUrl;
 
 final readonly class Commit extends AbstractEntity
 {
@@ -26,7 +26,7 @@ final readonly class Commit extends AbstractEntity
         public CommitGitCommitId $gitCommitId,
         public CommitTitle $title,
         public CommitCreatedAt $createdAt,
-        public CommitRequiredWebUrl $webUrl,
+        public CommitWebUrl $webUrl,
         public CommitAuthorName $authorName,
         public CommitAuthorEmail $authorEmail,
         public CommitAuthoredDate $authoredDate,
