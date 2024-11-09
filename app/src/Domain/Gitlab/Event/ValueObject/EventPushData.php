@@ -14,6 +14,10 @@ final readonly class EventPushData
     public function __construct(array $value)
     {
         $pushDataFactory = new PushDataFactory();
-        $this->value = $pushDataFactory->create($value);
+        if (empty($value)) {
+            $this->value = $pushDataFactory->createEmpty();
+        } else {
+            $this->value = $pushDataFactory->create($value);
+        }
     }
 }

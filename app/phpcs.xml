@@ -15,7 +15,7 @@
     <rule ref="Generic.Metrics.CyclomaticComplexity">
         <properties>
             <property name="complexity" value="5"/>
-            <property name="absoluteComplexity" value="10"/>
+            <property name="absoluteComplexity" value="7"/>
         </properties>
     </rule>
     <rule ref="Generic.Metrics.NestingLevel">
@@ -26,7 +26,7 @@
     </rule>
     <rule ref="CognitiveComplexity">
         <properties>
-            <property name="maxCognitiveComplexity" value="10"/>
+            <property name="maxCognitiveComplexity" value="8"/>
         </properties>
     </rule>
 
