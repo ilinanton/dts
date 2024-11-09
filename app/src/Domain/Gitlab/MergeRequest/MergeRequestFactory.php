@@ -22,18 +22,18 @@ final class MergeRequestFactory
     public function create(array $data): MergeRequest
     {
         return new MergeRequest(
-            new MergeRequestId($data['id'] ?? 0),
-            new MergeRequestIid($data['iid'] ?? 0),
-            new MergeRequestProjectId($data['project_id'] ?? 0),
-            new MergeRequestTitle($data['title'] ?? ''),
-            new MergeRequestState($data['state'] ?? ''),
+            new MergeRequestId($data['id']),
+            new MergeRequestIid($data['iid']),
+            new MergeRequestProjectId($data['project_id']),
+            new MergeRequestTitle($data['title']),
+            new MergeRequestState($data['state']),
             new MergeRequestMergedAt($data['merged_at'] ?? ''),
-            new MergeRequestCreatedAt($data['created_at'] ?? ''),
+            new MergeRequestCreatedAt($data['created_at']),
             new MergeRequestUpdatedAt($data['updated_at'] ?? ''),
-            new MergeRequestTargetBranch($data['target_branch'] ?? ''),
-            new MergeRequestSourceBranch($data['source_branch'] ?? ''),
-            new MergeRequestAuthorId($data['author']['id'] ?? 0),
-            new MergeRequestRequiredWebUrl($data['web_url'] ?? '')
+            new MergeRequestTargetBranch($data['target_branch']),
+            new MergeRequestSourceBranch($data['source_branch']),
+            new MergeRequestAuthorId($data['author']['id']),
+            new MergeRequestRequiredWebUrl($data['web_url'])
         );
     }
 }
