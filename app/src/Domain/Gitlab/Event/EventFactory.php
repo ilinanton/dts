@@ -21,15 +21,15 @@ final class EventFactory
     public function create(array $data): Event
     {
         return new Event(
-            new EventId($data['id'] ?? 0),
-            new EventProjectId($data['project_id'] ?? 0),
-            new EventActionName($data['action_name'] ?? ''),
+            new EventId($data['id']),
+            new EventProjectId($data['project_id']),
+            new EventActionName($data['action_name']),
             new EventTargetId($data['target_id'] ?? 0),
             new EventTargetIid($data['target_iid'] ?? 0),
             new EventTargetType($data['target_type'] ?? ''),
-            new EventAuthorId($data['author_id'] ?? 0),
+            new EventAuthorId($data['author_id']),
             new EventTargetTitle($data['target_title'] ?? ''),
-            new EventCreatedAt($data['created_at'] ?? ''),
+            new EventCreatedAt($data['created_at']),
             new EventPushData($data['push_data'] ?? []),
             new EventNote($data['note'] ?? []),
         );
