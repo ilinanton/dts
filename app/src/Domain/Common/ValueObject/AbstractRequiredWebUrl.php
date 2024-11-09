@@ -6,7 +6,7 @@ namespace App\Domain\Common\ValueObject;
 
 use InvalidArgumentException;
 
-abstract readonly class AbstractWebUrl
+abstract readonly class AbstractRequiredWebUrl
 {
     public string $value;
 

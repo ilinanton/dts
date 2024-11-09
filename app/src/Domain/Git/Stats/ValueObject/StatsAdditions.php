@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Git\Stats\ValueObject;
 
-use App\Domain\Common\ValueObject\AbstractUnsignedInt;
+use App\Domain\Common\ValueObject\AbstractRequiredUnsignedInt;
 
-final readonly class StatsAdditions extends AbstractUnsignedInt
+final readonly class StatsAdditions extends AbstractRequiredUnsignedInt
 {
 }

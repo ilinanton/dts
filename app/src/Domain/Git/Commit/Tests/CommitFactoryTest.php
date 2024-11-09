@@ -116,10 +116,6 @@ final class CommitFactoryTest extends TestCase
         $commitFactory = new CommitFactory();
         $commitStats = $commitFactory->parseCommitStats($commitData);
 
-        var_dump($commitStats->value->files->value);
-        var_dump($commitStats->value->additions->value);
-        var_dump($commitStats->value->deletions->value);
-
         $this->assertIsInt($commitStats->value->files->value);
         $this->assertIsInt($commitStats->value->additions->value);
         $this->assertIsInt($commitStats->value->deletions->value);

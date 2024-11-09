@@ -18,7 +18,7 @@ abstract readonly class AbstractRequiredUnsignedInt
 
     private function assertValueIsValid(int $value): void
     {
-        if ($value <= 0) {
+        if ($value < 0) {
             throw new InvalidArgumentException(get_class($this) . ' is incorrect!');
         }
     }

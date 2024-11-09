@@ -31,4 +31,10 @@ readonly class AbstractDate extends AbstractRequiredDate
         }
         return parent::getValue($timeZone);
     }
+
+    public function getDbValue(DateTimeZone $timeZone = new DateTimeZone('Etc/GMT+0')): ?string
+    {
+        $value = $this->getValue($timeZone);
+        return empty($value) ? null : $value;
+    }
 }

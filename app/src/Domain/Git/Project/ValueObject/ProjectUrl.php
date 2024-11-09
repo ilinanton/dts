@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Git\Project\ValueObject;
 
-use App\Domain\Common\ValueObject\AbstractString;
+use App\Domain\Common\ValueObject\AbstractRequiredString;
 
-final readonly class ProjectUrl extends AbstractString
+final readonly class ProjectUrl extends AbstractRequiredString
 {
 }

@@ -15,7 +15,7 @@ use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestState;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestTargetBranch;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestTitle;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestUpdatedAt;
-use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestWebUrl;
+use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestRequiredWebUrl;
 
 final readonly class MergeRequest
 {
@@ -30,7 +30,7 @@ final readonly class MergeRequest
     public MergeRequestTargetBranch $targetBranch;
     public MergeRequestSourceBranch $sourceBranch;
     public MergeRequestAuthorId $authorId;
-    public MergeRequestWebUrl $webUrl;
+    public MergeRequestRequiredWebUrl $webUrl;
 
     public function __construct(
         MergeRequestId $id,
@@ -44,7 +44,7 @@ final readonly class MergeRequest
         MergeRequestTargetBranch $targetBranch,
         MergeRequestSourceBranch $sourceBranch,
         MergeRequestAuthorId $authorId,
-        MergeRequestWebUrl $webUrl
+        MergeRequestRequiredWebUrl $webUrl
     ) {
         $this->id = $id;
         $this->iid = $iid;

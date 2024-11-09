@@ -14,19 +14,19 @@
     <rule ref="Generic.PHP.RequireStrictTypes"/>
     <rule ref="Generic.Metrics.CyclomaticComplexity">
         <properties>
-            <property name="complexity" value="10"/>
-            <property name="absoluteComplexity" value="20"/>
+            <property name="complexity" value="5"/>
+            <property name="absoluteComplexity" value="10"/>
         </properties>
     </rule>
     <rule ref="Generic.Metrics.NestingLevel">
         <properties>
-            <property name="nestingLevel" value="5"/>
-            <property name="absoluteNestingLevel" value="5"/>
+            <property name="nestingLevel" value="2"/>
+            <property name="absoluteNestingLevel" value="3"/>
         </properties>
     </rule>
     <rule ref="CognitiveComplexity">
         <properties>
-            <property name="maxCognitiveComplexity" value="15"/>
+            <property name="maxCognitiveComplexity" value="13"/>
         </properties>
     </rule>
 

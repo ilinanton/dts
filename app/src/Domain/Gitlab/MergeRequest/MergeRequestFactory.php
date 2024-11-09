@@ -15,7 +15,7 @@ use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestState;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestTargetBranch;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestTitle;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestUpdatedAt;
-use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestWebUrl;
+use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestRequiredWebUrl;
 
 final class MergeRequestFactory
 {
@@ -33,7 +33,7 @@ final class MergeRequestFactory
             new MergeRequestTargetBranch($data['target_branch'] ?? ''),
             new MergeRequestSourceBranch($data['source_branch'] ?? ''),
             new MergeRequestAuthorId($data['author']['id'] ?? 0),
-            new MergeRequestWebUrl($data['web_url'] ?? '')
+            new MergeRequestRequiredWebUrl($data['web_url'] ?? '')
         );
     }
 }

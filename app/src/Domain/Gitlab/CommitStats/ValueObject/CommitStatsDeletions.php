@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Gitlab\CommitStats\ValueObject;
 
-use App\Domain\Common\ValueObject\AbstractUnsignedInt;
+use App\Domain\Common\ValueObject\AbstractRequiredUnsignedInt;
 
-final readonly class CommitStatsDeletions extends AbstractUnsignedInt
+final readonly class CommitStatsDeletions extends AbstractRequiredUnsignedInt
 {
 }

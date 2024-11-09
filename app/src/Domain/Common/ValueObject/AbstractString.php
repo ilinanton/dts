@@ -10,4 +10,9 @@ abstract readonly class AbstractString
         public string $value
     ) {
     }
+
+    public function getDbValue(): ?string
+    {
+        return empty($this->value) ? null : $this->value;
+    }
 }
