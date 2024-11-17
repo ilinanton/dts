@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
+use App\Domain\Gitlab\User\Factory\UserCollectionFromArray;
+use App\Domain\Gitlab\User\Repository\GitlabDataBaseUserRepositoryInterface;
 use App\Domain\Gitlab\User\User;
 use App\Domain\Gitlab\User\UserCollection;
-use App\Domain\Gitlab\User\UserFactory;
-use App\Domain\Gitlab\User\Repository\GitlabDataBaseUserRepositoryInterface;
 use PDO;
 
 final readonly class GitlabMySqlUserRepository implements GitlabDataBaseUserRepositoryInterface
 {
     public function __construct(
         private PDO $pdo,
-        private UserFactory $memberFactory,
     ) {
     }
 
@@ -46,13 +45,7 @@ SQL;
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $data = $stmt->fetchAll();
-        $memberCollection = new UserCollection();
-
-        foreach ($data as $item) {
-            $project = $this->memberFactory->create($item);
-            $memberCollection->add($project);
-        }
-
-        return $memberCollection;
+        $userFactory = new UserCollectionFromArray($data);
+        return $userFactory->create();
     }
 }

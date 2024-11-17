@@ -31,7 +31,6 @@ use App\Domain\Gitlab\Project\Repository\GitlabApiProjectRepositoryInterface;
 use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterface;
 use App\Domain\Gitlab\User\Repository\GitlabApiUserRepositoryInterface;
 use App\Domain\Gitlab\User\Repository\GitlabDataBaseUserRepositoryInterface;
-use App\Domain\Gitlab\User\UserFactory;
 use App\Infrastructure\Git\GitRepository;
 use App\Infrastructure\Gitlab\GitlabApiClient;
 use App\Infrastructure\Gitlab\GitlabApiCommitRepository;
@@ -187,7 +186,6 @@ return [
     GitlabApiUserRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitlabApiUserRepository(
             $c->get(GitlabApiClientInterface::class),
-            new UserFactory()
         );
     },
     GitlabApiMergeRequestRepositoryInterface::class => function (ContainerInterface $c) {
@@ -231,7 +229,6 @@ return [
     GitlabDataBaseUserRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitlabMySqlUserRepository(
             $c->get(PDO::class),
-            new UserFactory()
         );
     },
     GitlabDataBaseMergeRequestRepositoryInterface::class => function (ContainerInterface $c) {
