@@ -31,34 +31,34 @@ final class CommitFactoryTest extends TestCase
     {
         return [
             [
-                "{|p|}commit: ec3fee94045ea63bb4ca36592fac912daa9823fc{|p|}date: 2024-01-10T09:04:22+00:00" .
-                "{|p|}email: " . self::EMAIL_1 .
-                "{|p|}name: " . self::NAME_1 .
-                "{|p|}stat:   1 file changed, 8 insertions(+) ",
+                '{|p|}commit: ec3fee94045ea63bb4ca36592fac912daa9823fc{|p|}date: 2024-01-10T09:04:22+00:00' .
+                '{|p|}email: ' . self::EMAIL_1 .
+                '{|p|}name: ' . self::NAME_1 .
+                '{|p|}stat:   1 file changed, 8 insertions(+) ',
             ],
             [
-                "{|p|}commit: 5c0cbe82d94935544529b6383a56d6e6d9321d43{|p|}date: 2024-01-09T18:42:03+05:00" .
-                "{|p|}email: " . self::EMAIL_2 .
-                "{|p|}name: " . self::NAME_2 .
-                "{|p|}stat:   4 files changed, 23 insertions(+), 26 deletions(-) "
+                '{|p|}commit: 5c0cbe82d94935544529b6383a56d6e6d9321d43{|p|}date: 2024-01-09T18:42:03+05:00' .
+                '{|p|}email: ' . self::EMAIL_2 .
+                '{|p|}name: ' . self::NAME_2 .
+                '{|p|}stat:   4 files changed, 23 insertions(+), 26 deletions(-) '
             ],
             [
-                "{|p|}commit: 2a4d730433f29174a04e0b242acd2e06a9f24c89{|p|}date: 2024-01-09T15:52:25+05:00" .
-                "{|p|}email: " . self::EMAIL_2 .
-                "{|p|}name: " . self::NAME_2 .
-                "{|p|}stat:   1 file changed, 1 insertion(+), 1 deletion(-) ",
+                '{|p|}commit: 2a4d730433f29174a04e0b242acd2e06a9f24c89{|p|}date: 2024-01-09T15:52:25+05:00' .
+                '{|p|}email: ' . self::EMAIL_2 .
+                '{|p|}name: ' . self::NAME_2 .
+                '{|p|}stat:   1 file changed, 1 insertion(+), 1 deletion(-) ',
             ],
             [
-                "{|p|}commit: 60dc9ebf002bf7565a767ef78ca124996e4b17d9{|p|}date: 2024-01-09T09:51:35+00:00" .
-                "{|p|}email: " . self::EMAIL_3 .
-                "{|p|}name: " . self::NAME_3 .
-                "{|p|}stat:   1 file changed, 67 insertions(+) ",
+                '{|p|}commit: 60dc9ebf002bf7565a767ef78ca124996e4b17d9{|p|}date: 2024-01-09T09:51:35+00:00' .
+                '{|p|}email: ' . self::EMAIL_3 .
+                '{|p|}name: ' . self::NAME_3 .
+                '{|p|}stat:   1 file changed, 67 insertions(+) ',
             ],
             [
-                "{|p|}commit: 64577bea147de7c0dda43a3fa59df9e18f18decd{|p|}date: 2024-01-09T13:59:38+05:00" .
-                "{|p|}email: " . self::EMAIL_3 .
-                "{|p|}name: " . self::NAME_3 .
-                "{|p|}stat:   1 file changed, 1 insertion(+), 1 deletion(-) ",
+                '{|p|}commit: 64577bea147de7c0dda43a3fa59df9e18f18decd{|p|}date: 2024-01-09T13:59:38+05:00' .
+                '{|p|}email: ' . self::EMAIL_3 .
+                '{|p|}name: ' . self::NAME_3 .
+                '{|p|}stat:   1 file changed, 1 insertion(+), 1 deletion(-) ',
             ],
         ];
     }

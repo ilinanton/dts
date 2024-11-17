@@ -32,4 +32,11 @@
 
     <file>cli.php</file>
     <file>src/</file>
+
+    <rule ref="Generic.PHP.RequireStrictTypes"/>
+    <rule ref="Squiz.NamingConventions.ValidVariableName.NotCamelCaps"/>
+    <rule ref="Squiz.Strings.DoubleQuoteUsage"/>
+    <rule ref="Squiz.Strings.DoubleQuoteUsage.ContainsVar">
+        <severity>0</severity>
+    </rule>
 </ruleset>

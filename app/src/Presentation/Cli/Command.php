@@ -35,7 +35,7 @@ enum Command: string
     public function id(): int
     {
         $list = Command::cases();
-        $matchingCommandIndex = array_search($this->name, array_column($list, "name"));
+        $matchingCommandIndex = array_search($this->name, array_column($list, 'name'));
         if (false === $matchingCommandIndex) {
             throw new \Exception('Command not found!');
         }

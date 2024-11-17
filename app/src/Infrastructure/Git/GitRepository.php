@@ -24,7 +24,7 @@ final readonly class GitRepository implements GitRepositoryInterface
 
     public function getProjects(): ProjectCollection
     {
-        $result = trim(shell_exec("cd " . self::PROJECTS_PATH . " && ls -d */"));
+        $result = trim(shell_exec('cd ' . self::PROJECTS_PATH . ' && ls -d */'));
         $directories = explode(PHP_EOL, $result);
         $projectCollection = new ProjectCollection();
 
@@ -49,7 +49,7 @@ final readonly class GitRepository implements GitRepositoryInterface
     {
         $commitCollection = new CommitCollection();
 
-        $exclude = "";
+        $exclude = '';
         if (count($this->logExcludePath) > 0) {
             $exclude = " -- ':(exclude)" .
                 implode("' ':(exclude)", $this->logExcludePath) .

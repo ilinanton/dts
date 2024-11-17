@@ -22,8 +22,8 @@ final readonly class Cli
         while (true) {
             try {
                 $this->identifyCommand(Command::menu->id())->execute();
-                $input = trim(readline("Command id: "));
-                $inputCommands = explode(",", $input);
+                $input = trim(readline('Command id: '));
+                $inputCommands = explode(',', $input);
                 foreach ($inputCommands as $inputCommand) {
                     $this->identifyCommand((int)$inputCommand)->execute();
                 }
