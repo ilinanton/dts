@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
+use App\Domain\Gitlab\Project\Factory\ProjectCollectionFromArray;
 use App\Domain\Gitlab\Project\Project;
 use App\Domain\Gitlab\Project\ProjectCollection;
-use App\Domain\Gitlab\Project\ProjectFactory;
 use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterface;
 use PDO;
 
@@ -14,7 +14,6 @@ final readonly class GitlabMySqlProjectRepository implements GitlabDataBaseProje
 {
     public function __construct(
         private PDO $pdo,
-        private ProjectFactory $projectFactory,
     ) {
     }
 
@@ -51,14 +50,8 @@ SQL;
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $data = $stmt->fetchAll();
-        $projectCollection = new ProjectCollection();
-
-        foreach ($data as $item) {
-            $project = $this->projectFactory->create($item);
-            $projectCollection->add($project);
-        }
-
-        return $projectCollection;
+        $projectCollectionFactory = new ProjectCollectionFromArray($data);
+        return $projectCollectionFactory->create();
     }
 
     public function findByUrlToRepo(string $url): ProjectCollection
@@ -74,13 +67,7 @@ SQL;
         ]);
 
         $data = $stmt->fetchAll();
-        $projectCollection = new ProjectCollection();
-
-        foreach ($data as $item) {
-            $project = $this->projectFactory->create($item);
-            $projectCollection->add($project);
-        }
-
-        return $projectCollection;
+        $projectCollectionFactory = new ProjectCollectionFromArray($data);
+        return $projectCollectionFactory->create();
     }
 }
