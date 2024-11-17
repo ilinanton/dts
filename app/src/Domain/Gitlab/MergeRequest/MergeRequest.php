@@ -19,44 +19,19 @@ use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestRequiredWebUrl;
 
 final readonly class MergeRequest
 {
-    public MergeRequestId $id;
-    public MergeRequestIid $iid;
-    public MergeRequestProjectId $projectId;
-    public MergeRequestTitle $title;
-    public MergeRequestState $state;
-    public MergeRequestMergedAt $mergedAt;
-    public MergeRequestCreatedAt $createdAt;
-    public MergeRequestUpdatedAt $updatedAt;
-    public MergeRequestTargetBranch $targetBranch;
-    public MergeRequestSourceBranch $sourceBranch;
-    public MergeRequestAuthorId $authorId;
-    public MergeRequestRequiredWebUrl $webUrl;
-
     public function __construct(
-        MergeRequestId $id,
-        MergeRequestIid $iid,
-        MergeRequestProjectId $projectId,
-        MergeRequestTitle $title,
-        MergeRequestState $state,
-        MergeRequestMergedAt $mergedAt,
-        MergeRequestCreatedAt $createdAt,
-        MergeRequestUpdatedAt $updatedAt,
-        MergeRequestTargetBranch $targetBranch,
-        MergeRequestSourceBranch $sourceBranch,
-        MergeRequestAuthorId $authorId,
-        MergeRequestRequiredWebUrl $webUrl
+        public MergeRequestId $id,
+        public MergeRequestIid $iid,
+        public MergeRequestProjectId $projectId,
+        public MergeRequestTitle $title,
+        public MergeRequestState $state,
+        public MergeRequestMergedAt $mergedAt,
+        public MergeRequestCreatedAt $createdAt,
+        public MergeRequestUpdatedAt $updatedAt,
+        public MergeRequestTargetBranch $targetBranch,
+        public MergeRequestSourceBranch $sourceBranch,
+        public MergeRequestAuthorId $authorId,
+        public MergeRequestRequiredWebUrl $webUrl,
     ) {
-        $this->id = $id;
-        $this->iid = $iid;
-        $this->projectId = $projectId;
-        $this->title = $title;
-        $this->state = $state;
-        $this->mergedAt = $mergedAt;
-        $this->createdAt = $createdAt;
-        $this->updatedAt = $updatedAt;
-        $this->targetBranch = $targetBranch;
-        $this->sourceBranch = $sourceBranch;
-        $this->authorId = $authorId;
-        $this->webUrl = $webUrl;
     }
 }
