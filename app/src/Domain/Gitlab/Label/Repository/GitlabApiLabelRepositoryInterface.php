@@ -8,5 +8,5 @@ use App\Domain\Gitlab\Label\LabelCollection;
 
 interface GitlabApiLabelRepositoryInterface
 {
-    public function getGroupLabels(array $params = []): LabelCollection;
+    public function get(array $params = []): LabelCollection;
 }

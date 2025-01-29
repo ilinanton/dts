@@ -17,7 +17,7 @@ final readonly class GitlabApiLabelRepository implements GitlabApiLabelRepositor
     ) {
     }
 
-    public function getGroupLabels(array $params = []): LabelCollection
+    public function get(array $params = []): LabelCollection
     {
         $data = $this->client->getLabels($params);
         return $this->createCollection($data);
