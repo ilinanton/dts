@@ -16,7 +16,7 @@ use App\Domain\Gitlab\Event\ValueObject\EventTargetIid;
 use App\Domain\Gitlab\Event\ValueObject\EventTargetTitle;
 use App\Domain\Gitlab\Event\ValueObject\EventTargetType;
 
-final class EventFactory
+final readonly class EventFactory
 {
     public function create(array $data): Event
     {

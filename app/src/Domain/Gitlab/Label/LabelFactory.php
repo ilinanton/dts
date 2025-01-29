@@ -8,19 +8,14 @@ use App\Domain\Gitlab\Label\ValueObject\LabelColor;
 use App\Domain\Gitlab\Label\ValueObject\LabelId;
 use App\Domain\Gitlab\Label\ValueObject\LabelName;
 
-class LabelFromArray
+final readonly class LabelFactory
 {
-    public function __construct(
-        private array $data,
-    ) {
-    }
-
-    public function create(): Label
+    public function create(array $data): Label
     {
         return new Label(
-            new LabelId($this->data['id']),
-            new LabelName($this->data['name']),
-            new LabelColor($this->data['color']),
+            new LabelId($data['id']),
+            new LabelName($data['name']),
+            new LabelColor($data['color']),
         );
     }
 }
