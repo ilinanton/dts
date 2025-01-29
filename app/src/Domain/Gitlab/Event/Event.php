@@ -32,9 +32,4 @@ final readonly class Event
         public EventNote $note,
     ) {
     }
-
-    public function toBinds(): array
-    {
-        return [];
-    }
 }
