@@ -86,4 +86,10 @@ final readonly class GitlabApiClient implements GitlabApiClientInterface
         $uri = 'users/' . $userId . '/events';
         return $this->get($uri, $params);
     }
+
+    public function getLabels(array $params = []): array
+    {
+        $uri = 'groups/' . $this->groupId . '/labels';
+        return $this->get($uri, $params);
+    }
 }
