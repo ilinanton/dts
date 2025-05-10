@@ -6,6 +6,6 @@ namespace App\Domain\Gitlab\ResourceEvent\ValueObject;
 
 use App\Domain\Common\ValueObject\AbstractRequiredUnsignedInt;
 
-final readonly class ResourceEventMergeRequestId extends AbstractRequiredUnsignedInt
+final readonly class ResourceEventResourceId extends AbstractRequiredUnsignedInt
 {
 }

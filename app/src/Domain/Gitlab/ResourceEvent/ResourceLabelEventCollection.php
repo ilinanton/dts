@@ -9,12 +9,12 @@ use Countable;
 use IteratorAggregate;
 use Traversable;
 
-final class MergeRequestLabelEventCollection implements IteratorAggregate, Countable
+final class ResourceLabelEventCollection implements IteratorAggregate, Countable
 {
-    /** @var MergeRequestLabelEvent[] */
+    /** @var ResourceLabelEvent[] */
     private array $list = [];
 
-    public function add(MergeRequestLabelEvent $item): void
+    public function add(ResourceLabelEvent $item): void
     {
         $this->list[] = $item;
     }
