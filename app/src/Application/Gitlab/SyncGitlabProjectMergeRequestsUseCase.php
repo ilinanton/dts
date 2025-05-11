@@ -15,16 +15,16 @@ final readonly class SyncGitlabProjectMergeRequestsUseCase implements UseCaseInt
 
     public function __construct(
         private string $syncDateAfter,
-        private GitlabApiMergeRequestRepositoryInterface $gitlabApiMergeRequestRepository,
-        private GitlabDataBaseMergeRequestRepositoryInterface $gitlabDataBaseMergeRequestRepository,
-        private GitlabDataBaseProjectRepositoryInterface $gitlabDataBaseProjectRepository,
+        private GitlabApiMergeRequestRepositoryInterface $apiMergeRequestRepository,
+        private GitlabDataBaseMergeRequestRepositoryInterface $dataBaseMergeRequestRepository,
+        private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
     ) {
     }
 
     public function execute(): void
     {
         echo 'Load merge requests that created after ' . $this->syncDateAfter . PHP_EOL;
-        $projectCollection = $this->gitlabDataBaseProjectRepository->getAll();
+        $projectCollection = $this->dataBaseProjectRepository->getAll();
         foreach ($projectCollection as $project) {
             $page = 0;
             $projectId = $project->id->value;
@@ -33,14 +33,14 @@ final readonly class SyncGitlabProjectMergeRequestsUseCase implements UseCaseInt
             do {
                 ++$page;
 
-                $mergeRequestCollection = $this->gitlabApiMergeRequestRepository->get($projectId, [
+                $mergeRequestCollection = $this->apiMergeRequestRepository->get($projectId, [
                     'page' => $page,
                     'per_page' => self::COUNT_ITEMS_PER_PAGE,
                     'created_after' => $this->syncDateAfter,
                 ]);
 
                 foreach ($mergeRequestCollection as $mergeRequest) {
-                    $this->gitlabDataBaseMergeRequestRepository->save($mergeRequest);
+                    $this->dataBaseMergeRequestRepository->save($mergeRequest);
                 }
                 echo ' .';
             } while (self::COUNT_ITEMS_PER_PAGE === count($mergeRequestCollection));
