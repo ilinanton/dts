@@ -13,8 +13,8 @@ final readonly class SyncGitlabLabelsUseCase implements UseCaseInterface
     private const COUNT_ITEMS_PER_PAGE = 60;
 
     public function __construct(
-        private GitlabApiLabelRepositoryInterface $gitlabApiLabelRepository,
-        private GitlabDataBaseLabelRepositoryInterface $gitlabDataBaseLabelRepository,
+        private GitlabApiLabelRepositoryInterface $apiLabelRepository,
+        private GitlabDataBaseLabelRepositoryInterface $dataBaseLabelRepository,
     ) {
     }
 
@@ -23,13 +23,13 @@ final readonly class SyncGitlabLabelsUseCase implements UseCaseInterface
         $page = 0;
         do {
             ++$page;
-            $collection = $this->gitlabApiLabelRepository->get([
+            $collection = $this->apiLabelRepository->get([
                 'page' => $page,
                 'per_page' => self::COUNT_ITEMS_PER_PAGE,
             ]);
             foreach ($collection as $item) {
                 echo 'Load label #' . $item->id->value . ' ' . $item->name->value;
-                $this->gitlabDataBaseLabelRepository->save($item);
+                $this->dataBaseLabelRepository->save($item);
                 echo ' done ' . PHP_EOL;
             }
         } while (self::COUNT_ITEMS_PER_PAGE === count($collection));

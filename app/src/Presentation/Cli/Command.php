@@ -15,8 +15,9 @@ enum Command: string
     case sync_gitlab_project_commits = 'Sync gitlab project commits';
     case sync_gitlab_project_commit_stats = 'Sync gitlab project commit stats';
     case sync_gitlab_users = 'Sync gitlab users';
-    case sync_gitlab_labels = 'Sync gitlab labels';
     case sync_gitlab_user_events = 'Sync gitlab user events';
+    case sync_gitlab_labels = 'Sync gitlab labels';
+    case sync_gitlab_label_events = 'Sync gitlab label events';
 
     public function diId(): string
     {

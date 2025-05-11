@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Infrastructure\Gitlab;
 
 use App\Domain\Gitlab\MergeRequest\MergeRequest;
+use App\Domain\Gitlab\MergeRequest\MergeRequestCollection;
+use App\Domain\Gitlab\MergeRequest\MergeRequestFactory;
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
 use PDO;
 
@@ -72,5 +74,39 @@ SQL;
             ':AUTHOR_ID' => $object->authorId->value,
             ':WEB_URL' => $object->webUrl->value,
         ]);
+    }
+
+    public function getAll(): MergeRequestCollection
+    {
+        $sql = <<<SQL
+SELECT
+     id,
+     iid,
+     project_id,
+     title, 
+     state,
+     merged_at,
+     created_at, 
+     updated_at,
+     target_branch,
+     source_branch,
+     author_id,
+     web_url
+FROM gitlab_merge_request
+SQL;
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $data = $stmt->fetchAll();
+
+        $collection = new MergeRequestCollection();
+        $factory = new MergeRequestFactory();
+
+        array_walk(
+            $data,
+            function (array $item) use ($collection, $factory) {
+                $collection->add($factory->create($item, 'Y-m-d H:i:s'));
+            },
+        );
+        return $collection;
     }
 }

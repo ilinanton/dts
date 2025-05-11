@@ -16,16 +16,16 @@ final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
 
     public function __construct(
         private string $syncDateAfter,
-        private GitlabDataBaseProjectRepositoryInterface $gitlabDataBaseProjectRepository,
-        private GitlabApiCommitRepositoryInterface $gitlabApiCommitRepository,
-        private GitlabDataBaseCommitRepositoryInterface $gitlabDataBaseCommitRepository,
+        private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
+        private GitlabApiCommitRepositoryInterface $apiCommitRepository,
+        private GitlabDataBaseCommitRepositoryInterface $dataBaseCommitRepository,
     ) {
     }
 
     public function execute(): void
     {
         echo 'Load project commits that made after ' . $this->syncDateAfter . PHP_EOL;
-        $projectCollection = $this->gitlabDataBaseProjectRepository->getAll();
+        $projectCollection = $this->dataBaseProjectRepository->getAll();
         foreach ($projectCollection as $project) {
             $this->syncProject($project);
         }
@@ -49,10 +49,10 @@ final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
                 'with_stats' => true,
             ];
 
-            $commitCollection = $this->gitlabApiCommitRepository->get($projectId, $params);
+            $commitCollection = $this->apiCommitRepository->get($projectId, $params);
 
             foreach ($commitCollection as $commit) {
-                $this->gitlabDataBaseCommitRepository->save($commit);
+                $this->dataBaseCommitRepository->save($commit);
             }
             echo ' .';
         } while (self::COUNT_ITEMS_PER_PAGE === count($commitCollection));

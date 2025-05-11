@@ -92,4 +92,10 @@ final readonly class GitlabApiClient implements GitlabApiClientInterface
         $uri = 'groups/' . $this->groupId . '/labels';
         return $this->get($uri, $params);
     }
+
+    public function getMergeRequestLabelEvents(int $projectId, int $mergeRequestIid, array $params = []): array
+    {
+        $uri = 'projects/' . $projectId . '/merge_requests/' . $mergeRequestIid . '/resource_label_events';
+        return $this->get($uri, $params);
+    }
 }

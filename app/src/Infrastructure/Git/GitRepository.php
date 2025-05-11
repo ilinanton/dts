@@ -16,8 +16,6 @@ final readonly class GitRepository implements GitRepositoryInterface
     private const PROJECTS_PATH = '../projects';
 
     public function __construct(
-        private ProjectFactory $projectFactory,
-        private CommitFactory $commitFactory,
         private array $logExcludePath,
     ) {
     }
@@ -26,7 +24,8 @@ final readonly class GitRepository implements GitRepositoryInterface
     {
         $result = trim(shell_exec('cd ' . self::PROJECTS_PATH . ' && ls -d */'));
         $directories = explode(PHP_EOL, $result);
-        $projectCollection = new ProjectCollection();
+        $collection = new ProjectCollection();
+        $factory = new ProjectFactory();
 
         foreach ($directories as $directory) {
             $path = self::PROJECTS_PATH . DS . $directory;
@@ -34,7 +33,7 @@ final readonly class GitRepository implements GitRepositoryInterface
             $branch = ltrim(trim(shell_exec("cd {$path} && git branch | grep '*'")), '* ');
             $url = trim(shell_exec("cd {$path} && git config --get remote.origin.url"));
 
-            $projectCollection->add($this->projectFactory->create([
+            $collection->add($factory->create([
                 'name' => $name,
                 'branch' => $branch,
                 'url' => $url,
@@ -42,12 +41,13 @@ final readonly class GitRepository implements GitRepositoryInterface
             ]));
         }
 
-        return $projectCollection;
+        return $collection;
     }
 
     public function getCommits(Project $project, string $since): CommitCollection
     {
-        $commitCollection = new CommitCollection();
+        $collection = new CommitCollection();
+        $factory = new CommitFactory();
 
         $exclude = '';
         if (count($this->logExcludePath) > 0) {
@@ -66,9 +66,9 @@ final readonly class GitRepository implements GitRepositoryInterface
             if (0 === strlen($logItem)) {
                 continue;
             }
-            $commitCollection->add($this->commitFactory->create($logItem));
+            $collection->add($factory->create($logItem));
         }
 
-        return $commitCollection;
+        return $collection;
     }
 }

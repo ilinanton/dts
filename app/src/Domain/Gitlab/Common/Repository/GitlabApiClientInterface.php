@@ -23,4 +23,6 @@ interface GitlabApiClientInterface
     public function getUserEvents(int $userId, array $params = []): array;
 
     public function getLabels(array $params = []): array;
+
+    public function getMergeRequestLabelEvents(int $projectId, int $mergeRequestIid, array $params = []): array;
 }

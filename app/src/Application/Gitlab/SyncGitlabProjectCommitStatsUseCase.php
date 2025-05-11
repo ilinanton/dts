@@ -16,9 +16,8 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
     public function __construct(
         private string $syncDateAfter,
         private GitRepositoryInterface $gitRepository,
-        private GitlabDataBaseProjectRepositoryInterface $gitlabDataBaseProjectRepository,
-        private CommitStatsFactory $gitlabCommitStatsFactory,
-        private GitlabDataBaseCommitStatsRepositoryInterface $gitlabDataBaseCommitStatsRepository,
+        private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
+        private GitlabDataBaseCommitStatsRepositoryInterface $dataBaseCommitStatsRepository,
     ) {
     }
 
@@ -35,7 +34,7 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
     {
         echo ' - Git project ' . $gitProject->name->value;
         $gitlabProjectCollection =
-            $this->gitlabDataBaseProjectRepository->findByUrlToRepo($gitProject->url->value);
+            $this->dataBaseProjectRepository->findByUrlToRepo($gitProject->url->value);
 
         if (0 === $gitlabProjectCollection->count()) {
             echo ' gitlab projects not found!' . PHP_EOL;
@@ -43,6 +42,7 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
         }
 
         $gitCommitCollection = $this->gitRepository->getCommits($gitProject, $this->syncDateAfter);
+        $gitCommitStatsFactory = new CommitStatsFactory();
         $counter = 0;
         foreach ($gitCommitCollection as $gitCommit) {
             $counter++;
@@ -54,11 +54,11 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
                 'deletions' => $gitCommitStats->deletions->value,
             ];
             foreach ($gitlabProjectCollection as $gitlabProject) {
-                $gitlabCommitStats = $this->gitlabCommitStatsFactory->create(
+                $gitlabCommitStats = $gitCommitStatsFactory->create(
                     $gitlabProject->id->value,
                     $gitStatsData,
                 );
-                $this->gitlabDataBaseCommitStatsRepository->save($gitlabCommitStats);
+                $this->dataBaseCommitStatsRepository->save($gitlabCommitStats);
             }
 
             if (0 === $counter % 500) {

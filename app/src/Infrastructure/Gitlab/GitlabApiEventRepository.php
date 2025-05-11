@@ -13,7 +13,6 @@ final readonly class GitlabApiEventRepository implements GitlabApiEventRepositor
 {
     public function __construct(
         private GitlabApiClientInterface $client,
-        private EventFactory $eventFactory,
     ) {
     }
 
@@ -31,12 +30,14 @@ final readonly class GitlabApiEventRepository implements GitlabApiEventRepositor
 
     private function createCollection(array $data): EventCollection
     {
-        $eventCollection = new EventCollection();
+        $collection = new EventCollection();
+        $factory = new EventFactory();
+
         foreach ($data as $item) {
-            $event = $this->eventFactory->create($item);
-            $eventCollection->add($event);
+            $event = $factory->create($item);
+            $collection->add($event);
         }
 
-        return $eventCollection;
+        return $collection;
     }
 }

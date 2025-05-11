@@ -13,20 +13,21 @@ final readonly class GitlabApiMergeRequestRepository implements GitlabApiMergeRe
 {
     public function __construct(
         private GitlabApiClientInterface $client,
-        private MergeRequestFactory $mergeRequestFactory,
     ) {
     }
 
     public function get(int $projectId, array $params = []): MergeRequestCollection
     {
         $data = $this->client->getProjectMergeRequests($projectId, $params);
-        $mergeRequestCollection = new MergeRequestCollection();
+        $collection = new MergeRequestCollection();
+        $factory = new MergeRequestFactory();
 
         foreach ($data as $item) {
-            $mergeRequest = $this->mergeRequestFactory->create($item);
-            $mergeRequestCollection->add($mergeRequest);
+            $item['author_id'] = $item['author']['id'];
+            $mergeRequest = $factory->create($item);
+            $collection->add($mergeRequest);
         }
 
-        return $mergeRequestCollection;
+        return $collection;
     }
 }
