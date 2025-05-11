@@ -26,6 +26,9 @@ final readonly class GitlabApiResourceLabelEventRepository implements GitlabApiR
         $collection = new ResourceLabelEventCollection();
         $factory = new ResourceLabelEventFactory();
         foreach ($data as $item) {
+            if (is_null($item['label'])) {
+                continue;
+            }
             $item['label_id'] = $item['label']['id'];
             $item['project_id'] = $projectId;
             $collection->add($factory->create($item));
