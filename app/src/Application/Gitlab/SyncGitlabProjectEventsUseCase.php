@@ -30,16 +30,16 @@ final readonly class SyncGitlabProjectEventsUseCase implements UseCaseInterface
 
     public function __construct(
         private string $syncDateAfter,
-        private GitlabDataBaseProjectRepositoryInterface $gitlabDataBaseProjectRepository,
-        private GitlabApiEventRepositoryInterface $gitlabApiEventRepository,
-        private GitlabDataBaseEventRepositoryInterface $gitlabDataBaseEventRepository,
+        private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
+        private GitlabApiEventRepositoryInterface $apiEventRepository,
+        private GitlabDataBaseEventRepositoryInterface $dataBaseEventRepository,
     ) {
     }
 
     public function execute(): void
     {
         echo 'Load project events that happened after ' . $this->syncDateAfter . PHP_EOL;
-        $projectCollection = $this->gitlabDataBaseProjectRepository->getAll();
+        $projectCollection = $this->dataBaseProjectRepository->getAll();
         foreach ($projectCollection as $project) {
             $this->syncProject($project);
         }
@@ -63,10 +63,10 @@ final readonly class SyncGitlabProjectEventsUseCase implements UseCaseInterface
                     $filter['param_name'] => $filter['value'],
                 ];
 
-                $eventCollection = $this->gitlabApiEventRepository->getByProjectId($projectId, $params);
+                $eventCollection = $this->apiEventRepository->getByProjectId($projectId, $params);
 
                 foreach ($eventCollection as $event) {
-                    $this->gitlabDataBaseEventRepository->save($event);
+                    $this->dataBaseEventRepository->save($event);
                 }
                 echo ' .';
             } while (self::COUNT_ITEMS_PER_PAGE === count($eventCollection));

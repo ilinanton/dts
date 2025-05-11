@@ -15,15 +15,15 @@ final readonly class SyncGitlabUserEventsUseCase implements UseCaseInterface
 
     public function __construct(
         private string $syncDateAfter,
-        private GitlabDataBaseUserRepositoryInterface $gitlabDataBaseUserRepository,
-        private GitlabApiEventRepositoryInterface $gitlabApiEventRepository,
-        private GitlabDataBaseEventRepositoryInterface $gitlabDataBaseEventRepository,
+        private GitlabDataBaseUserRepositoryInterface $dataBaseUserRepository,
+        private GitlabApiEventRepositoryInterface $apiEventRepository,
+        private GitlabDataBaseEventRepositoryInterface $dataBaseEventRepository,
     ) {
     }
 
     public function execute(): void
     {
-        $userCollection = $this->gitlabDataBaseUserRepository->getAll();
+        $userCollection = $this->dataBaseUserRepository->getAll();
         echo 'Load events that happened after ' . $this->syncDateAfter . PHP_EOL;
         foreach ($userCollection as $user) {
             $page = 0;
@@ -33,7 +33,7 @@ final readonly class SyncGitlabUserEventsUseCase implements UseCaseInterface
             do {
                 ++$page;
 
-                $eventCollection = $this->gitlabApiEventRepository->getByUserId($userId, [
+                $eventCollection = $this->apiEventRepository->getByUserId($userId, [
                     'page' => $page,
                     'per_page' => self::COUNT_ITEMS_PER_PAGE,
                     'after' => $this->syncDateAfter,
@@ -41,7 +41,7 @@ final readonly class SyncGitlabUserEventsUseCase implements UseCaseInterface
                 ]);
 
                 foreach ($eventCollection as $event) {
-                    $this->gitlabDataBaseEventRepository->save($event);
+                    $this->dataBaseEventRepository->save($event);
                 }
                 echo ' .';
             } while (self::COUNT_ITEMS_PER_PAGE === count($eventCollection));

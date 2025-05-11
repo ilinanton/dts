@@ -13,8 +13,8 @@ final readonly class SyncGitlabProjectsUseCase implements UseCaseInterface
     private const COUNT_ITEMS_PER_PAGE = 60;
 
     public function __construct(
-        private GitlabApiProjectRepositoryInterface $gitlabApiProjectRepository,
-        private GitlabDataBaseProjectRepositoryInterface $gitlabDataBaseProjectRepository,
+        private GitlabApiProjectRepositoryInterface $apiProjectRepository,
+        private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
     ) {
     }
 
@@ -23,13 +23,13 @@ final readonly class SyncGitlabProjectsUseCase implements UseCaseInterface
         $page = 0;
         do {
             ++$page;
-            $projectCollection = $this->gitlabApiProjectRepository->get([
+            $projectCollection = $this->apiProjectRepository->get([
                 'page' => $page,
                 'per_page' => self::COUNT_ITEMS_PER_PAGE,
             ]);
             foreach ($projectCollection as $project) {
                 echo 'Load project #' . $project->id->value . ' ' . $project->name->value;
-                $this->gitlabDataBaseProjectRepository->save($project);
+                $this->dataBaseProjectRepository->save($project);
                 echo ' done ' . PHP_EOL;
             }
         } while (self::COUNT_ITEMS_PER_PAGE === count($projectCollection));

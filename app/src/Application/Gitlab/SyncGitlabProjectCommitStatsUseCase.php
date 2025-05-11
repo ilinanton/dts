@@ -16,8 +16,8 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
     public function __construct(
         private string $syncDateAfter,
         private GitRepositoryInterface $gitRepository,
-        private GitlabDataBaseProjectRepositoryInterface $gitlabDataBaseProjectRepository,
-        private GitlabDataBaseCommitStatsRepositoryInterface $gitlabDataBaseCommitStatsRepository,
+        private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
+        private GitlabDataBaseCommitStatsRepositoryInterface $dataBaseCommitStatsRepository,
     ) {
     }
 
@@ -34,7 +34,7 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
     {
         echo ' - Git project ' . $gitProject->name->value;
         $gitlabProjectCollection =
-            $this->gitlabDataBaseProjectRepository->findByUrlToRepo($gitProject->url->value);
+            $this->dataBaseProjectRepository->findByUrlToRepo($gitProject->url->value);
 
         if (0 === $gitlabProjectCollection->count()) {
             echo ' gitlab projects not found!' . PHP_EOL;
@@ -58,7 +58,7 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
                     $gitlabProject->id->value,
                     $gitStatsData,
                 );
-                $this->gitlabDataBaseCommitStatsRepository->save($gitlabCommitStats);
+                $this->dataBaseCommitStatsRepository->save($gitlabCommitStats);
             }
 
             if (0 === $counter % 500) {
