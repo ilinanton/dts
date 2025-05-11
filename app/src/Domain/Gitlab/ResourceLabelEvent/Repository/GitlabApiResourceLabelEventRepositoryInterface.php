@@ -8,5 +8,5 @@ use App\Domain\Gitlab\ResourceLabelEvent\ResourceLabelEventCollection;
 
 interface GitlabApiResourceLabelEventRepositoryInterface
 {
-    public function get(array $params = []): ResourceLabelEventCollection;
+    public function getMergeRequestLabelEvents(int $projectId, int $mergeRequestIid, array $params = []): ResourceLabelEventCollection;
 }

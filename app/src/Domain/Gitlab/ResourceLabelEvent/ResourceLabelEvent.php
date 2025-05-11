@@ -6,7 +6,6 @@ namespace App\Domain\Gitlab\ResourceLabelEvent;
 
 use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventActionName;
 use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventCreatedAt;
-use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventGroupId;
 use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventId;
 use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventLabelId;
 use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventProjectId;
@@ -25,7 +24,6 @@ final readonly class ResourceLabelEvent
         public ResourceLabelEventLabelId $labelId,
         public ResourceLabelEventActionName $actionName,
         public ResourceLabelEventProjectId $projectId,
-        public ResourceLabelEventGroupId $groupId,
     ) {
     }
 }
