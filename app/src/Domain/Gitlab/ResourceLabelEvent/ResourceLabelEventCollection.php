@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Gitlab\ResourceEvent;
+namespace App\Domain\Gitlab\ResourceLabelEvent;
 
 use ArrayIterator;
 use Countable;
