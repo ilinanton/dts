@@ -8,6 +8,7 @@ use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventActionNam
 use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventCreatedAt;
 use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventId;
 use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventLabelId;
+use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventProjectId;
 use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventResourceId;
 use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventResourceType;
 use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventUserId;
@@ -24,6 +25,7 @@ final readonly class ResourceLabelEventFactory
             new ResourceLabelEventResourceId($data['resource_id']),
             new ResourceLabelEventLabelId($data['label']['id']),
             new ResourceLabelEventActionName($data['action']),
+            new ResourceLabelEventProjectId($data['project_id']),
         );
     }
 }

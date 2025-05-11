@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Application\Cli\ExitUseCase;
 use App\Application\Cli\MenuUseCase;
 use App\Application\Gitlab\SyncGitlabDataUseCase;
+use App\Application\Gitlab\SyncGitlabLabelEventsUseCase;
 use App\Application\Gitlab\SyncGitlabLabelsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectCommitStatsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectCommitsUseCase;
@@ -33,6 +34,9 @@ use App\Domain\Gitlab\MergeRequest\Repository\GitlabApiMergeRequestRepositoryInt
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
 use App\Domain\Gitlab\Project\Repository\GitlabApiProjectRepositoryInterface;
 use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterface;
+use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabApiResourceLabelEventRepositoryInterface;
+use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabDataBaseResourceLabelEventRepositoryInterface;
+use App\Domain\Gitlab\ResourceLabelEvent\ResourceLabelEventFactory;
 use App\Domain\Gitlab\User\Repository\GitlabApiUserRepositoryInterface;
 use App\Domain\Gitlab\User\Repository\GitlabDataBaseUserRepositoryInterface;
 use App\Infrastructure\Git\GitRepository;
@@ -42,6 +46,7 @@ use App\Infrastructure\Gitlab\GitlabApiEventRepository;
 use App\Infrastructure\Gitlab\GitlabApiLabelRepository;
 use App\Infrastructure\Gitlab\GitlabApiMergeRequestRepository;
 use App\Infrastructure\Gitlab\GitlabApiProjectRepository;
+use App\Infrastructure\Gitlab\GitlabApiResourceLabelEventRepository;
 use App\Infrastructure\Gitlab\GitlabApiUserRepository;
 use App\Infrastructure\Gitlab\GitlabMySqlCommitRepository;
 use App\Infrastructure\Gitlab\GitlabMySqlCommitStatsRepository;
@@ -49,6 +54,7 @@ use App\Infrastructure\Gitlab\GitlabMySqlEventRepository;
 use App\Infrastructure\Gitlab\GitlabMySqlLabelRepository;
 use App\Infrastructure\Gitlab\GitlabMySqlMergeRequestRepository;
 use App\Infrastructure\Gitlab\GitlabMySqlProjectRepository;
+use App\Infrastructure\Gitlab\GitlabMySqlResourceLabelEventRepository;
 use App\Infrastructure\Gitlab\GitlabMySqlUserRepository;
 use App\Presentation\Cli\Command;
 use Psr\Container\ContainerInterface;
@@ -106,14 +112,17 @@ return [
     Command::sync_gitlab_users->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitlabUsersUseCase::class);
     },
-    Command::sync_gitlab_labels->diId() => function (ContainerInterface $c) {
-        return $c->get(SyncGitlabLabelsUseCase::class);
-    },
     Command::sync_gitlab_merge_requests->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitlabProjectMergeRequestsUseCase::class);
     },
     Command::sync_gitlab_user_events->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitlabUserEventsUseCase::class);
+    },
+    Command::sync_gitlab_labels->diId() => function (ContainerInterface $c) {
+        return $c->get(SyncGitlabLabelsUseCase::class);
+    },
+    Command::sync_gitlab_label_events->diId() => function (ContainerInterface $c) {
+        return $c->get(SyncGitlabLabelEventsUseCase::class);
     },
 
     MenuUseCase::class => function (ContainerInterface $c) {
@@ -175,6 +184,12 @@ return [
             $c->get(GitlabDataBaseLabelRepositoryInterface::class),
         );
     },
+    SyncGitlabLabelEventsUseCase::class => function (ContainerInterface $c) {
+        return new SyncGitlabLabelEventsUseCase(
+            $c->get(GitlabApiResourceLabelEventRepositoryInterface::class),
+            $c->get(GitlabDataBaseResourceLabelEventRepositoryInterface::class),
+        );
+    },
     SyncGitlabProjectMergeRequestsUseCase::class => function (ContainerInterface $c) {
         return new SyncGitlabProjectMergeRequestsUseCase(
             $c->get('GITLAB_SYNC_DATE_AFTER'),
@@ -206,6 +221,12 @@ return [
         return new GitlabApiLabelRepository(
             $c->get(GitlabApiClientInterface::class),
             new LabelFactory(),
+        );
+    },
+    GitlabApiResourceLabelEventRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitlabApiResourceLabelEventRepository(
+            $c->get(GitlabApiClientInterface::class),
+            new ResourceLabelEventFactory(),
         );
     },
     GitlabApiMergeRequestRepositoryInterface::class => function (ContainerInterface $c) {
@@ -252,6 +273,11 @@ return [
     },
     GitlabDataBaseLabelRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitlabMySqlLabelRepository(
+            $c->get(PDO::class),
+        );
+    },
+    GitlabDataBaseResourceLabelEventRepositoryInterface::class => function (ContainerInterface $c) {
+        return new GitlabMySqlResourceLabelEventRepository(
             $c->get(PDO::class),
         );
     },
