@@ -16,20 +16,14 @@ use App\Application\Gitlab\SyncGitlabUserEventsUseCase;
 use App\Application\Gitlab\SyncGitlabUsersUseCase;
 use App\Application\UseCaseCollection;
 use App\Domain\Git\Common\GitRepositoryInterface;
-use App\Domain\Git\Project\ProjectFactory;
-use App\Domain\Gitlab\Commit\CommitFactory;
 use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;
 use App\Domain\Gitlab\Commit\Repository\GitlabDataBaseCommitRepositoryInterface;
-use App\Domain\Gitlab\CommitStats\CommitStatsFactory;
 use App\Domain\Gitlab\CommitStats\Repository\GitlabDataBaseCommitStatsRepositoryInterface;
 use App\Domain\Gitlab\Common\Repository\GitlabApiClientInterface;
-use App\Domain\Gitlab\Event\EventFactory;
 use App\Domain\Gitlab\Event\Repository\GitlabApiEventRepositoryInterface;
 use App\Domain\Gitlab\Event\Repository\GitlabDataBaseEventRepositoryInterface;
-use App\Domain\Gitlab\Label\LabelFactory;
 use App\Domain\Gitlab\Label\Repository\GitlabApiLabelRepositoryInterface;
 use App\Domain\Gitlab\Label\Repository\GitlabDataBaseLabelRepositoryInterface;
-use App\Domain\Gitlab\MergeRequest\MergeRequestFactory;
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabApiMergeRequestRepositoryInterface;
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
 use App\Domain\Gitlab\Project\Repository\GitlabApiProjectRepositoryInterface;
@@ -167,7 +161,6 @@ return [
             $c->get('GITLAB_SYNC_DATE_AFTER'),
             $c->get(GitRepositoryInterface::class),
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
-            new CommitStatsFactory(),
             $c->get(GitlabDataBaseCommitStatsRepositoryInterface::class),
         );
     },
@@ -219,7 +212,6 @@ return [
     GitlabApiLabelRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitlabApiLabelRepository(
             $c->get(GitlabApiClientInterface::class),
-            new LabelFactory(),
         );
     },
     GitlabApiResourceLabelEventRepositoryInterface::class => function (ContainerInterface $c) {
@@ -230,26 +222,21 @@ return [
     GitlabApiMergeRequestRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitlabApiMergeRequestRepository(
             $c->get(GitlabApiClientInterface::class),
-            new MergeRequestFactory(),
         );
     },
     GitlabApiEventRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitlabApiEventRepository(
             $c->get(GitlabApiClientInterface::class),
-            new EventFactory(),
         );
     },
     GitRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitRepository(
-            new ProjectFactory(),
-            new \App\Domain\Git\Commit\CommitFactory(),
             $c->get('GIT_LOG_EXCLUDE_PATH'),
         );
     },
     GitlabApiCommitRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitlabApiCommitRepository(
             $c->get(GitlabApiClientInterface::class),
-            new CommitFactory(),
         );
     },
     GitlabApiClientInterface::class => function (ContainerInterface $c) {

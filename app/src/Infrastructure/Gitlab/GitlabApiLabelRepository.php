@@ -13,7 +13,6 @@ final readonly class GitlabApiLabelRepository implements GitlabApiLabelRepositor
 {
     public function __construct(
         private GitlabApiClientInterface $client,
-        private LabelFactory $labelFactory,
     ) {
     }
 
@@ -26,8 +25,9 @@ final readonly class GitlabApiLabelRepository implements GitlabApiLabelRepositor
     private function createCollection(array $data): LabelCollection
     {
         $collection = new LabelCollection();
+        $factory = new LabelFactory();
         foreach ($data as $item) {
-            $collection->add($this->labelFactory->create($item));
+            $collection->add($factory->create($item));
         }
 
         return $collection;

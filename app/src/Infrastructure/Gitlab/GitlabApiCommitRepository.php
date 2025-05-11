@@ -13,20 +13,20 @@ final readonly class GitlabApiCommitRepository implements GitlabApiCommitReposit
 {
     public function __construct(
         private GitlabApiClientInterface $client,
-        private CommitFactory $commitFactory,
     ) {
     }
 
     public function get(int $projectId, array $params = []): CommitCollection
     {
         $data = $this->client->getProjectRepositoryCommits($projectId, $params);
-        $commitCollection = new CommitCollection();
+        $collection = new CommitCollection();
+        $factory = new CommitFactory();
 
         foreach ($data as $item) {
-            $commit = $this->commitFactory->create($projectId, $item);
-            $commitCollection->add($commit);
+            $commit = $factory->create($projectId, $item);
+            $collection->add($commit);
         }
 
-        return $commitCollection;
+        return $collection;
     }
 }
