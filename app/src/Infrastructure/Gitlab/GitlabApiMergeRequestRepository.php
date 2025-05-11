@@ -23,6 +23,7 @@ final readonly class GitlabApiMergeRequestRepository implements GitlabApiMergeRe
         $factory = new MergeRequestFactory();
 
         foreach ($data as $item) {
+            $item['author_id'] = $item['author']['id'];
             $mergeRequest = $factory->create($item);
             $collection->add($mergeRequest);
         }

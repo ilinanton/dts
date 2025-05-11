@@ -28,7 +28,7 @@ final readonly class SyncGitlabLabelEventsUseCase implements UseCaseInterface
         foreach ($mergeRequestCollection as $mergeRequest) {
             $page = 0;
             $projectId = $mergeRequest->projectId->value;
-            $mergeRequestIid = $mergeRequest->name->value;
+            $mergeRequestIid = $mergeRequest->iid->value;
             echo ' - # project_id: ' . $projectId . ' merge_request_iid: ' . $mergeRequestIid;
             do {
                 ++$page;

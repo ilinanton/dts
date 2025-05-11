@@ -23,7 +23,7 @@ final readonly class ResourceLabelEventFactory
             new ResourceLabelEventCreatedAt($data['created_at']),
             new ResourceLabelEventResourceType($data['resource_type']),
             new ResourceLabelEventResourceId($data['resource_id']),
-            new ResourceLabelEventLabelId($data['label']['id']),
+            new ResourceLabelEventLabelId($data['label_id']),
             new ResourceLabelEventActionName($data['action']),
             new ResourceLabelEventProjectId($data['project_id']),
         );
