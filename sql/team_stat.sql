@@ -104,7 +104,7 @@ FROM (
          LEFT JOIN (
 #            SELECT DATE_FORMAT(NOW() - INTERVAL 6 DAY, '%Y.%m.%d') AS date
 #            SELECT DATE_FORMAT(LAST_DAY(NOW()) - INTERVAL 10 MONTH , '%Y.%m.%d') + INTERVAL 1 DAY AS date
-             SELECT '2024.07.01 00:00:00' AS date
+             SELECT '2025.01.01 00:00:00' AS date
              FROM DUAL
          ) d ON 1 = 1
          GROUP BY u.id
