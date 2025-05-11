@@ -13,7 +13,6 @@ final readonly class GitlabApiResourceLabelEventRepository implements GitlabApiR
 {
     public function __construct(
         private GitlabApiClientInterface $client,
-        private ResourceLabelEventFactory $factory,
     ) {
     }
 
@@ -22,6 +21,14 @@ final readonly class GitlabApiResourceLabelEventRepository implements GitlabApiR
         int $mergeRequestIid,
         array $params = [],
     ): ResourceLabelEventCollection {
-        $this->client->getMergeRequestLabelEvents($projectId, $mergeRequestIid, $params);
+        $data = $this->client->getMergeRequestLabelEvents($projectId, $mergeRequestIid, $params);
+
+        $collection = new ResourceLabelEventCollection();
+        $factory = new ResourceLabelEventFactory();
+        foreach ($data as $item) {
+            $collection->add($factory->create($item));
+        }
+
+        return $collection;
     }
 }

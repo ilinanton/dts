@@ -36,7 +36,6 @@ use App\Domain\Gitlab\Project\Repository\GitlabApiProjectRepositoryInterface;
 use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabApiResourceLabelEventRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabDataBaseResourceLabelEventRepositoryInterface;
-use App\Domain\Gitlab\ResourceLabelEvent\ResourceLabelEventFactory;
 use App\Domain\Gitlab\User\Repository\GitlabApiUserRepositoryInterface;
 use App\Domain\Gitlab\User\Repository\GitlabDataBaseUserRepositoryInterface;
 use App\Infrastructure\Git\GitRepository;
@@ -226,7 +225,6 @@ return [
     GitlabApiResourceLabelEventRepositoryInterface::class => function (ContainerInterface $c) {
         return new GitlabApiResourceLabelEventRepository(
             $c->get(GitlabApiClientInterface::class),
-            new ResourceLabelEventFactory(),
         );
     },
     GitlabApiMergeRequestRepositoryInterface::class => function (ContainerInterface $c) {
