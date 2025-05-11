@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Gitlab;
 
 use App\Application\UseCaseInterface;
+use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabApiResourceLabelEventRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabDataBaseResourceLabelEventRepositoryInterface;
 
@@ -13,25 +14,41 @@ final readonly class SyncGitlabLabelEventsUseCase implements UseCaseInterface
     private const COUNT_ITEMS_PER_PAGE = 60;
 
     public function __construct(
+        private string $syncDateAfter,
         private GitlabApiResourceLabelEventRepositoryInterface $apiResourceLabelEventRepository,
         private GitlabDataBaseResourceLabelEventRepositoryInterface $databaseResourceLabelEventRepository,
+        private GitlabDataBaseMergeRequestRepositoryInterface $dataBaseMergeRequestRepository,
     ) {
     }
 
     public function execute(): void
     {
-//        $page = 0;
-//        do {
-//            ++$page;
-//            $collection = $this->gitlabApiLabelRepository->get([
-//                'page' => $page,
-//                'per_page' => self::COUNT_ITEMS_PER_PAGE,
-//            ]);
-//            foreach ($collection as $item) {
-//                echo 'Load label #' . $item->id->value . ' ' . $item->name->value;
-//                $this->gitlabDataBaseLabelRepository->save($item);
-//                echo ' done ' . PHP_EOL;
-//            }
-//        } while (self::COUNT_ITEMS_PER_PAGE === count($collection));
+        echo 'Load label events that created after ' . $this->syncDateAfter . PHP_EOL;
+        $mergeRequestCollection = $this->dataBaseMergeRequestRepository->getAll();
+        foreach ($mergeRequestCollection as $mergeRequest) {
+            $page = 0;
+            $projectId = $mergeRequest->projectId->value;
+            $mergeRequestIid = $mergeRequest->name->value;
+            echo ' - # project_id: ' . $projectId . ' merge_request_iid: ' . $mergeRequestIid;
+            do {
+                ++$page;
+
+                $resourceLabelEventCollection = $this->apiResourceLabelEventRepository->getMergeRequestLabelEvents(
+                    $projectId,
+                    $mergeRequestIid,
+                    [
+                        'page' => $page,
+                        'per_page' => self::COUNT_ITEMS_PER_PAGE,
+                        'created_after' => $this->syncDateAfter,
+                    ],
+                );
+
+                foreach ($resourceLabelEventCollection as $resourceLabelEvent) {
+                    $this->databaseResourceLabelEventRepository->save($resourceLabelEvent);
+                }
+                echo ' .';
+            } while (self::COUNT_ITEMS_PER_PAGE === count($mergeRequestCollection));
+            echo ' done ' . PHP_EOL;
+        }
     }
 }

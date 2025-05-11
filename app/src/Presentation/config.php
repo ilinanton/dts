@@ -178,8 +178,10 @@ return [
     },
     SyncGitlabLabelEventsUseCase::class => function (ContainerInterface $c) {
         return new SyncGitlabLabelEventsUseCase(
+            $c->get('GITLAB_SYNC_DATE_AFTER'),
             $c->get(GitlabApiResourceLabelEventRepositoryInterface::class),
             $c->get(GitlabDataBaseResourceLabelEventRepositoryInterface::class),
+            $c->get(GitlabDataBaseMergeRequestRepositoryInterface::class),
         );
     },
     SyncGitlabProjectMergeRequestsUseCase::class => function (ContainerInterface $c) {
