@@ -2,7 +2,6 @@ name: dts
 
 networks:
   dts_network:
-    name: dts_network
     driver: bridge
 
 x-logging: &default-logging
@@ -48,10 +47,9 @@ services:
     container_name: dts_mysql
     healthcheck:
       test: mysqladmin ping -h 0.0.0.0 -u root -p${MYSQL_ROOT_PASSWORD:-password} | grep -q 'mysqld is alive' || exit 1
-      interval: 5s
-      timeout: 20s
-      retries: 5
-      start_period: 30s
+      interval: 3s
+      timeout: 3s
+      retries: 10
     expose:
       - 3306
     ports:
