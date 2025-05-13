@@ -10,6 +10,7 @@ x-logging: &default-logging
 
 services:
   php:
+    container_name: dts-php
     build:
       context: ./docker/php
     restart: unless-stopped
@@ -39,6 +40,7 @@ services:
     logging: *default-logging
 
   mysql:
+    container_name: dts-mysql
     image: mysql:8.0.33
     restart: unless-stopped
     healthcheck:
