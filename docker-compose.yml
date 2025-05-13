@@ -2,7 +2,11 @@ networks:
   dts_network:
     driver: bridge
 
-x-logging: &default-logging
+volumes:
+  mysql_storage:
+  postgres_storage:
+
+x-logging: &logging
   driver: ${DOCKER_LOG_DRIVER:-json-file}
   options:
     max-size: ${DOCKER_LOG_MAX_SIZE:-100m}
@@ -18,18 +22,16 @@ services:
     depends_on:
       - mysql
     environment:
-      APP_DATABASE_TYPE: ${APP_DATABASE_TYPE}
-      MYSQL_URL: ${MYSQL_URL}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_USER_PASS: ${MYSQL_USER_PASS}
-
-      GITLAB_URL: ${GITLAB_URL}
-      GITLAB_TOKEN: ${GITLAB_TOKEN}
-      GITLAB_GROUP_ID: ${GITLAB_GROUP_ID}
-      GITLAB_SYNC_DATE_AFTER: ${GITLAB_SYNC_DATE_AFTER}
-
-      GIT_LOG_EXCLUDE_PATH: ${GIT_LOG_EXCLUDE_PATH}
+      - APP_DATABASE_TYPE
+      - MYSQL_URL
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_USER_PASS
+      - GITLAB_URL
+      - GITLAB_TOKEN
+      - GITLAB_GROUP_ID
+      - GITLAB_SYNC_DATE_AFTER
+      - GIT_LOG_EXCLUDE_PATH
     networks:
       dts_network:
         aliases:
@@ -37,18 +39,14 @@ services:
     volumes:
       - ./app:/var/www/app
       - ${GIT_PROJECTS_PATH}:/var/www/projects
-    logging: *default-logging
+    logging: *logging
 
   mysql:
     container_name: dts-mysql
     image: mysql:8.0.33
     restart: unless-stopped
     healthcheck:
-      test:
-        [
-          'CMD-SHELL',
-          'mysqladmin ping -u root -p ${MYSQL_ROOT_PASSWORD} -h localhost -s'
-        ]
+      test: mysqladmin ping -h 0.0.0.0 -u root -p${MYSQL_ROOT_PASSWORD:-password} | grep -q 'mysqld is alive' || exit 1
       interval: 3s
       timeout: 3s
       retries: 10
@@ -57,16 +55,64 @@ services:
     ports:
       - ${MYSQL_PUB_PORT}:3306
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_USER_PASS: ${MYSQL_USER_PASS}
+      - MYSQL_DATABASE
+      - MYSQL_ROOT_HOST
+      - MYSQL_ROOT_PASSWORD
     networks:
       dts_network:
         aliases:
           - dts_mysql
     volumes:
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/mysql.cnf:ro
-      - ./data/mysql:/var/lib/mysql
-    logging: *default-logging
+      - mysql_storage:/var/lib/mysql
+    logging: *logging
+
+  metabase:
+    container_name: dts-metabase
+    image: metabase/metabase:v0.54.6.2
+    restart: unless-stopped
+    healthcheck:
+      test: curl --fail -I http://localhost:3000/api/health || exit 1
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    depends_on:
+      - postgres
+    ports:
+      - ${MB_PUB_PORT:-3000}:3000
+    environment:
+      - MB_DB_TYPE
+      - MB_DB_DBNAME=${POSTGRES_DB}
+      - MB_DB_PORT=${POSTGRES_PORT}
+      - MB_DB_USER=${POSTGRES_USER}
+      - MB_DB_PASS=${POSTGRES_PASSWORD}
+      - MB_DB_HOST=dts_postgres
+    networks:
+      dts_network:
+        aliases:
+          - dts_metabase
+    logging: *logging
+
+  postgres:
+    container_name: dts-postgres
+    image: postgres:latest
+    environment:
+      - POSTGRES_PORT
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PASSWORD
+    volumes:
+      - postgres_storage:/var/lib/postgresql/data
+    networks:
+      dts_network:
+        aliases:
+          - dts_postgres
+    healthcheck:
+      test: [
+        'CMD-SHELL',
+        'pg_isready -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB}',
+      ]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    logging: *logging
