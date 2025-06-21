@@ -13,6 +13,6 @@ abstract readonly class AbstractString
 
     public function getDbValue(): ?string
     {
-        return empty($this->value) ? null : $this->value;
+        return $this->value === '' || $this->value === '0' ? null : $this->value;
     }
 }

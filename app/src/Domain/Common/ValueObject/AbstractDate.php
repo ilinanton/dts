@@ -37,6 +37,6 @@ abstract readonly class AbstractDate extends AbstractRequiredDate
     public function getDbValue(DateTimeZone $timeZone = new DateTimeZone('Etc/GMT+0')): ?string
     {
         $value = $this->getValue($timeZone);
-        return empty($value) ? null : $value;
+        return $value === '' || $value === '0' ? null : $value;
     }
 }

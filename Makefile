@@ -28,6 +28,10 @@ phpcbf:
 	${DC} exec php ./vendor/bin/phpcbf -n -p
 phpstan:
 	${DC} exec php ./vendor/bin/phpstan analyse -l 5 src
+rector:
+	${DC} exec php ./vendor/bin/rector src --dry-run
+rectorbf:
+	${DC} exec php ./vendor/bin/rector src
 
 ##################
 #      APP       #

@@ -25,6 +25,6 @@ abstract readonly class AbstractUnsignedInt
 
     public function getDbValue(): ?int
     {
-        return empty($this->value) ? null : $this->value;
+        return $this->value === 0 ? null : $this->value;
     }
 }

@@ -63,7 +63,7 @@ final readonly class GitRepository implements GitRepositoryInterface
         $logItems = explode('{|c|}', $log);
 
         foreach ($logItems as $logItem) {
-            if (0 === strlen($logItem)) {
+            if ($logItem === '') {
                 continue;
             }
             $collection->add($factory->create($logItem));

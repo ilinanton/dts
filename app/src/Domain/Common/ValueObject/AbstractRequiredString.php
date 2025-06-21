@@ -18,7 +18,7 @@ abstract readonly class AbstractRequiredString
 
     private function assertValueIsValid(string $value): void
     {
-        if (0 === strlen($value)) {
+        if ($value === '') {
             throw new InvalidArgumentException(get_class($this) . ' is empty!');
         }
     }
