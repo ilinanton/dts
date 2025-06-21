@@ -20,7 +20,7 @@
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
     },
     "require": {
-        "php": "8.2.*",
+        "php": "8.4.*",
         "symfony/dotenv": "v7.0.2",
         "guzzlehttp/guzzle": "^7.8",
         "php-di/php-di": "^7.0",

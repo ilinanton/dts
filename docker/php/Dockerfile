@@ -1,4 +1,4 @@
-FROM php:8.2.14-cli-alpine3.19
+FROM php:8.4.8-cli-alpine3.22
 
 ARG GID=1000
 ARG UID=1000
@@ -23,7 +23,7 @@ RUN set -eux; \
     rm -rf /tmp/pear /var/cache/apk/*; \
     docker-php-source delete
 
-COPY --from=composer:2.6.6 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.8.9 /usr/bin/composer /usr/bin/composer
 COPY ./php.ini ${PHP_INI_DIR}/conf.d/99-php.ini
 RUN addgroup -g $GID appgroup && \
     adduser -u $UID -G appgroup -s /bin/sh -D appuser
