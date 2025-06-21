@@ -26,6 +26,8 @@ phpcs:
 	${DC} exec php ./vendor/bin/phpcs -n -p --no-cache
 phpcbf:
 	${DC} exec php ./vendor/bin/phpcbf -n -p
+phpstan:
+	${DC} exec php ./vendor/bin/phpstan analyse -l 5 src
 
 ##################
 #      APP       #

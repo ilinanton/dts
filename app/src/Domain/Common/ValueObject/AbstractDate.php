@@ -7,7 +7,7 @@ namespace App\Domain\Common\ValueObject;
 use DateTime;
 use DateTimeZone;
 
-readonly class AbstractDate extends AbstractRequiredDate
+abstract readonly class AbstractDate extends AbstractRequiredDate
 {
     protected DateTime $value;
     protected string $format;
@@ -15,7 +15,9 @@ readonly class AbstractDate extends AbstractRequiredDate
     public function __construct(string $value, string $format = DATE_RFC3339_EXTENDED)
     {
         if (strlen($value) > 0) {
-            parent::__construct($value, $format);
+            $this->format = $format;
+            $this->assertValueIsValid($value);
+            $this->value = DateTime::createFromFormat($this->format, $value);
             $this->isEmpty = false;
         } else {
             $this->isEmpty = true;

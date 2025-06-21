@@ -8,7 +8,7 @@ use DateTime;
 use DateTimeZone;
 use InvalidArgumentException;
 
-readonly class AbstractRequiredDate
+abstract readonly class AbstractRequiredDate
 {
     protected DateTime $value;
     protected string $format;
@@ -31,7 +31,7 @@ readonly class AbstractRequiredDate
         return $this->value->format($this->format);
     }
 
-    private function assertValueIsValid(string $value): void
+    protected function assertValueIsValid(string $value): void
     {
         $dateTime = DateTime::createFromFormat($this->format, $value);
         if (false === $dateTime) {
