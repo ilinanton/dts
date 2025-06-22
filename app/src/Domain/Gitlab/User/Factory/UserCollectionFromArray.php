@@ -18,7 +18,7 @@ final class UserCollectionFromArray
         $userCollection = new UserCollection();
         array_walk(
             $this->data,
-            function (array &$item) use ($userCollection) {
+            function (array &$item) use ($userCollection): void {
                 $userFactory = new UserFromArray($item);
                 $userCollection->add($userFactory->create());
             },

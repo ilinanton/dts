@@ -103,7 +103,7 @@ SQL;
 
         array_walk(
             $data,
-            function (array $item) use ($collection, $factory) {
+            function (array $item) use ($collection, $factory): void {
                 $collection->add($factory->create($item, 'Y-m-d H:i:s'));
             },
         );

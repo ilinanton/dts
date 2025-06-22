@@ -18,7 +18,7 @@ final class ProjectCollectionFromArray
         $projectCollection = new ProjectCollection();
         array_walk(
             $this->data,
-            function (array &$item) use ($projectCollection) {
+            function (array &$item) use ($projectCollection): void {
                 $projectFactory = new ProjectFromArray($item);
                 $projectCollection->add($projectFactory->create());
             },
