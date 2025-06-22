@@ -30,8 +30,8 @@ final readonly class GitRepository implements GitRepositoryInterface
         foreach ($directories as $directory) {
             $path = self::PROJECTS_PATH . DS . $directory;
             $name = rtrim($directory, DS);
-            $branch = ltrim(trim(shell_exec("cd {$path} && git branch | grep '*'")), '* ');
-            $url = trim(shell_exec("cd {$path} && git config --get remote.origin.url"));
+            $branch = ltrim(trim(shell_exec(sprintf("cd %s && git branch | grep '*'", $path))), '* ');
+            $url = trim(shell_exec(sprintf('cd %s && git config --get remote.origin.url', $path)));
 
             $collection->add($factory->create([
                 'name' => $name,
@@ -50,16 +50,17 @@ final readonly class GitRepository implements GitRepositoryInterface
         $factory = new CommitFactory();
 
         $exclude = '';
-        if (count($this->logExcludePath) > 0) {
+        if ($this->logExcludePath !== []) {
             $exclude = " -- ':(exclude)" .
                 implode("' ':(exclude)", $this->logExcludePath) .
                 "'";
         }
 
-        $log = shell_exec("cd {$project->path->value} " .
-            "&& git log --shortstat --no-merges --date=iso-local --since='{$since}'" .
+        $log = shell_exec(sprintf('cd %s ', $project->path->value) .
+            sprintf("&& git log --shortstat --no-merges --date=iso-local --since='%s'", $since) .
             " --format='{|c|}{|p|}commit: %H{|p|}date: %aI{|p|}name: %aN{|p|}email: %aE{|p|}stat:'" .
-            "{$exclude} | tr '\n' ' '") ?? '';
+            ($exclude . ' | tr \'
+\' \' \'')) ?? '';
         $logItems = explode('{|c|}', $log);
 
         foreach ($logItems as $logItem) {

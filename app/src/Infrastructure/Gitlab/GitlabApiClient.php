@@ -33,7 +33,7 @@ final readonly class GitlabApiClient implements GitlabApiClientInterface
     public function get(string $uri, array $params = []): array
     {
         sleep(1);
-        if (count($params) > 0) {
+        if ($params !== []) {
             $uri .= '?' . http_build_query($params);
         }
 

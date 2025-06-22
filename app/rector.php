@@ -1,22 +1,20 @@
 <?php
 
+use Rector\CodingStyle\Rector\ClassMethod\NewlineBeforeNewAssignSetRector;
+use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
 use Rector\Config\RectorConfig;
-use Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictConstructorRector;
 
 return RectorConfig::configure()
-// register single rule
-    ->withRules([
-        TypedPropertyFromStrictConstructorRector::class,
-    ])
-// here we can define, what prepared sets of rules will be applied
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
-//        codingStyle: true,
-//        typeDeclarations: true,
+        codingStyle: true,
         typeDeclarations: true,
         privatization: true,
         naming: false,
         instanceOf: true,
         earlyReturn: true,
-    );
+    )->withSkip([
+        NewlineAfterStatementRector::class,
+        NewlineBeforeNewAssignSetRector::class,
+    ]);

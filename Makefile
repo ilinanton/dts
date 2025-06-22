@@ -32,7 +32,8 @@ rector:
 	${DC} exec php ./vendor/bin/rector src --dry-run
 rectorbf:
 	${DC} exec php ./vendor/bin/rector src
-
+code_quality:
+	make phpcs phpstan rector
 ##################
 #      APP       #
 ##################
