@@ -1,20 +1,21 @@
 name: Check
 on: push
 jobs:
-  phpcs:
+  code-quality:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-
       - name: Install dependencies
         run: cd ./app && composer install
 
       - name: phpcs
-        run: ls -la
-#        run: cd ./app && php ./vendor/bin/phpcs -n -p --no-cache
+        run: cd ./app && php ./vendor/bin/phpcs -n -p --no-cache
+      - name: phpstan
+        run: cd ./app && php ./vendor/bin/phpstan analyse -l 5 src
+      - name: rector
+        run: cd ./app && php ./vendor/bin/rector src --dry-run
