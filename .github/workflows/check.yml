@@ -1,0 +1,19 @@
+name: Check
+on: push
+jobs:
+  phpcs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+
+      - name: Install dependencies
+        run: compose install
+
+      - name: phpcs
+        run: cd ./app && php ./vendor/bin/phpcs -n -p --no-cache
