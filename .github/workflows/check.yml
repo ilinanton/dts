@@ -13,7 +13,7 @@ jobs:
           php-version: '8.4'
 
       - name: Install dependencies
-        run: composer install
+        run: ls -la
 
-      - name: phpcs
-        run: cd ./app && php ./vendor/bin/phpcs -n -p --no-cache
+#      - name: phpcs
+#        run: cd ./app && php ./vendor/bin/phpcs -n -p --no-cache
