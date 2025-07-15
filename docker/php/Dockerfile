@@ -9,6 +9,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN set -eux; \
     apk add --no-cache \
         bash \
+        git \
         tzdata; \
     \
     apk add --no-cache --virtual .build-deps \
