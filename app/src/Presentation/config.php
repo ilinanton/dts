@@ -58,6 +58,13 @@ return [
     'GITLAB_TOKEN' => getenv('GITLAB_TOKEN'),
     'GITLAB_GROUP_ID' => (int)getenv('GITLAB_GROUP_ID'),
     'GITLAB_SYNC_DATE_AFTER' => getenv('GITLAB_SYNC_DATE_AFTER'),
+    'GITLAB_EXCLUDED_USER_IDS' => function (ContainerInterface $c): array {
+        $ids = explode(',', getenv('GITLAB_EXCLUDED_USER_IDS'));
+        array_walk($ids, function (&$value): void {
+            $value = trim($value);
+        });
+        return $ids;
+    },
     'GITLAB_URI' => function (ContainerInterface $c): string {
         return $c->get('GITLAB_URL') . '/api/v4/';
     },
@@ -210,6 +217,7 @@ return [
     GitlabApiUserRepositoryInterface::class => function (ContainerInterface $c): GitlabApiUserRepositoryInterface {
         return new GitlabApiUserRepository(
             $c->get(GitlabApiClientInterface::class),
+            $c->get('GITLAB_EXCLUDED_USER_IDS'),
         );
     },
     GitlabApiLabelRepositoryInterface::class => function (ContainerInterface $c): GitlabApiLabelRepositoryInterface {

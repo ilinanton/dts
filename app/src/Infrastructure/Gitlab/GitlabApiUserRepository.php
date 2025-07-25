@@ -13,12 +13,16 @@ final readonly class GitlabApiUserRepository implements GitlabApiUserRepositoryI
 {
     public function __construct(
         private GitlabApiClientInterface $client,
+        private array $excludedUserIds,
     ) {
     }
 
     public function get(array $params = []): UserCollection
     {
         $data = $this->client->getGroupMembers($params);
+        $data = array_filter($data, function (array $value): bool {
+            return !in_array($value['id'], $this->excludedUserIds);
+        });
         $userCollectionFactory = new UserCollectionFromArray($data);
         return $userCollectionFactory->create();
     }
