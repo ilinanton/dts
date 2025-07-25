@@ -13,12 +13,16 @@ final readonly class GitlabApiProjectRepository implements GitlabApiProjectRepos
 {
     public function __construct(
         private GitlabApiClientInterface $client,
+        private array $excludedProjectIds,
     ) {
     }
 
     public function get(array $params = []): ProjectCollection
     {
         $data = $this->client->getGroupProjects($params);
+        $data = array_filter($data, function (array $value): bool {
+            return !in_array($value['id'], $this->excludedProjectIds);
+        });
         $projectCollectionFactory = new ProjectCollectionFromArray($data);
         return $projectCollectionFactory->create();
     }

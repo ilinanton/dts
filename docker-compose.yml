@@ -32,6 +32,7 @@ services:
       - GITLAB_GROUP_ID
       - GITLAB_SYNC_DATE_AFTER
       - GITLAB_EXCLUDED_USER_IDS
+      - GITLAB_EXCLUDED_PROJECT_IDS
       - GIT_LOG_EXCLUDE_PATH
     networks:
       dts_network:
