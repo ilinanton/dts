@@ -14,6 +14,7 @@ use App\Application\Gitlab\SyncGitlabProjectMergeRequestsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectsUseCase;
 use App\Application\Gitlab\SyncGitlabUserEventsUseCase;
 use App\Application\Gitlab\SyncGitlabUsersUseCase;
+use App\Application\Report\DevReportUseCase;
 use App\Application\UseCaseCollection;
 use App\Application\UseCaseInterface;
 use App\Domain\Git\Common\GitRepositoryInterface;
@@ -132,6 +133,9 @@ return [
     Command::sync_gitlab_label_events->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitlabLabelEventsUseCase::class);
     },
+    Command::dev_report->diId() => function (ContainerInterface $c) {
+        return $c->get(DevReportUseCase::class);
+    },
 
     MenuUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new MenuUseCase();
@@ -197,6 +201,11 @@ return [
             $c->get(GitlabApiResourceLabelEventRepositoryInterface::class),
             $c->get(GitlabDataBaseResourceLabelEventRepositoryInterface::class),
             $c->get(GitlabDataBaseMergeRequestRepositoryInterface::class),
+        );
+    },
+    DevReportUseCase::class => function (ContainerInterface $c): UseCaseInterface {
+        return new DevReportUseCase(
+            $c->get(PDO::class),
         );
     },
     SyncGitlabProjectMergeRequestsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
