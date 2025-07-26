@@ -54,21 +54,21 @@ use App\Presentation\Cli\Command;
 use Psr\Container\ContainerInterface;
 
 return [
-    'GITLAB_URL' => getenv('GITLAB_URL'),
-    'GITLAB_TOKEN' => getenv('GITLAB_TOKEN'),
-    'GITLAB_GROUP_ID' => (int)getenv('GITLAB_GROUP_ID'),
-    'GITLAB_SYNC_DATE_AFTER' => getenv('GITLAB_SYNC_DATE_AFTER'),
+    'GITLAB_URL' => $_ENV['GITLAB_URL'],
+    'GITLAB_TOKEN' => $_ENV['GITLAB_TOKEN'],
+    'GITLAB_GROUP_ID' => (int)$_ENV['GITLAB_GROUP_ID'],
+    'GITLAB_SYNC_DATE_AFTER' => $_ENV['GITLAB_SYNC_DATE_AFTER'],
     'GITLAB_EXCLUDED_PROJECT_IDS' => function (ContainerInterface $c): array {
-        $ids = explode(',', getenv('GITLAB_EXCLUDED_PROJECT_IDS'));
+        $ids = explode(',', $_ENV['GITLAB_EXCLUDED_PROJECT_IDS']);
         array_walk($ids, function (&$value): void {
-            $value = trim($value);
+            $value = (int)trim($value);
         });
         return $ids;
     },
     'GITLAB_EXCLUDED_USER_IDS' => function (ContainerInterface $c): array {
-        $ids = explode(',', getenv('GITLAB_EXCLUDED_USER_IDS'));
+        $ids = explode(',', $_ENV['GITLAB_EXCLUDED_USER_IDS']);
         array_walk($ids, function (&$value): void {
-            $value = trim($value);
+            $value = (int)trim($value);
         });
         return $ids;
     },
@@ -77,13 +77,13 @@ return [
     },
 
     'GIT_LOG_EXCLUDE_PATH' => function () {
-        return explode(',', getenv('GIT_LOG_EXCLUDE_PATH'));
+        return explode(',', $_ENV['GIT_LOG_EXCLUDE_PATH']);
     },
 
-    'MYSQL_URL' => getenv('MYSQL_URL'),
-    'MYSQL_DATABASE' => getenv('MYSQL_DATABASE'),
-    'MYSQL_USER' => getenv('MYSQL_USER'),
-    'MYSQL_USER_PASS' => getenv('MYSQL_USER_PASS'),
+    'MYSQL_URL' => $_ENV['MYSQL_URL'],
+    'MYSQL_DATABASE' => $_ENV['MYSQL_DATABASE'],
+    'MYSQL_USER' => $_ENV['MYSQL_USER'],
+    'MYSQL_USER_PASS' => $_ENV['MYSQL_USER_PASS'],
     'MYSQL_DSN' => function (ContainerInterface $c): string {
         return 'mysql:host=' . $c->get('MYSQL_URL') . ';'
             . 'dbname=' . $c->get('MYSQL_DATABASE');
