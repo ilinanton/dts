@@ -96,7 +96,7 @@ FROM gitlab_merge_request
 SQL;
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
-        $data = $stmt->fetchAll();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $collection = new MergeRequestCollection();
         $factory = new MergeRequestFactory();

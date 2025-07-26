@@ -49,7 +49,7 @@ FROM gitlab_project
 SQL;
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
-        $data = $stmt->fetchAll();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $projectCollectionFactory = new ProjectCollectionFromArray($data);
         return $projectCollectionFactory->create();
     }
@@ -66,7 +66,7 @@ SQL;
             ':URL' => $url,
         ]);
 
-        $data = $stmt->fetchAll();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $projectCollectionFactory = new ProjectCollectionFromArray($data);
         return $projectCollectionFactory->create();
     }
