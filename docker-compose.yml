@@ -21,19 +21,8 @@ services:
     tty: true
     depends_on:
       - mysql
-    environment:
-      - APP_DATABASE_TYPE
-      - MYSQL_URL
-      - MYSQL_DATABASE
-      - MYSQL_USER
-      - MYSQL_USER_PASS
-      - GITLAB_URL
-      - GITLAB_TOKEN
-      - GITLAB_GROUP_ID
-      - GITLAB_SYNC_DATE_AFTER
-      - GITLAB_EXCLUDED_USER_IDS
-      - GITLAB_EXCLUDED_PROJECT_IDS
-      - GIT_LOG_EXCLUDE_PATH
+    env_file:
+      - .env
     networks:
       dts_network:
         aliases:
