@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-require DIR_ROOT . '/vendor/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 
 use DI\ContainerBuilder;
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable(DIR_ROOT);
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
 
 $containerBuilder = new ContainerBuilder();
