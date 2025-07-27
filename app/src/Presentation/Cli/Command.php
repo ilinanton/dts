@@ -21,7 +21,7 @@ enum Command: string
     case sync_gitlab_data = 'Sync users, projects and labels';
     case sync_gitlab_merge_requests = 'Sync project merge requests';
     case sync_gitlab_project_events = 'Sync project events';
-    case sync_gitlab_project_label_events = 'Sync project label events';
+    case sync_gitlab_merge_request_label_events = 'Sync merge request label events';
     case sync_gitlab_project_commits = 'Sync project commits';
     case sync_gitlab_user_events = 'Sync user events';
     case sync_gitlab_users = 'Sync users';
@@ -65,7 +65,7 @@ enum Command: string
             self::sync_gitlab_project_events,
             self::sync_gitlab_project_commits,
             self::sync_gitlab_user_events,
-            self::sync_gitlab_project_label_events => self::CATEGORY_GITLAB,
+            self::sync_gitlab_merge_request_label_events => self::CATEGORY_GITLAB,
 
             self::sync_git_project_commit_stats, => self::CATEGORY_GIT,
 

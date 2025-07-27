@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Application\Cli\ExitUseCase;
 use App\Application\Cli\MenuUseCase;
 use App\Application\Gitlab\SyncGitlabDataUseCase;
-use App\Application\Gitlab\SyncGitlabLabelEventsUseCase;
+use App\Application\Gitlab\SyncGitlabMergeRequestLabelEventsUseCase;
 use App\Application\Gitlab\SyncGitlabLabelsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectCommitStatsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectCommitsUseCase;
@@ -130,8 +130,8 @@ return [
     Command::sync_gitlab_labels->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitlabLabelsUseCase::class);
     },
-    Command::sync_gitlab_project_label_events->diId() => function (ContainerInterface $c) {
-        return $c->get(SyncGitlabLabelEventsUseCase::class);
+    Command::sync_gitlab_merge_request_label_events->diId() => function (ContainerInterface $c) {
+        return $c->get(SyncGitlabMergeRequestLabelEventsUseCase::class);
     },
     Command::dev_report->diId() => function (ContainerInterface $c) {
         return $c->get(DevReportUseCase::class);
@@ -194,8 +194,8 @@ return [
             $c->get(GitlabDataBaseLabelRepositoryInterface::class),
         );
     },
-    SyncGitlabLabelEventsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
-        return new SyncGitlabLabelEventsUseCase(
+    SyncGitlabMergeRequestLabelEventsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
+        return new SyncGitlabMergeRequestLabelEventsUseCase(
             $c->get('GITLAB_SYNC_DATE_AFTER'),
             $c->get(GitlabApiResourceLabelEventRepositoryInterface::class),
             $c->get(GitlabDataBaseResourceLabelEventRepositoryInterface::class),

@@ -9,7 +9,7 @@ use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestReposito
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabApiResourceLabelEventRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabDataBaseResourceLabelEventRepositoryInterface;
 
-final readonly class SyncGitlabLabelEventsUseCase implements UseCaseInterface
+final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCaseInterface
 {
     private const COUNT_ITEMS_PER_PAGE = 60;
 
