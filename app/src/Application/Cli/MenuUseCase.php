@@ -14,8 +14,23 @@ final readonly class MenuUseCase implements UseCaseInterface
         echo 'Command list:' . PHP_EOL;
 
         $commands = Command::cases();
-        foreach ($commands as $key => $command) {
-            echo '[' . $key . '] - ' . $command->value . PHP_EOL;
+        $grouped = [];
+
+        foreach ($commands as $index => $command) {
+            $grouped[$command->category()][$index] = $command;
+        }
+
+        foreach (Command::CATEGORY as $category) {
+            if (empty($grouped[$category])) {
+                continue;
+            }
+
+            echo '- ' . $category . ':' . PHP_EOL;
+            ksort($grouped[$category]);
+
+            foreach ($grouped[$category] as $index => $command) {
+                echo '  [' . $index . '] - ' . $command->value . PHP_EOL;
+            }
         }
     }
 }

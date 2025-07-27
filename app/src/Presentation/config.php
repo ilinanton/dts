@@ -115,7 +115,7 @@ return [
     Command::sync_gitlab_project_commits->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitlabProjectCommitsUseCase::class);
     },
-    Command::sync_gitlab_project_commit_stats->diId() => function (ContainerInterface $c) {
+    Command::sync_git_project_commit_stats->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitlabProjectCommitStatsUseCase::class);
     },
     Command::sync_gitlab_users->diId() => function (ContainerInterface $c) {
@@ -130,7 +130,7 @@ return [
     Command::sync_gitlab_labels->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitlabLabelsUseCase::class);
     },
-    Command::sync_gitlab_label_events->diId() => function (ContainerInterface $c) {
+    Command::sync_gitlab_project_label_events->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitlabLabelEventsUseCase::class);
     },
     Command::dev_report->diId() => function (ContainerInterface $c) {
@@ -148,8 +148,7 @@ return [
         $useCaseCollection = new UseCaseCollection();
         $useCaseCollection->add($c->get(SyncGitlabProjectsUseCase::class));
         $useCaseCollection->add($c->get(SyncGitlabUsersUseCase::class));
-        $useCaseCollection->add($c->get(SyncGitlabProjectMergeRequestsUseCase::class));
-        $useCaseCollection->add($c->get(SyncGitlabProjectEventsUseCase::class));
+        $useCaseCollection->add($c->get(SyncGitlabLabelsUseCase::class));
 
         return new SyncGitlabDataUseCase($useCaseCollection);
     },
