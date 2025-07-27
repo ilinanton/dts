@@ -115,7 +115,7 @@ return [
     Command::sync_gitlab_project_commits->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitlabProjectCommitsUseCase::class);
     },
-    Command::sync_git_project_commit_stats->diId() => function (ContainerInterface $c) {
+    Command::sync_gitlab_project_commit_stats->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitlabProjectCommitStatsUseCase::class);
     },
     Command::sync_gitlab_users->diId() => function (ContainerInterface $c) {

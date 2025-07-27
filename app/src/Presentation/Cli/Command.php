@@ -8,11 +8,10 @@ enum Command: string
 {
     public const string CATEGORY_GENERAL = 'General';
     public const string CATEGORY_GITLAB = 'GitLab';
-    public const string CATEGORY_GIT = 'Git';
+    public const string CATEGORY_OTHER = 'Other';
     public const array CATEGORY = [
         self::CATEGORY_GENERAL,
         self::CATEGORY_GITLAB,
-        self::CATEGORY_GIT,
     ];
 
     case exit = 'Exit';
@@ -23,11 +22,11 @@ enum Command: string
     case sync_gitlab_project_events = 'Sync project events';
     case sync_gitlab_merge_request_label_events = 'Sync merge request label events';
     case sync_gitlab_project_commits = 'Sync project commits';
+    case sync_gitlab_project_commit_stats = 'Sync project commit stats';
     case sync_gitlab_user_events = 'Sync user events';
     case sync_gitlab_users = 'Sync users';
     case sync_gitlab_projects = 'Sync projects';
     case sync_gitlab_labels = 'Sync labels';
-    case sync_git_project_commit_stats = 'Sync git project commit stats';
 
     public function diId(): string
     {
@@ -64,12 +63,11 @@ enum Command: string
             self::sync_gitlab_merge_requests,
             self::sync_gitlab_project_events,
             self::sync_gitlab_project_commits,
+            self::sync_gitlab_project_commit_stats,
             self::sync_gitlab_user_events,
             self::sync_gitlab_merge_request_label_events => self::CATEGORY_GITLAB,
 
-            self::sync_git_project_commit_stats, => self::CATEGORY_GIT,
-
-            default => 'Other',
+            default => self::CATEGORY_OTHER,
         };
     }
 }
