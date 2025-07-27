@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Application\Report;
 
 use App\Application\UseCaseInterface;
+use DateInterval;
+use DateTime;
 use PDO;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableCell;
@@ -21,8 +23,7 @@ final readonly class DevReportUseCase implements UseCaseInterface
     public function execute(): void
     {
         //todo divide into classes
-
-        $afterAt = '2025-07-01 00:00:00';
+        $afterAt = $this->getDate()->format('Y-m-d') . ' 00:00:00';
 
         $sql = <<<SQL
 SELECT
@@ -163,5 +164,18 @@ SQL;
             ])
             ->setRows($data);
         $table->render();
+    }
+
+    private function getDate(): DateTime
+    {
+        $defaultDate = new DateTime();
+        $defaultDate->sub(new DateInterval('P2W'));
+        $input = trim(readline('Enter the start date for the report (YYYY-MM-DD): '));
+        $inputDateTime = DateTime::createFromFormat('Y-m-d', $input);
+        if ($inputDateTime === false) {
+            echo $defaultDate->format('Y-m-d') . PHP_EOL;
+            return $defaultDate;
+        }
+        return $inputDateTime;
     }
 }
