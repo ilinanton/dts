@@ -25,8 +25,10 @@ final readonly class Cli
                 $input = trim(readline('Command id: '));
                 $inputCommands = explode(',', $input);
                 foreach ($inputCommands as $inputCommand) {
+                    echo '--------------------' . PHP_EOL;
                     $this->identifyCommand((int)$inputCommand)->execute();
                 }
+                readline('Press any key to continue...');
             } catch (Throwable $exception) {
                 $code = $exception->getCode();
                 echo PHP_EOL . '#' . $code . ' ' . $exception->getMessage() . PHP_EOL;
