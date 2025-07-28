@@ -18,9 +18,7 @@ final readonly class DevReportMySqlRepository implements DevReportDataBaseReposi
     {
         $stmt = $this->pdo->prepare($this->getSql());
         $stmt->execute();
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $userFactory = new UserCollectionFromArray($data);
-        return $userFactory->create();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     private function getSql(): string
