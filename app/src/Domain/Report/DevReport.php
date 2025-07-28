@@ -6,11 +6,13 @@ namespace App\Domain\Report;
 
 use App\Domain\Report\Common\ReportInterface;
 use App\Domain\Report\Metric\MetricCollection;
+use DateTime;
 
 final readonly class DevReport implements ReportInterface
 {
     public function __construct(
-        private DateTime $afterAt,
+        public DateTime $afterAt,
+        private MetricCollection $metrics,
     ) {
     }
 
@@ -21,12 +23,12 @@ final readonly class DevReport implements ReportInterface
 
     public function getDescription(): string
     {
+        // todo write some description
         return '';
     }
 
     public function getMetrics(): MetricCollection
     {
-        $metrics = new MetricCollection();
-        return $metrics;
+        return $this->metrics;
     }
 }
