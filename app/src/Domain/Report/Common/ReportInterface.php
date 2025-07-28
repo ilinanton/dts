@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Report\Common;
 
 use App\Domain\Report\Metric\MetricCollection;
