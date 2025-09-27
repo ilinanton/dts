@@ -36,6 +36,8 @@
         <severity>0</severity>
     </rule>
 
+    <rule ref="SlevomatCodingStandard.Exceptions"/>
+    <rule ref="SlevomatCodingStandard.Whitespaces"/>
     <rule ref="SlevomatCodingStandard.Classes.ClassConstantVisibility"/>
     <rule ref="SlevomatCodingStandard.TypeHints.ClassConstantTypeHint"/>
 
