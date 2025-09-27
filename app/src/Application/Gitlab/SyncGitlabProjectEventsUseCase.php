@@ -12,8 +12,8 @@ use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterfac
 
 final readonly class SyncGitlabProjectEventsUseCase implements UseCaseInterface
 {
-    private const COUNT_ITEMS_PER_PAGE = 40;
-    private const FILTERS = [
+    private const int COUNT_ITEMS_PER_PAGE = 40;
+    private const array FILTERS = [
         [
             'param_name' => 'action',
             'value' => 'pushed',

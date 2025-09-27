@@ -8,12 +8,12 @@ use InvalidArgumentException;
 
 final readonly class MergeRequestState
 {
-    private const STATE_OPENED = 'opened';
-    private const STATE_CLOSED = 'closed';
-    private const STATE_LOCKED = 'locked';
-    private const STATE_MERGED = 'merged';
+    private const string STATE_OPENED = 'opened';
+    private const string STATE_CLOSED = 'closed';
+    private const string STATE_LOCKED = 'locked';
+    private const string STATE_MERGED = 'merged';
 
-    private const STATE_LIST = [
+    private const array STATE_LIST = [
         self::STATE_OPENED,
         self::STATE_CLOSED,
         self::STATE_LOCKED,

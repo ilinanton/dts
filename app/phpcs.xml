@@ -10,7 +10,6 @@
     <arg name="extensions" value="php"/>
 
     <rule ref="PSR12"/>
-
     <rule ref="Generic.PHP.RequireStrictTypes"/>
     <rule ref="Generic.Metrics.CyclomaticComplexity">
         <properties>
@@ -36,6 +35,9 @@
     <rule ref="Squiz.Strings.DoubleQuoteUsage.ContainsVar">
         <severity>0</severity>
     </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.ClassConstantVisibility"/>
+    <rule ref="SlevomatCodingStandard.TypeHints.ClassConstantTypeHint"/>
 
     <file>cli.php</file>
     <file>src/</file>

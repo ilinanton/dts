@@ -9,19 +9,19 @@ use PHPUnit\Framework\TestCase;
 
 final class CommitFactoryTest extends TestCase
 {
-    private const EMAIL_1 = 's@dd.wqd.fwqfe.com';
-    private const EMAIL_2 = 'wwwww@sssb.com';
-    private const EMAIL_3 = 'weqweqwe@wwwww.ru';
-    private const EMAILS = [
+    private const string EMAIL_1 = 's@dd.wqd.fwqfe.com';
+    private const string EMAIL_2 = 'wwwww@sssb.com';
+    private const string EMAIL_3 = 'weqweqwe@wwwww.ru';
+    private const array EMAILS = [
         self::EMAIL_1,
         self::EMAIL_2,
         self::EMAIL_3,
     ];
 
-    private const NAME_1 = 'Den Brown';
-    private const NAME_2 = 'Ken Lower';
-    private const NAME_3 = 'Phil Selfish';
-    private const NAMES = [
+    private const string NAME_1 = 'Den Brown';
+    private const string NAME_2 = 'Ken Lower';
+    private const string NAME_3 = 'Phil Selfish';
+    private const array NAMES = [
         self::NAME_1,
         self::NAME_2,
         self::NAME_3,

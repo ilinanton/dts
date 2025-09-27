@@ -19,7 +19,8 @@
         "robmorgan/phinx": "^0.15.5",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
         "phpstan/phpstan": "^2.1",
-        "rector/rector": "^2.0"
+        "rector/rector": "^2.0",
+        "slevomat/coding-standard": "^8.19"
     },
     "require": {
         "php": "8.4.*",
@@ -33,7 +34,8 @@
     },
     "config": {
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "slevomat/coding-standard": true
         }
     }
 }
