@@ -30,6 +30,7 @@ enum Command: string
     case sync_gitlab_projects = 'Sync projects';
     case sync_gitlab_labels = 'Sync labels';
     case sync_weeek_users = 'Sync ws users';
+    case sync_weeek_tags = 'Sync ws tags';
 
     public function diId(): string
     {
@@ -70,7 +71,8 @@ enum Command: string
             self::sync_gitlab_user_events,
             self::sync_gitlab_merge_request_label_events => self::CATEGORY_GITLAB,
 
-            self::sync_weeek_users => self::CATEGORY_WEEEK,
+            self::sync_weeek_users,
+            self::sync_weeek_tags => self::CATEGORY_WEEEK,
 
             default => self::CATEGORY_OTHER,
         };
