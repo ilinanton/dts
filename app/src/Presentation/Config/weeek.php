@@ -6,8 +6,10 @@ use App\Application\UseCaseInterface;
 use App\Application\Weeek\SyncWeeekUsersUseCase;
 use App\Domain\Weeek\Common\Repository\WeeekApiClientInterface;
 use App\Domain\Weeek\User\Repository\WeeekApiUserRepositoryInterface;
+use App\Domain\Weeek\User\Repository\WeeekDataBaseUserRepositoryInterface;
 use App\Infrastructure\Weeek\WeeekApiClient;
 use App\Infrastructure\Weeek\WeeekApiUserRepository;
+use App\Infrastructure\Weeek\WeeekMySqlUserRepository;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -17,15 +19,19 @@ return [
     SyncWeeekUsersUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncWeeekUsersUseCase(
             $c->get(WeeekApiUserRepositoryInterface::class),
+            $c->get(WeeekDataBaseUserRepositoryInterface::class),
         );
     },
-
     WeeekApiUserRepositoryInterface::class => function (ContainerInterface $c): WeeekApiUserRepositoryInterface {
         return new WeeekApiUserRepository(
             $c->get(WeeekApiClientInterface::class),
         );
     },
-
+    WeeekDataBaseUserRepositoryInterface::class => function (ContainerInterface $c): WeeekDataBaseUserRepositoryInterface {
+        return new WeeekMySqlUserRepository(
+            $c->get(PDO::class),
+        );
+    },
     WeeekApiClientInterface::class => function (ContainerInterface $c): WeeekApiClientInterface {
         return new WeeekApiClient(
             $c->get('WEEEK_URL'),
