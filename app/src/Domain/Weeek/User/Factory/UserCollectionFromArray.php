@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Weeek\User\Factory;
 
-
 use App\Domain\Weeek\User\UserCollection;
 
 final class UserCollectionFromArray
