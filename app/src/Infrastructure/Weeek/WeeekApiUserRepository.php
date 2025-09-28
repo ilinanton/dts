@@ -24,7 +24,7 @@ final readonly class WeeekApiUserRepository implements WeeekApiUserRepositoryInt
             throw new Exception($data['message']);
         }
 
-        $userCollectionFactory = new UserCollectionFromArray($data['members']);
-        return $userCollectionFactory->create();
+        $factory = new UserCollectionFromArray($data['members']);
+        return $factory->create();
     }
 }

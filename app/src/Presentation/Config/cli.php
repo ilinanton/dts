@@ -16,6 +16,7 @@ use App\Application\Gitlab\SyncGitlabUserEventsUseCase;
 use App\Application\Gitlab\SyncGitlabUsersUseCase;
 use App\Application\Report\DevReportUseCase;
 use App\Application\UseCaseInterface;
+use App\Application\Weeek\SyncWeeekTagsUseCase;
 use App\Application\Weeek\SyncWeeekUsersUseCase;
 use App\Presentation\Cli\Command;
 use Psr\Container\ContainerInterface;
@@ -60,6 +61,9 @@ return [
 
     Command::sync_weeek_users->diId() => function (ContainerInterface $c) {
         return $c->get(SyncWeeekUsersUseCase::class);
+    },
+    Command::sync_weeek_tags->diId() => function (ContainerInterface $c) {
+        return $c->get(SyncWeeekTagsUseCase::class);
     },
 
     Command::dev_report->diId() => function (ContainerInterface $c) {
