@@ -33,11 +33,11 @@ final readonly class GitlabApiClient implements GitlabApiClientInterface
     public function get(string $uri, array $params = []): array
     {
         sleep(1);
-        if ($params !== []) {
-            $uri .= '?' . http_build_query($params);
-        }
 
-        $response = $this->client->get($uri);
+        $response = $this->client->get(
+            $uri,
+            ['query' => $params],
+        );
         $body = (string)$response->getBody();
         if (200 !== $response->getStatusCode()) {
             throw new Exception('Gitlab api error: ' . $body);
