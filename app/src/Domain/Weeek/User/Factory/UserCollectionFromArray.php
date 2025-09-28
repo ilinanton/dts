@@ -15,15 +15,15 @@ final class UserCollectionFromArray
 
     public function create(): UserCollection
     {
-        $userCollection = new UserCollection();
+        $collection = new UserCollection();
         array_walk(
             $this->data,
-            function (array $item) use ($userCollection): void {
-                $userFactory = new UserFromArray($item);
-                $userCollection->add($userFactory->create());
+            function (array $item) use ($collection): void {
+                $factory = new UserFromArray($item);
+                $collection->add($factory->create());
             },
         );
 
-        return $userCollection;
+        return $collection;
     }
 }
