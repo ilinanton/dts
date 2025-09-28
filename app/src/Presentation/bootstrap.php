@@ -13,5 +13,7 @@ $dotenv->load();
 $containerBuilder = new ContainerBuilder();
 $containerBuilder->useAttributes(false);
 $containerBuilder->useAutowiring(false);
-$containerBuilder->addDefinitions(__DIR__ . '/config.php');
+$containerBuilder->addDefinitions(__DIR__ . '/Config/main.php');
+$containerBuilder->addDefinitions(__DIR__ . '/Config/cli.php');
+$containerBuilder->addDefinitions(__DIR__ . '/Config/gitlab.php');
 return $containerBuilder->build();
