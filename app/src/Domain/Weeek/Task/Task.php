@@ -6,7 +6,7 @@ namespace App\Domain\Weeek\Task;
 
 final readonly class Task
 {
-    public function __construct(
-    ) {
+    public function __construct()
+    {
     }
 }
