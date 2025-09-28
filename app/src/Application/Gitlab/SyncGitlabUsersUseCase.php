@@ -10,7 +10,7 @@ use App\Domain\Gitlab\User\Repository\GitlabDataBaseUserRepositoryInterface;
 
 final readonly class SyncGitlabUsersUseCase implements UseCaseInterface
 {
-    private const COUNT_ITEMS_PER_PAGE = 40;
+    private const int COUNT_ITEMS_PER_PAGE = 40;
 
     public function __construct(
         private GitlabApiUserRepositoryInterface $apiUserRepository,

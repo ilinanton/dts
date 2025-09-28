@@ -11,7 +11,7 @@ use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabDataBaseResourceLabelE
 
 final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCaseInterface
 {
-    private const COUNT_ITEMS_PER_PAGE = 60;
+    private const int COUNT_ITEMS_PER_PAGE = 60;
 
     public function __construct(
         private string $syncDateAfter,

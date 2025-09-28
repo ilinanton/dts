@@ -12,7 +12,7 @@ use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterfac
 
 final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
 {
-    private const COUNT_ITEMS_PER_PAGE = 40;
+    private const int COUNT_ITEMS_PER_PAGE = 40;
 
     public function __construct(
         private string $syncDateAfter,

@@ -10,7 +10,7 @@ use App\Domain\Gitlab\Label\Repository\GitlabDataBaseLabelRepositoryInterface;
 
 final readonly class SyncGitlabLabelsUseCase implements UseCaseInterface
 {
-    private const COUNT_ITEMS_PER_PAGE = 60;
+    private const int COUNT_ITEMS_PER_PAGE = 60;
 
     public function __construct(
         private GitlabApiLabelRepositoryInterface $apiLabelRepository,

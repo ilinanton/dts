@@ -13,7 +13,7 @@ use App\Domain\Git\Project\ProjectFactory;
 
 final readonly class GitRepository implements GitRepositoryInterface
 {
-    private const PROJECTS_PATH = '../projects';
+    private const string PROJECTS_PATH = '../projects';
 
     public function __construct(
         private array $logExcludePath,

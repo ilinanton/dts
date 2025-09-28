@@ -22,9 +22,70 @@ final readonly class DevReportUseCase implements UseCaseInterface
 
     public function execute(): void
     {
-        //todo divide into classes
         $afterAt = $this->getDate()->format('Y-m-d') . ' 00:00:00';
+        $data = $this->getData($afterAt);
+        $this->printTable($data);
+    }
 
+    private function printTable(array $rows): void
+    {
+        $output = new ConsoleOutput();
+        $table = new Table($output);
+        $table->setStyle('markdown');
+        $table
+            ->setHeaders([
+                [
+                    new TableCell('User', ['colspan' => 2]),
+                    new TableCell('Merge request', ['colspan' => 2]),
+                    new TableCell('Merge request merged', ['colspan' => 3]),
+                    new TableCell('Commit'),
+                    new TableCell('Lines of code', ['colspan' => 3]),
+                ],
+                [
+                    'id',
+                    'name',
+                    'approved',
+                    'created',
+                    new TableCell(
+                        'without approv',
+                        [
+                            'colspan' => 1,
+                            'style' => new TableCellStyle([
+                                'bg' => 'red',
+                            ]),
+                        ],
+                    ),
+                    new TableCell(
+                        'self approved',
+                        [
+                            'colspan' => 1,
+                            'style' => new TableCellStyle([
+                                'bg' => 'blue',
+                            ]),
+                        ],
+                    ),
+                    'total',
+                    new TableCell(
+                        'to def branch',
+                        [
+                            'colspan' => 1,
+                            'style' => new TableCellStyle([
+                                'bg' => 'blue',
+                            ]),
+                        ],
+                    ),
+                    'add',
+                    'del',
+                    'total',
+                    'score',
+                ],
+            ])
+            ->setRows($rows);
+        $table->render();
+    }
+
+    private function getData(string $afterAt): array
+    {
         $sql = <<<SQL
 SELECT
     u.id,
@@ -110,60 +171,7 @@ SQL;
         $stmt->bindValue(':POINTS_LINES_ADDED', (float)$_ENV['POINTS_LINES_ADDED']);
         $stmt->bindValue(':POINTS_LINES_REMOVED', (float)$_ENV['POINTS_LINES_REMOVED']);
         $stmt->execute();
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $output = new ConsoleOutput();
-        $table = new Table($output);
-        $table->setStyle('markdown');
-        $table
-            ->setHeaders([
-                [
-                    new TableCell('User', ['colspan' => 2]),
-                    new TableCell('Merge request', ['colspan' => 2]),
-                    new TableCell('Merge request merged', ['colspan' => 3]),
-                    new TableCell('Commit'),
-                    new TableCell('Lines of code', ['colspan' => 3]),
-                ],
-                [
-                    'id',
-                    'name',
-                    'approved',
-                    'created',
-                    new TableCell(
-                        'without approv',
-                        [
-                            'colspan' => 1,
-                            'style' => new TableCellStyle([
-                                'bg' => 'red',
-                            ]),
-                        ],
-                    ),
-                    new TableCell(
-                        'self approved',
-                        [
-                            'colspan' => 1,
-                            'style' => new TableCellStyle([
-                                'bg' => 'blue',
-                            ]),
-                        ],
-                    ),
-                    'total',
-                    new TableCell(
-                        'to def branch',
-                        [
-                            'colspan' => 1,
-                            'style' => new TableCellStyle([
-                                'bg' => 'blue',
-                            ]),
-                        ],
-                    ),
-                    'add',
-                    'del',
-                    'total',
-                    'score',
-                ],
-            ])
-            ->setRows($data);
-        $table->render();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     private function getDate(): DateTime

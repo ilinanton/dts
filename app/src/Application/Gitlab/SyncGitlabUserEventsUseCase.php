@@ -11,7 +11,7 @@ use App\Domain\Gitlab\User\Repository\GitlabDataBaseUserRepositoryInterface;
 
 final readonly class SyncGitlabUserEventsUseCase implements UseCaseInterface
 {
-    private const COUNT_ITEMS_PER_PAGE = 20;
+    private const int COUNT_ITEMS_PER_PAGE = 20;
 
     public function __construct(
         private string $syncDateAfter,
