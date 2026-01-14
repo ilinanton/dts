@@ -16,6 +16,12 @@ use App\Application\Report\DevReportUseCase;
 use App\Application\UseCaseCollection;
 use App\Application\UseCaseInterface;
 use App\Domain\Git\Common\GitRepositoryInterface;
+use App\Domain\Report\Repository\DevReportRepositoryInterface;
+use App\Domain\Report\ScoringConfiguration;
+use App\Domain\Report\ScoringService;
+use App\Infrastructure\Report\DevReportMySqlRepository;
+use App\Presentation\Report\DevReportTablePresenter;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;
 use App\Domain\Gitlab\Commit\Repository\GitlabDataBaseCommitRepositoryInterface;
 use App\Domain\Gitlab\CommitStats\Repository\GitlabDataBaseCommitStatsRepositoryInterface;
@@ -136,9 +142,38 @@ return [
             $c->get(GitlabDataBaseMergeRequestRepositoryInterface::class),
         );
     },
+    ScoringConfiguration::class => function (): ScoringConfiguration {
+        return new ScoringConfiguration(
+            mergeRequestCreated: (float)$_ENV['POINTS_MERGE_REQUEST_CREATED'],
+            mergeRequestMerged: (float)$_ENV['POINTS_MERGE_REQUEST_MERGED'],
+            mergedWithoutApproval: (float)$_ENV['PENALTY_MERGED_WITHOUT_APPROVAL'],
+            selfApprovals: (float)$_ENV['POINTS_SELF_APPROVALS'],
+            approvalsGiven: (float)$_ENV['POINTS_APPROVALS_GIVEN'],
+            directCommitsToMain: (float)$_ENV['POINTS_DIRECT_COMMITS_TO_MAIN'],
+            linesAdded: (float)$_ENV['POINTS_LINES_ADDED'],
+            linesRemoved: (float)$_ENV['POINTS_LINES_REMOVED'],
+        );
+    },
+    ScoringService::class => function (ContainerInterface $c): ScoringService {
+        return new ScoringService(
+            $c->get(ScoringConfiguration::class),
+        );
+    },
+    DevReportRepositoryInterface::class => function (ContainerInterface $c): DevReportRepositoryInterface {
+        return new DevReportMySqlRepository(
+            $c->get(PDO::class),
+        );
+    },
+    DevReportTablePresenter::class => function (): DevReportTablePresenter {
+        return new DevReportTablePresenter(
+            new ConsoleOutput(),
+        );
+    },
     DevReportUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new DevReportUseCase(
-            $c->get(PDO::class),
+            $c->get(DevReportRepositoryInterface::class),
+            $c->get(ScoringService::class),
+            $c->get(DevReportTablePresenter::class),
         );
     },
     SyncGitlabProjectMergeRequestsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
