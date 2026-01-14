@@ -35,7 +35,7 @@ final readonly class DevReportUseCase implements UseCaseInterface
     {
         $date = $this->getDateFromUser();
         return new ReportCriteria(
-            startDate: new ReportStartDate($date->format('Y-m-d')),
+            startDate: new ReportStartDate($date->format('Y-m-d'), 'Y-m-d'),
         );
     }
 
