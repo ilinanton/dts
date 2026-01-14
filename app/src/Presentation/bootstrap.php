@@ -16,4 +16,5 @@ $containerBuilder->useAutowiring(false);
 $containerBuilder->addDefinitions(__DIR__ . '/Config/main.php');
 $containerBuilder->addDefinitions(__DIR__ . '/Config/cli.php');
 $containerBuilder->addDefinitions(__DIR__ . '/Config/gitlab.php');
+$containerBuilder->addDefinitions(__DIR__ . '/Config/weeek.php');
 return $containerBuilder->build();
