@@ -80,6 +80,7 @@ LEFT JOIN (
            AND s.git_commit_id = c.git_commit_id
     GROUP BY x.gitlab_user_id
 ) commit_stats ON commit_stats.gitlab_user_id = u.id
+WHERE u.state = 'active'
 SQL;
 
         $stmt = $this->pdo->prepare($sql);
