@@ -19,6 +19,11 @@ DC_RESTART = ${DC_DOWN} && ${DC_UP}
 dc_restart:
 	${DC_RESTART}
 
+dc_setup:
+	${DC_UP}
+	${DC} exec php composer install
+	${DC} exec php ./vendor/bin/phinx migrate ${PHINX_CONF}
+
 ##################
 #  CODE QUALITY  #
 ##################

@@ -15,18 +15,12 @@ Development Team Statistics (DTS) - a PHP CLI tool that syncs GitLab data (proje
 
 ## Common Commands
 
-All commands run inside Docker container. Working directory for PHP commands is `app/`.
+**IMPORTANT: The project always runs inside Docker Compose. All PHP commands (composer, phpunit, phinx, cli.php, etc.) MUST be executed via `docker compose exec php ...`. Never run PHP commands directly on the host machine.** Working directory for PHP commands is `app/`.
 
 ### Environment Setup
 ```bash
-# Start Docker environment
-docker compose up -d --build
-
-# Install dependencies
-docker compose exec php composer install
-
-# Run database migrations
-docker compose exec php ./vendor/bin/phinx migrate
+# Full setup (build containers, install deps, run migrations)
+make dc_setup
 
 # Restart Docker
 make dc_restart

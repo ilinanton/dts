@@ -29,22 +29,12 @@ git clone <repository-url>
 cd dts
 ```
 
-2. Start the Docker environment:
+2. Set up the environment (build containers, install deps, run migrations):
 ```bash
-docker compose up -d --build
+make dc_setup
 ```
 
-3. Install PHP dependencies:
-```bash
-docker compose exec php composer install
-```
-
-4. Run database migrations:
-```bash
-docker compose exec php ./vendor/bin/phinx migrate
-```
-
-5. Configure GitLab API access (update configuration as needed)
+3. Configure GitLab API access (update configuration as needed)
 
 ## Usage
 
@@ -139,17 +129,17 @@ Migrations are managed with Phinx and located in `app/phinx/dts/migrations/`.
 
 Create a new migration:
 ```bash
-docker compose exec php ./vendor/bin/phinx create MigrationName
+make phinx_create name=MigrationName
 ```
 
 Run migrations:
 ```bash
-docker compose exec php ./vendor/bin/phinx migrate
+make phinx_migrate
 ```
 
 Rollback last migration:
 ```bash
-docker compose exec php ./vendor/bin/phinx rollback
+make phinx_rollback
 ```
 
 ## Project Structure
