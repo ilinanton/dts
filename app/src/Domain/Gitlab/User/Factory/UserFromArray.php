@@ -27,7 +27,7 @@ final readonly class UserFromArray
             new UserName($this->data['name'] ?? ''),
             new UserAvatarUrlRequired($this->data['avatar_url'] ?? ''),
             new UserRequiredWebUrl($this->data['web_url'] ?? ''),
-            new UserState($this->data['state'] ?? 'active')
+            UserState::from($this->data['state'] ?? 'active')
         );
     }
 }

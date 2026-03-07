@@ -26,7 +26,7 @@ final class MergeRequestFactory
             new MergeRequestIid($data['iid']),
             new MergeRequestProjectId($data['project_id']),
             new MergeRequestTitle($data['title']),
-            new MergeRequestState($data['state']),
+            MergeRequestState::from($data['state']),
             new MergeRequestMergedAt($data['merged_at'] ?? '', $dateFormat),
             new MergeRequestCreatedAt($data['created_at'], $dateFormat),
             new MergeRequestUpdatedAt($data['updated_at'] ?? '', $dateFormat),
