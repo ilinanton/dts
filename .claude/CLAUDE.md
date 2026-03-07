@@ -71,13 +71,13 @@ docker compose exec php ./vendor/bin/phpunit --filter TestClassName
 
 ```bash
 # Create new migration
-docker compose exec php ./vendor/bin/phinx create MigrationName
+make phinx_create name=MigrationName
 
 # Run migrations
-docker compose exec php ./vendor/bin/phinx migrate
+make phinx_migrate
 
 # Rollback last migration
-docker compose exec php ./vendor/bin/phinx rollback
+make phinx_rollback
 ```
 
 ### Git Operations
@@ -249,7 +249,7 @@ dts/
 
 Always use Phinx migrations - never modify schema directly:
 ```bash
-docker compose exec php ./vendor/bin/phinx create DescriptiveMigrationName
+make phinx_create name=DescriptiveMigrationName
 # Edit migration file in app/phinx/dts/migrations/
-docker compose exec php ./vendor/bin/phinx migrate
+make phinx_migrate
 ```
