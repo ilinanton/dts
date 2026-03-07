@@ -114,7 +114,7 @@ Application/           # Use cases - orchestrate domain logic
 
 Domain/                # Pure business logic, no framework dependencies
 ├── Common/
-│   └── ValueObject/
+│   └── ValueObject/   # Abstract base types (string, int, date, url)
 ├── Gitlab/            # GitLab-specific entities:
 │   ├── Commit/
 │   ├── CommitStats/
@@ -127,27 +127,41 @@ Domain/                # Pure business logic, no framework dependencies
 │   ├── ResourceLabelEvent/
 │   ├── User/
 │   └── Common/
-└── Git/               # Generic Git entities:
-    ├── Commit/
-    ├── Project/
-    ├── Stats/
-    ├── User/
-    └── Common/
+├── Git/               # Generic Git entities:
+│   ├── Commit/
+│   ├── Project/
+│   ├── Stats/
+│   ├── User/
+│   └── Common/
+└── Report/            # Developer report domain:
+    ├── DeveloperStatistics.php
+    ├── ReportCriteria.php
+    ├── ScoringConfiguration.php
+    ├── ScoringService.php
+    ├── ValueObject/ReportStartDate.php
+    └── Repository/DevReportRepositoryInterface.php
 
 Infrastructure/        # External integrations & implementations
 ├── Gitlab/
 │   ├── GitlabApiClient
 │   ├── GitlabApi*Repository      # API clients (fetch from GitLab)
 │   └── GitlabMySql*Repository    # MySQL repositories (local storage)
-└── Git/
+├── Git/
+│   └── GitRepository
+└── Report/
+    └── DevReportMySqlRepository  # Complex SQL for developer stats
 
 Presentation/          # Entry points and configuration
 ├── Cli/
-│   └── CLI.php        # Interactive menu loop
-└── Config/
-    ├── main.php       # Main DI container config
-    ├── cli.php        # CLI-specific config
-    └── gitlab.php     # GitLab repositories wiring
+│   ├── Cli.php        # Interactive menu loop
+│   └── Command.php    # PHP enum of all CLI commands
+├── Config/
+│   ├── main.php       # Main DI container config (MySQL)
+│   ├── cli.php        # CLI commands DI wiring
+│   └── gitlab.php     # GitLab + Report repositories wiring
+├── Report/
+│   └── DevReportTablePresenter.php  # Markdown table output
+└── bootstrap.php      # DI container setup
 ```
 
 ### Key Architecture Patterns
@@ -229,7 +243,7 @@ dts/
 5. Add to `UseCaseCollection.php`
 6. Wire dependencies in `Presentation/Config/gitlab.php`
 7. Create migration for new tables
-8. Add to CLI menu in `Presentation/Cli/CLI.php`
+8. Add command to `Presentation/Cli/Command.php` enum and wire in `Presentation/Config/cli.php`
 
 ### Database Changes
 
