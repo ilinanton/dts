@@ -4,28 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Gitlab\Project;
 
-use ArrayIterator;
-use Countable;
-use IteratorAggregate;
-use Traversable;
+use App\Domain\Common\AbstractCollection;
 
-final class ProjectCollection implements IteratorAggregate, Countable
+/** @extends AbstractCollection<Project> */
+final class ProjectCollection extends AbstractCollection
 {
-    /** @var Project[] */
-    private array $list = [];
-
-    public function add(Project $item): void
+    protected function getType(): string
     {
-        $this->list[] = $item;
-    }
-
-    public function getIterator(): Traversable
-    {
-        return new ArrayIterator($this->list);
-    }
-
-    public function count(): int
-    {
-        return count($this->list);
+        return Project::class;
     }
 }

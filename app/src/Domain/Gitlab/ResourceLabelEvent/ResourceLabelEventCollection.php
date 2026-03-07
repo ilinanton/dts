@@ -4,28 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Gitlab\ResourceLabelEvent;
 
-use ArrayIterator;
-use Countable;
-use IteratorAggregate;
-use Traversable;
+use App\Domain\Common\AbstractCollection;
 
-final class ResourceLabelEventCollection implements IteratorAggregate, Countable
+/** @extends AbstractCollection<ResourceLabelEvent> */
+final class ResourceLabelEventCollection extends AbstractCollection
 {
-    /** @var ResourceLabelEvent[] */
-    private array $list = [];
-
-    public function add(ResourceLabelEvent $item): void
+    protected function getType(): string
     {
-        $this->list[] = $item;
-    }
-
-    public function getIterator(): Traversable
-    {
-        return new ArrayIterator($this->list);
-    }
-
-    public function count(): int
-    {
-        return count($this->list);
+        return ResourceLabelEvent::class;
     }
 }

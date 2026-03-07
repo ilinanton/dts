@@ -4,28 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Gitlab\Commit;
 
-use ArrayIterator;
-use Countable;
-use IteratorAggregate;
-use Traversable;
+use App\Domain\Common\AbstractCollection;
 
-final class CommitCollection implements IteratorAggregate, Countable
+/** @extends AbstractCollection<Commit> */
+final class CommitCollection extends AbstractCollection
 {
-    /** @var Commit[] */
-    private array $list = [];
-
-    public function add(Commit $item): void
+    protected function getType(): string
     {
-        $this->list[] = $item;
-    }
-
-    public function getIterator(): Traversable
-    {
-        return new ArrayIterator($this->list);
-    }
-
-    public function count(): int
-    {
-        return count($this->list);
+        return Commit::class;
     }
 }

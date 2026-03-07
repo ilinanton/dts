@@ -4,28 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Gitlab\Event;
 
-use ArrayIterator;
-use Countable;
-use IteratorAggregate;
-use Traversable;
+use App\Domain\Common\AbstractCollection;
 
-final class EventCollection implements IteratorAggregate, Countable
+/** @extends AbstractCollection<Event> */
+final class EventCollection extends AbstractCollection
 {
-    /** @var Event[] */
-    private array $list = [];
-
-    public function add(Event $item): void
+    protected function getType(): string
     {
-        $this->list[] = $item;
-    }
-
-    public function getIterator(): Traversable
-    {
-        return new ArrayIterator($this->list);
-    }
-
-    public function count(): int
-    {
-        return count($this->list);
+        return Event::class;
     }
 }

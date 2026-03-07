@@ -4,28 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Gitlab\Label;
 
-use ArrayIterator;
-use Countable;
-use IteratorAggregate;
-use Traversable;
+use App\Domain\Common\AbstractCollection;
 
-final class LabelCollection implements IteratorAggregate, Countable
+/** @extends AbstractCollection<Label> */
+final class LabelCollection extends AbstractCollection
 {
-    /** @var Label[] */
-    private array $list = [];
-
-    public function add(Label $item): void
+    protected function getType(): string
     {
-        $this->list[] = $item;
-    }
-
-    public function getIterator(): Traversable
-    {
-        return new ArrayIterator($this->list);
-    }
-
-    public function count(): int
-    {
-        return count($this->list);
+        return Label::class;
     }
 }

@@ -4,28 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Gitlab\MergeRequest;
 
-use ArrayIterator;
-use Countable;
-use IteratorAggregate;
-use Traversable;
+use App\Domain\Common\AbstractCollection;
 
-final class MergeRequestCollection implements IteratorAggregate, Countable
+/** @extends AbstractCollection<MergeRequest> */
+final class MergeRequestCollection extends AbstractCollection
 {
-    /** @var MergeRequest[] */
-    private array $list = [];
-
-    public function add(MergeRequest $item): void
+    protected function getType(): string
     {
-        $this->list[] = $item;
-    }
-
-    public function getIterator(): Traversable
-    {
-        return new ArrayIterator($this->list);
-    }
-
-    public function count(): int
-    {
-        return count($this->list);
+        return MergeRequest::class;
     }
 }

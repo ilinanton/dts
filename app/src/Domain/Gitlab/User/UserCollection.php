@@ -4,28 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Gitlab\User;
 
-use ArrayIterator;
-use Countable;
-use IteratorAggregate;
-use Traversable;
+use App\Domain\Common\AbstractCollection;
 
-final class UserCollection implements IteratorAggregate, Countable
+/** @extends AbstractCollection<User> */
+final class UserCollection extends AbstractCollection
 {
-    /** @var User[] */
-    private array $list = [];
-
-    public function add(User $item): void
+    protected function getType(): string
     {
-        $this->list[] = $item;
-    }
-
-    public function getIterator(): Traversable
-    {
-        return new ArrayIterator($this->list);
-    }
-
-    public function count(): int
-    {
-        return count($this->list);
+        return User::class;
     }
 }

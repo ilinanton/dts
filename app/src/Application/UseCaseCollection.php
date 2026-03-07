@@ -4,28 +4,13 @@ declare(strict_types=1);
 
 namespace App\Application;
 
-use ArrayIterator;
-use Countable;
-use IteratorAggregate;
-use Traversable;
+use App\Domain\Common\AbstractCollection;
 
-final class UseCaseCollection implements IteratorAggregate, Countable
+/** @extends AbstractCollection<UseCaseInterface> */
+final class UseCaseCollection extends AbstractCollection
 {
-    /** @var UseCaseInterface[] */
-    private array $list = [];
-
-    public function add(UseCaseInterface $item): void
+    protected function getType(): string
     {
-        $this->list[] = $item;
-    }
-
-    public function getIterator(): Traversable
-    {
-        return new ArrayIterator($this->list);
-    }
-
-    public function count(): int
-    {
-        return count($this->list);
+        return UseCaseInterface::class;
     }
 }
