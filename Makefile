@@ -35,6 +35,21 @@ rectorbf:
 code_quality:
 	make phpcs phpstan rector
 ##################
+#    MIGRATIONS   #
+##################
+PHINX = ${DC} exec php ./vendor/bin/phinx
+PHINX_CONF = -c phinx/dts/phinx.php
+
+phinx_create:
+	${PHINX} create $(name) ${PHINX_CONF}
+
+phinx_migrate:
+	${PHINX} migrate ${PHINX_CONF}
+
+phinx_rollback:
+	${PHINX} rollback ${PHINX_CONF}
+
+##################
 #      APP       #
 ##################
 app_run:
