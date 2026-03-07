@@ -20,9 +20,9 @@ final readonly class GitlabMySqlUserRepository implements GitlabDataBaseUserRepo
     public function save(User $object): void
     {
         $sql = <<<SQL
-INSERT INTO gitlab_user (id, username, name, avatar_url, web_url)
-VALUES (:ID, :USERNAME, :NAME, :AVATAR_URL, :WEB_URL)
-ON DUPLICATE KEY UPDATE username = :USERNAME, name = :NAME, avatar_url = :AVATAR_URL, web_url = :WEB_URL
+INSERT INTO gitlab_user (id, username, name, avatar_url, web_url, state)
+VALUES (:ID, :USERNAME, :NAME, :AVATAR_URL, :WEB_URL, :STATE)
+ON DUPLICATE KEY UPDATE username = :USERNAME, name = :NAME, avatar_url = :AVATAR_URL, web_url = :WEB_URL, state = :STATE
 SQL;
 
         $stmt = $this->pdo->prepare($sql);
@@ -32,13 +32,14 @@ SQL;
             ':NAME' => $object->name->value,
             ':AVATAR_URL' => $object->avatarUrl->value,
             ':WEB_URL' => $object->webUrl->value,
+            ':STATE' => $object->state->value,
         ]);
     }
 
     public function getAll(): UserCollection
     {
         $sql = <<<SQL
-SELECT id, username, name, avatar_url, web_url
+SELECT id, username, name, avatar_url, web_url, state
 FROM gitlab_user
 SQL;
 
