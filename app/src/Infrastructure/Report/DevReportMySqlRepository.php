@@ -19,6 +19,40 @@ final readonly class DevReportMySqlRepository implements DevReportRepositoryInte
     public function getStatistics(ReportCriteria $criteria): array
     {
         $afterAt = $criteria->startDate->getValue();
+        $hasTestedLabels = $criteria->testedLabelNames !== [];
+
+        $testedJoin = '';
+        $testedSelect = '0 AS mr_tested';
+        if ($hasTestedLabels) {
+            $testedSelect = 'COALESCE(tested_stats.mr_tested, 0) AS mr_tested';
+            $placeholders = $this->buildLabelPlaceholders($criteria->testedLabelNames);
+            $testedJoin = <<<SQL
+LEFT JOIN (
+    SELECT
+        mr.author_id,
+        COUNT(DISTINCT rle.resource_id) AS mr_tested
+    FROM gitlab_resource_label_event rle
+    INNER JOIN gitlab_label l ON l.id = rle.label_id
+    INNER JOIN gitlab_merge_request mr ON mr.id = rle.resource_id
+    INNER JOIN gitlab_project p ON p.id = mr.project_id
+    WHERE rle.resource_type = 'MergeRequest'
+      AND rle.action_name = 'add'
+      AND l.name IN ({$placeholders})
+      AND mr.state = 'merged'
+      AND mr.merged_at >= :AFTER_AT
+      AND mr.target_branch = p.default_branch
+      AND NOT EXISTS (
+          SELECT 1
+          FROM gitlab_resource_label_event rle2
+          WHERE rle2.resource_id = rle.resource_id
+            AND rle2.label_id = rle.label_id
+            AND rle2.action_name = 'remove'
+            AND rle2.created_at > rle.created_at
+      )
+    GROUP BY mr.author_id
+) tested_stats ON tested_stats.author_id = u.id
+SQL;
+        }
 
         $sql = <<<SQL
 SELECT
@@ -31,7 +65,8 @@ SELECT
     COALESCE(mr_stats.mr_merged, 0) AS mr_merged,
     COALESCE(ev_stats.committed_to_default_branch, 0) AS committed_to_default_branch,
     COALESCE(commit_stats.loc_add, 0) AS loc_add,
-    COALESCE(commit_stats.loc_del, 0) AS loc_del
+    COALESCE(commit_stats.loc_del, 0) AS loc_del,
+    {$testedSelect}
 FROM gitlab_user u
 LEFT JOIN (
     SELECT
@@ -80,11 +115,17 @@ LEFT JOIN (
            AND s.git_commit_id = c.git_commit_id
     GROUP BY x.gitlab_user_id
 ) commit_stats ON commit_stats.gitlab_user_id = u.id
+{$testedJoin}
 WHERE u.state = 'active'
 SQL;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':AFTER_AT', $afterAt);
+
+        if ($hasTestedLabels) {
+            $this->bindLabelValues($stmt, $criteria->testedLabelNames);
+        }
+
         $stmt->execute();
 
         $results = [];
@@ -100,9 +141,32 @@ SQL;
                 commitsToDefaultBranch: (int)$row['committed_to_default_branch'],
                 linesAdded: (int)$row['loc_add'],
                 linesDeleted: (int)$row['loc_del'],
+                mergeRequestsTested: (int)$row['mr_tested'],
             );
         }
 
         return $results;
+    }
+
+    /**
+     * @param array<string> $labels
+     */
+    private function buildLabelPlaceholders(array $labels): string
+    {
+        $keys = [];
+        foreach (array_keys($labels) as $i) {
+            $keys[] = ':LABEL_' . $i;
+        }
+        return implode(', ', $keys);
+    }
+
+    /**
+     * @param array<string> $labels
+     */
+    private function bindLabelValues(\PDOStatement $stmt, array $labels): void
+    {
+        foreach (array_values($labels) as $i => $label) {
+            $stmt->bindValue(':LABEL_' . $i, $label);
+        }
     }
 }

@@ -15,10 +15,14 @@ use DateTime;
 
 final readonly class DevReportUseCase implements UseCaseInterface
 {
+    /**
+     * @param array<string> $testedLabelNames
+     */
     public function __construct(
         private DevReportRepositoryInterface $repository,
         private ScoringService $scoringService,
         private DevReportTablePresenter $presenter,
+        private array $testedLabelNames = [],
     ) {
     }
 
@@ -36,6 +40,7 @@ final readonly class DevReportUseCase implements UseCaseInterface
         $date = $this->getDateFromUser();
         return new ReportCriteria(
             startDate: new ReportStartDate($date->format('Y-m-d'), 'Y-m-d'),
+            testedLabelNames: $this->testedLabelNames,
         );
     }
 

@@ -38,6 +38,7 @@ final readonly class DevReportTablePresenter
                 $stat->mergeRequestsCreated,
                 $stat->mergeRequestsMergedWithoutApproval,
                 $stat->mergeRequestsSelfApproved,
+                $stat->mergeRequestsTested,
                 $stat->mergeRequestsMerged,
                 $stat->commitsToDefaultBranch,
                 $stat->linesAdded,
@@ -58,7 +59,7 @@ final readonly class DevReportTablePresenter
                 [
                     new TableCell('User', ['colspan' => 2]),
                     new TableCell('Merge request', ['colspan' => 2]),
-                    new TableCell('Merge request merged', ['colspan' => 3]),
+                    new TableCell('Merge request merged', ['colspan' => 4]),
                     new TableCell('Commit'),
                     new TableCell('Lines of code', ['colspan' => 3]),
                 ],
@@ -85,6 +86,7 @@ final readonly class DevReportTablePresenter
                             ]),
                         ],
                     ),
+                    'tested',
                     'total',
                     new TableCell(
                         'to def branch',

@@ -21,6 +21,7 @@ final readonly class ScoringService
             $statistics->mergeRequestsSelfApproved * $this->configuration->selfApprovals +
             $statistics->commitsToDefaultBranch * $this->configuration->directCommitsToMain +
             $statistics->linesAdded * $this->configuration->linesAdded +
-            $statistics->linesDeleted * $this->configuration->linesRemoved;
+            $statistics->linesDeleted * $this->configuration->linesRemoved +
+            $statistics->mergeRequestsTested * $this->configuration->mergeRequestTested;
     }
 }

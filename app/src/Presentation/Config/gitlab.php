@@ -142,6 +142,13 @@ return [
             $c->get(GitlabDataBaseMergeRequestRepositoryInterface::class),
         );
     },
+    'REPORT_TESTED_LABELS' => function (): array {
+        $value = trim($_ENV['REPORT_TESTED_LABELS'] ?? '');
+        if ($value === '') {
+            return [];
+        }
+        return array_map('trim', explode(',', $value));
+    },
     ScoringConfiguration::class => function (): ScoringConfiguration {
         return new ScoringConfiguration(
             mergeRequestCreated: (float)$_ENV['POINTS_MERGE_REQUEST_CREATED'],
@@ -152,6 +159,7 @@ return [
             directCommitsToMain: (float)$_ENV['POINTS_DIRECT_COMMITS_TO_MAIN'],
             linesAdded: (float)$_ENV['POINTS_LINES_ADDED'],
             linesRemoved: (float)$_ENV['POINTS_LINES_REMOVED'],
+            mergeRequestTested: (float)($_ENV['POINTS_MERGE_REQUEST_TESTED'] ?? 0),
         );
     },
     ScoringService::class => function (ContainerInterface $c): ScoringService {
@@ -174,6 +182,7 @@ return [
             $c->get(DevReportRepositoryInterface::class),
             $c->get(ScoringService::class),
             $c->get(DevReportTablePresenter::class),
+            $c->get('REPORT_TESTED_LABELS'),
         );
     },
     SyncGitlabProjectMergeRequestsUseCase::class => function (ContainerInterface $c): UseCaseInterface {

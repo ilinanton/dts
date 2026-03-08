@@ -15,6 +15,7 @@ final readonly class ScoringConfiguration
         public float $directCommitsToMain,
         public float $linesAdded,
         public float $linesRemoved,
+        public float $mergeRequestTested = 0.0,
     ) {
     }
 }

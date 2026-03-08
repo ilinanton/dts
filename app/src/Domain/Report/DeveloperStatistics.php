@@ -17,6 +17,7 @@ final readonly class DeveloperStatistics
         public int $commitsToDefaultBranch,
         public int $linesAdded,
         public int $linesDeleted,
+        public int $mergeRequestsTested = 0,
     ) {
     }
 
