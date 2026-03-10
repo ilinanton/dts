@@ -15,13 +15,13 @@ final readonly class ScoringService
     {
         return
             $statistics->mergeRequestsCreated * $this->configuration->mergeRequestCreated +
+            $statistics->approvalsGiven * $this->configuration->approvalsGiven +
             $statistics->mergeRequestsMerged * $this->configuration->mergeRequestMerged +
-            $statistics->mergeRequestsMergedWithoutApproval * $this->configuration->mergedWithoutApproval +
-            $statistics->mergeRequestsApproved * $this->configuration->approvalsGiven +
-            $statistics->mergeRequestsSelfApproved * $this->configuration->selfApprovals +
-            $statistics->commitsToDefaultBranch * $this->configuration->directCommitsToMain +
+            $statistics->mergeRequestsMergedWithApproval * $this->configuration->mergeRequestApproved +
+            $statistics->mergeRequestsTested * $this->configuration->mergeRequestTested +
             $statistics->linesAdded * $this->configuration->linesAdded +
             $statistics->linesDeleted * $this->configuration->linesRemoved +
-            $statistics->mergeRequestsTested * $this->configuration->mergeRequestTested;
+            $statistics->mergeRequestsSelfApproved * $this->configuration->selfApprovals +
+            $statistics->commitsToDefaultBranch * $this->configuration->directCommitsToMain;
     }
 }

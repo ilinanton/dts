@@ -34,16 +34,16 @@ final readonly class DevReportTablePresenter
             $rows[] = [
                 $stat->userId,
                 $stat->userName,
-                $stat->mergeRequestsApproved,
                 $stat->mergeRequestsCreated,
-                $stat->mergeRequestsMergedWithoutApproval,
-                $stat->mergeRequestsSelfApproved,
-                $stat->mergeRequestsTested,
+                $stat->approvalsGiven,
                 $stat->mergeRequestsMerged,
-                $stat->commitsToDefaultBranch,
+                $stat->mergeRequestsMergedWithApproval,
+                $stat->mergeRequestsTested,
                 $stat->linesAdded,
                 $stat->linesDeleted,
                 $stat->getTotalLinesChanged(),
+                $stat->mergeRequestsSelfApproved,
+                $stat->commitsToDefaultBranch,
                 $scores[$index],
             ];
         }
@@ -58,25 +58,23 @@ final readonly class DevReportTablePresenter
             ->setHeaders([
                 [
                     new TableCell('User', ['colspan' => 2]),
-                    new TableCell('Merge request', ['colspan' => 2]),
-                    new TableCell('Merge request merged', ['colspan' => 4]),
-                    new TableCell('Commit'),
+                    new TableCell('MR Activity', ['colspan' => 2]),
+                    new TableCell('Merged to default', ['colspan' => 3]),
                     new TableCell('Lines of code', ['colspan' => 3]),
+                    new TableCell('Info', ['colspan' => 2]),
+                    '',
                 ],
                 [
                     'id',
                     'name',
-                    'approved',
                     'created',
-                    new TableCell(
-                        'without approv',
-                        [
-                            'colspan' => 1,
-                            'style' => new TableCellStyle([
-                                'bg' => 'red',
-                            ]),
-                        ],
-                    ),
+                    'approvals',
+                    'total',
+                    'approved',
+                    'tested',
+                    'add',
+                    'del',
+                    'total',
                     new TableCell(
                         'self approved',
                         [
@@ -86,10 +84,8 @@ final readonly class DevReportTablePresenter
                             ]),
                         ],
                     ),
-                    'tested',
-                    'total',
                     new TableCell(
-                        'to def branch',
+                        'to main',
                         [
                             'colspan' => 1,
                             'style' => new TableCellStyle([
@@ -97,9 +93,6 @@ final readonly class DevReportTablePresenter
                             ]),
                         ],
                     ),
-                    'add',
-                    'del',
-                    'total',
                     'score',
                 ],
             ])

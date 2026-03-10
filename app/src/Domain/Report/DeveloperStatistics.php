@@ -9,15 +9,15 @@ final readonly class DeveloperStatistics
     public function __construct(
         public int $userId,
         public string $userName,
-        public int $mergeRequestsApproved,
         public int $mergeRequestsCreated,
-        public int $mergeRequestsMergedWithoutApproval,
-        public int $mergeRequestsSelfApproved,
+        public int $approvalsGiven,
         public int $mergeRequestsMerged,
-        public int $commitsToDefaultBranch,
+        public int $mergeRequestsMergedWithApproval,
+        public int $mergeRequestsTested,
         public int $linesAdded,
         public int $linesDeleted,
-        public int $mergeRequestsTested = 0,
+        public int $mergeRequestsSelfApproved,
+        public int $commitsToDefaultBranch,
     ) {
     }
 

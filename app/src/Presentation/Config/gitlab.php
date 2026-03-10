@@ -152,14 +152,14 @@ return [
     ScoringConfiguration::class => function (): ScoringConfiguration {
         return new ScoringConfiguration(
             mergeRequestCreated: (float)$_ENV['POINTS_MERGE_REQUEST_CREATED'],
-            mergeRequestMerged: (float)$_ENV['POINTS_MERGE_REQUEST_MERGED'],
-            mergedWithoutApproval: (float)$_ENV['PENALTY_MERGED_WITHOUT_APPROVAL'],
-            selfApprovals: (float)$_ENV['POINTS_SELF_APPROVALS'],
             approvalsGiven: (float)$_ENV['POINTS_APPROVALS_GIVEN'],
-            directCommitsToMain: (float)$_ENV['POINTS_DIRECT_COMMITS_TO_MAIN'],
+            mergeRequestMerged: (float)$_ENV['POINTS_MERGE_REQUEST_MERGED'],
+            mergeRequestApproved: (float)$_ENV['POINTS_MERGE_REQUEST_APPROVED'],
+            mergeRequestTested: (float)$_ENV['POINTS_MERGE_REQUEST_TESTED'],
             linesAdded: (float)$_ENV['POINTS_LINES_ADDED'],
             linesRemoved: (float)$_ENV['POINTS_LINES_REMOVED'],
-            mergeRequestTested: (float)($_ENV['POINTS_MERGE_REQUEST_TESTED'] ?? 0),
+            selfApprovals: (float)$_ENV['POINTS_SELF_APPROVALS'],
+            directCommitsToMain: (float)$_ENV['POINTS_DIRECT_COMMITS_TO_MAIN'],
         );
     },
     ScoringService::class => function (ContainerInterface $c): ScoringService {

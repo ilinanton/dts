@@ -58,11 +58,11 @@ SQL;
 SELECT
     u.id,
     u.name AS user,
-    COALESCE(ev_stats.mr_approved, 0) AS mr_approved,
     COALESCE(mr_stats.mr_created, 0) AS mr_created,
-    COALESCE(mr_stats.mr_merged_without_approv, 0) AS mr_merged_without_approv,
-    COALESCE(ev_stats.mr_self_approved, 0) AS mr_self_approved,
+    COALESCE(ev_stats.mr_approved, 0) AS approvals_given,
     COALESCE(mr_stats.mr_merged, 0) AS mr_merged,
+    COALESCE(mr_stats.mr_merged_with_approval, 0) AS mr_merged_with_approval,
+    COALESCE(ev_stats.mr_self_approved, 0) AS mr_self_approved,
     COALESCE(ev_stats.committed_to_default_branch, 0) AS committed_to_default_branch,
     COALESCE(commit_stats.loc_add, 0) AS loc_add,
     COALESCE(commit_stats.loc_del, 0) AS loc_del,
@@ -72,13 +72,23 @@ LEFT JOIN (
     SELECT
         mr.author_id,
         COUNT(CASE WHEN mr.created_at >= :AFTER_AT AND mr.source_branch <> p.default_branch THEN 1 END) AS mr_created,
-        COUNT(CASE WHEN mr.state = 'merged' AND mr.merged_at >= :AFTER_AT AND mr.source_branch <> p.default_branch THEN 1 END) AS mr_merged,
-        COUNT(CASE WHEN mr.state = 'merged' AND mr.merged_at >= :AFTER_AT AND mr.target_branch = p.default_branch AND e.id IS NULL THEN 1 END) AS mr_merged_without_approv
+        COUNT(CASE WHEN mr.state = 'merged' AND mr.merged_at >= :AFTER_AT AND mr.target_branch = p.default_branch THEN 1 END) AS mr_merged,
+        COUNT(CASE WHEN mr.state = 'merged' AND mr.merged_at >= :AFTER_AT AND mr.target_branch = p.default_branch
+            AND EXISTS (
+                SELECT 1 FROM gitlab_event ea
+                WHERE ea.target_id = mr.id
+                  AND ea.action_name = 'approved'
+                  AND NOT EXISTS (
+                      SELECT 1 FROM gitlab_event eu
+                      WHERE eu.target_id = ea.target_id
+                        AND eu.author_id = ea.author_id
+                        AND eu.action_name = 'unapproved'
+                        AND eu.created_at > ea.created_at
+                  )
+            )
+        THEN 1 END) AS mr_merged_with_approval
     FROM gitlab_merge_request mr
     INNER JOIN gitlab_project p ON p.id = mr.project_id
-    LEFT JOIN gitlab_event e
-           ON e.target_id = mr.id
-          AND e.action_name = 'approved'
     WHERE mr.created_at >= :AFTER_AT OR mr.merged_at >= :AFTER_AT
     GROUP BY mr.author_id
 ) mr_stats ON mr_stats.author_id = u.id
@@ -133,15 +143,15 @@ SQL;
             $results[] = new DeveloperStatistics(
                 userId: (int)$row['id'],
                 userName: (string)$row['user'],
-                mergeRequestsApproved: (int)$row['mr_approved'],
                 mergeRequestsCreated: (int)$row['mr_created'],
-                mergeRequestsMergedWithoutApproval: (int)$row['mr_merged_without_approv'],
-                mergeRequestsSelfApproved: (int)$row['mr_self_approved'],
+                approvalsGiven: (int)$row['approvals_given'],
                 mergeRequestsMerged: (int)$row['mr_merged'],
-                commitsToDefaultBranch: (int)$row['committed_to_default_branch'],
+                mergeRequestsMergedWithApproval: (int)$row['mr_merged_with_approval'],
+                mergeRequestsTested: (int)$row['mr_tested'],
                 linesAdded: (int)$row['loc_add'],
                 linesDeleted: (int)$row['loc_del'],
-                mergeRequestsTested: (int)$row['mr_tested'],
+                mergeRequestsSelfApproved: (int)$row['mr_self_approved'],
+                commitsToDefaultBranch: (int)$row['committed_to_default_branch'],
             );
         }
 
