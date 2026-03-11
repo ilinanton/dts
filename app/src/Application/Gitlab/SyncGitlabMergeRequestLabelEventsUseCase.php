@@ -47,7 +47,7 @@ final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCase
                     $this->databaseResourceLabelEventRepository->save($resourceLabelEvent);
                 }
                 echo ' .';
-            } while (self::COUNT_ITEMS_PER_PAGE === count($mergeRequestCollection));
+            } while (self::COUNT_ITEMS_PER_PAGE === count($resourceLabelEventCollection));
             echo ' done ' . PHP_EOL;
         }
     }
