@@ -15,9 +15,17 @@ use App\Domain\Gitlab\Event\ValueObject\EventTargetId;
 use App\Domain\Gitlab\Event\ValueObject\EventTargetIid;
 use App\Domain\Gitlab\Event\ValueObject\EventTargetTitle;
 use App\Domain\Gitlab\Event\ValueObject\EventTargetType;
+use App\Domain\Gitlab\Note\NoteFactory;
+use App\Domain\Gitlab\PushData\Factory\PushDataFromArray;
 
 final readonly class EventFactory
 {
+    public function __construct(
+        private PushDataFromArray $pushDataFactory,
+        private NoteFactory $noteFactory,
+    ) {
+    }
+
     public function create(array $data): Event
     {
         return new Event(
@@ -30,8 +38,8 @@ final readonly class EventFactory
             new EventAuthorId($data['author_id']),
             new EventTargetTitle($data['target_title'] ?? ''),
             new EventCreatedAt($data['created_at']),
-            new EventPushData($data['push_data'] ?? []),
-            new EventNote($data['note'] ?? []),
+            new EventPushData($this->pushDataFactory->create($data['push_data'] ?? [])),
+            new EventNote($this->noteFactory->create($data['note'] ?? [])),
         );
     }
 }

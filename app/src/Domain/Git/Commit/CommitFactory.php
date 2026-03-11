@@ -9,9 +9,15 @@ use App\Domain\Git\Commit\ValueObject\CommitAuthorEmail;
 use App\Domain\Git\Commit\ValueObject\CommitAuthorName;
 use App\Domain\Git\Commit\ValueObject\CommitId;
 use App\Domain\Git\Commit\ValueObject\CommitStats;
+use App\Domain\Git\Stats\StatsFactory;
 
 final readonly class CommitFactory
 {
+    public function __construct(
+        private StatsFactory $statsFactory,
+    ) {
+    }
+
     public function create(string $data): Commit
     {
         return new Commit(
@@ -65,10 +71,12 @@ final readonly class CommitFactory
             $result,
         );
 
-        return new CommitStats([
+        $stats = $this->statsFactory->create([
             'files' => (int) ($result['files'] ?? 0),
             'additions' => (int) ($result['insertions'] ?? 0),
             'deletions' => (int) ($result['deletions'] ?? 0),
         ]);
+
+        return new CommitStats($stats);
     }
 }

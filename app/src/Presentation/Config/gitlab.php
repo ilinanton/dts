@@ -45,6 +45,11 @@ use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabApiResourceLabelEventR
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabDataBaseResourceLabelEventRepositoryInterface;
 use App\Domain\Gitlab\User\Repository\GitlabApiUserRepositoryInterface;
 use App\Domain\Gitlab\User\Repository\GitlabDataBaseUserRepositoryInterface;
+use App\Domain\Git\Commit\CommitFactory;
+use App\Domain\Git\Stats\StatsFactory;
+use App\Domain\Gitlab\Event\EventFactory;
+use App\Domain\Gitlab\Note\NoteFactory;
+use App\Domain\Gitlab\PushData\Factory\PushDataFromArray;
 use App\Infrastructure\Git\GitRepository;
 use App\Infrastructure\Gitlab\GitlabApiClient;
 use App\Infrastructure\Gitlab\GitlabApiCommitRepository;
@@ -236,14 +241,27 @@ return [
             $c->get(GitlabApiClientMergeRequestInterface::class),
         );
     },
+    EventFactory::class => function (ContainerInterface $c): EventFactory {
+        return new EventFactory(
+            new PushDataFromArray(),
+            new NoteFactory(),
+        );
+    },
+    CommitFactory::class => function (ContainerInterface $c): CommitFactory {
+        return new CommitFactory(
+            new StatsFactory(),
+        );
+    },
     GitlabApiEventRepositoryInterface::class => function (ContainerInterface $c): GitlabApiEventRepositoryInterface {
         return new GitlabApiEventRepository(
             $c->get(GitlabApiClientEventInterface::class),
+            $c->get(EventFactory::class),
         );
     },
     GitRepositoryInterface::class => function (ContainerInterface $c): GitRepositoryInterface {
         return new GitRepository(
             $c->get('GIT_LOG_EXCLUDE_PATH'),
+            $c->get(CommitFactory::class),
         );
     },
     GitlabApiCommitRepositoryInterface::class => function (ContainerInterface $c): GitlabApiCommitRepositoryInterface {

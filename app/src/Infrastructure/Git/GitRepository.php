@@ -17,6 +17,7 @@ final readonly class GitRepository implements GitRepositoryInterface
 
     public function __construct(
         private array $logExcludePath,
+        private CommitFactory $commitFactory,
     ) {
     }
 
@@ -47,7 +48,6 @@ final readonly class GitRepository implements GitRepositoryInterface
     public function getCommits(Project $project, string $since): CommitCollection
     {
         $collection = new CommitCollection();
-        $factory = new CommitFactory();
 
         $exclude = '';
         if ($this->logExcludePath !== []) {
@@ -67,7 +67,7 @@ final readonly class GitRepository implements GitRepositoryInterface
             if ($logItem === '') {
                 continue;
             }
-            $collection->add($factory->create($logItem));
+            $collection->add($this->commitFactory->create($logItem));
         }
 
         return $collection;

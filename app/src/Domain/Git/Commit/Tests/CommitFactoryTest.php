@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Git\Commit\Tests;
 
 use App\Domain\Git\Commit\CommitFactory;
+use App\Domain\Git\Stats\StatsFactory;
 use PHPUnit\Framework\TestCase;
 
 final class CommitFactoryTest extends TestCase
@@ -68,7 +69,7 @@ final class CommitFactoryTest extends TestCase
      */
     public function testParseCommitId(string $commitData): void
     {
-        $commitFactory = new CommitFactory();
+        $commitFactory = new CommitFactory(new StatsFactory());
         $commitId = $commitFactory->parseCommitId($commitData);
         $this->assertTrue(32 === strlen($commitId->value));
         $this->assertStringContainsString($commitId->value, $commitData);
@@ -79,7 +80,7 @@ final class CommitFactoryTest extends TestCase
      */
     public function testParseAuthorName(string $commitData): void
     {
-        $commitFactory = new CommitFactory();
+        $commitFactory = new CommitFactory(new StatsFactory());
         $authorName = $commitFactory->parseAuthorName($commitData);
         $this->assertContains($authorName->value, self::NAMES);
     }
@@ -89,7 +90,7 @@ final class CommitFactoryTest extends TestCase
      */
     public function testParseAuthorEmail(string $commitData): void
     {
-        $commitFactory = new CommitFactory();
+        $commitFactory = new CommitFactory(new StatsFactory());
         $authorEmail = $commitFactory->parseAuthorEmail($commitData);
         $this->assertContains($authorEmail->value, self::EMAILS);
     }
@@ -99,7 +100,7 @@ final class CommitFactoryTest extends TestCase
      */
     public function testParseCommitAuthorDate(string $commitData): void
     {
-        $commitFactory = new CommitFactory();
+        $commitFactory = new CommitFactory(new StatsFactory());
         $commitAuthorDate = $commitFactory->parseCommitAuthorDate($commitData);
 
         $this->assertStringContainsString(
@@ -113,7 +114,7 @@ final class CommitFactoryTest extends TestCase
      */
     public function testParseCommitStats(string $commitData): void
     {
-        $commitFactory = new CommitFactory();
+        $commitFactory = new CommitFactory(new StatsFactory());
         $commitStats = $commitFactory->parseCommitStats($commitData);
 
         $this->assertTrue($commitStats->value->files->value > 0);

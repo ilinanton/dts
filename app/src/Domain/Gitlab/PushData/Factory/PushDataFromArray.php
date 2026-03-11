@@ -16,26 +16,21 @@ use App\Domain\Gitlab\PushData\ValueObject\PushDataRefType;
 
 final readonly class PushDataFromArray
 {
-    public function __construct(
-        private array $data,
-    ) {
-    }
-
-    public function create(): PushData
+    public function create(array $data): PushData
     {
-        if ([] === $this->data) {
+        if ([] === $data) {
             return $this->createEmpty();
         }
 
         return new PushData(
-            new PushDataAction($this->data['action']),
-            new PushDataCommitTitle($this->data['commit_title'] ?? ''),
-            new PushDataCommitCount($this->data['commit_count']),
-            new PushDataCommitFrom($this->data['commit_from'] ?? ''),
-            new PushDataCommitTo($this->data['commit_to'] ?? ''),
-            new PushDataRef($this->data['ref']),
-            new PushDataRefCount($this->data['ref_count'] ?? 0),
-            new PushDataRefType($this->data['ref_type']),
+            new PushDataAction($data['action']),
+            new PushDataCommitTitle($data['commit_title'] ?? ''),
+            new PushDataCommitCount($data['commit_count']),
+            new PushDataCommitFrom($data['commit_from'] ?? ''),
+            new PushDataCommitTo($data['commit_to'] ?? ''),
+            new PushDataRef($data['ref']),
+            new PushDataRefCount($data['ref_count'] ?? 0),
+            new PushDataRefType($data['ref_type']),
         );
     }
 
