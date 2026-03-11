@@ -7,7 +7,6 @@ namespace App\Infrastructure\Gitlab;
 use App\Domain\Gitlab\Commit\CommitCollection;
 use App\Domain\Gitlab\Commit\CommitFactory;
 use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;
-use App\Domain\Gitlab\Common\Repository\GitlabApiClientInterface;
 
 final readonly class GitlabApiCommitRepository implements GitlabApiCommitRepositoryInterface
 {

@@ -26,7 +26,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;
 use App\Domain\Gitlab\Commit\Repository\GitlabDataBaseCommitRepositoryInterface;
 use App\Domain\Gitlab\CommitStats\Repository\GitlabDataBaseCommitStatsRepositoryInterface;
-use App\Domain\Gitlab\Common\Repository\GitlabApiClientInterface;
+use App\Infrastructure\Gitlab\GitlabApiClientInterface;
 use App\Domain\Gitlab\Event\Repository\GitlabApiEventRepositoryInterface;
 use App\Domain\Gitlab\Event\Repository\GitlabDataBaseEventRepositoryInterface;
 use App\Domain\Gitlab\Label\Repository\GitlabApiLabelRepositoryInterface;
