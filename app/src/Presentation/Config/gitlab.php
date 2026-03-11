@@ -20,6 +20,7 @@ use App\Domain\Report\Repository\DevReportRepositoryInterface;
 use App\Domain\Report\ScoringConfiguration;
 use App\Domain\Report\ScoringService;
 use App\Infrastructure\Report\DevReportMySqlRepository;
+use App\Application\Report\DevReportPresenterInterface;
 use App\Presentation\Report\DevReportTablePresenter;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;
@@ -172,7 +173,7 @@ return [
             $c->get(PDO::class),
         );
     },
-    DevReportTablePresenter::class => function (): DevReportTablePresenter {
+    DevReportPresenterInterface::class => function (): DevReportPresenterInterface {
         return new DevReportTablePresenter(
             new ConsoleOutput(),
         );
@@ -181,7 +182,7 @@ return [
         return new DevReportUseCase(
             $c->get(DevReportRepositoryInterface::class),
             $c->get(ScoringService::class),
-            $c->get(DevReportTablePresenter::class),
+            $c->get(DevReportPresenterInterface::class),
             $c->get('REPORT_TESTED_LABELS'),
         );
     },

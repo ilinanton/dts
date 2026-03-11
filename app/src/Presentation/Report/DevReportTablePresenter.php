@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Presentation\Report;
 
+use App\Application\Report\DevReportPresenterInterface;
 use App\Domain\Report\DeveloperStatistics;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Helper\TableCellStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-final readonly class DevReportTablePresenter
+final readonly class DevReportTablePresenter implements DevReportPresenterInterface
 {
     public function __construct(
         private ConsoleOutput $output,
