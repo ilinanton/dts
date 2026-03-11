@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Gitlab\Project;
 
-use App\Domain\Common\AbstractEntity;
+use App\Domain\Common\EntityInterface;
 use App\Domain\Gitlab\Project\ValueObject\ProjectDefaultBranch;
 use App\Domain\Gitlab\Project\ValueObject\ProjectHttpUrlToRepoRequired;
 use App\Domain\Gitlab\Project\ValueObject\ProjectId;
@@ -12,7 +12,7 @@ use App\Domain\Gitlab\Project\ValueObject\ProjectName;
 use App\Domain\Gitlab\Project\ValueObject\ProjectSshUrlToRepo;
 use App\Domain\Gitlab\Project\ValueObject\ProjectRequiredWebUrl;
 
-final readonly class Project extends AbstractEntity
+final readonly class Project implements EntityInterface
 {
     public function __construct(
         public ProjectId $id,

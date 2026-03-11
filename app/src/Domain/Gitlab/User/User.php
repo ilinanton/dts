@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Gitlab\User;
 
-use App\Domain\Common\AbstractEntity;
+use App\Domain\Common\EntityInterface;
 use App\Domain\Gitlab\User\ValueObject\UserAvatarUrlRequired;
 use App\Domain\Gitlab\User\ValueObject\UserId;
 use App\Domain\Gitlab\User\ValueObject\UserName;
@@ -12,7 +12,7 @@ use App\Domain\Gitlab\User\ValueObject\UserUsername;
 use App\Domain\Gitlab\User\ValueObject\UserRequiredWebUrl;
 use App\Domain\Gitlab\User\ValueObject\UserState;
 
-final readonly class User extends AbstractEntity
+final readonly class User implements EntityInterface
 {
     public function __construct(
         public UserId $id,

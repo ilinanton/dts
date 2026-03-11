@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Gitlab\Commit;
 
-use App\Domain\Common\AbstractEntity;
+use App\Domain\Common\EntityInterface;
 use App\Domain\Gitlab\Commit\ValueObject\CommitAuthoredDate;
 use App\Domain\Gitlab\Commit\ValueObject\CommitAuthorEmail;
 use App\Domain\Gitlab\Commit\ValueObject\CommitAuthorName;
@@ -18,7 +18,7 @@ use App\Domain\Gitlab\Commit\ValueObject\CommitProjectId;
 use App\Domain\Gitlab\Commit\ValueObject\CommitTitle;
 use App\Domain\Gitlab\Commit\ValueObject\CommitWebUrl;
 
-final readonly class Commit extends AbstractEntity
+final readonly class Commit implements EntityInterface
 {
     public function __construct(
         public CommitId $id,
