@@ -7,5 +7,5 @@
 /app/vendor
 /projects/**/
 /tasks
+/plans
 /.claude
-CLAUDE.md
