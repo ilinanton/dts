@@ -11,7 +11,7 @@ use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;
 final readonly class GitlabApiCommitRepository implements GitlabApiCommitRepositoryInterface
 {
     public function __construct(
-        private GitlabApiClientInterface $client,
+        private GitlabApiClientCommitInterface $client,
     ) {
     }
 

@@ -11,7 +11,7 @@ use App\Domain\Gitlab\Event\Repository\GitlabApiEventRepositoryInterface;
 final readonly class GitlabApiEventRepository implements GitlabApiEventRepositoryInterface
 {
     public function __construct(
-        private GitlabApiClientInterface $client,
+        private GitlabApiClientEventInterface $client,
     ) {
     }
 

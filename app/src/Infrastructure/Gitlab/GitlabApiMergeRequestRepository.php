@@ -11,7 +11,7 @@ use App\Domain\Gitlab\MergeRequest\Repository\GitlabApiMergeRequestRepositoryInt
 final readonly class GitlabApiMergeRequestRepository implements GitlabApiMergeRequestRepositoryInterface
 {
     public function __construct(
-        private GitlabApiClientInterface $client,
+        private GitlabApiClientMergeRequestInterface $client,
     ) {
     }
 

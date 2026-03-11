@@ -11,7 +11,7 @@ use App\Domain\Gitlab\User\UserCollection;
 final readonly class GitlabApiUserRepository implements GitlabApiUserRepositoryInterface
 {
     public function __construct(
-        private GitlabApiClientInterface $client,
+        private GitlabApiClientUserInterface $client,
         private array $excludedUserIds,
     ) {
     }

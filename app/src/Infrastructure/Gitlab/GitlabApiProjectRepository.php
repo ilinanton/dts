@@ -11,7 +11,7 @@ use App\Domain\Gitlab\Project\Repository\GitlabApiProjectRepositoryInterface;
 final readonly class GitlabApiProjectRepository implements GitlabApiProjectRepositoryInterface
 {
     public function __construct(
-        private GitlabApiClientInterface $client,
+        private GitlabApiClientProjectInterface $client,
         private array $excludedProjectIds,
     ) {
     }

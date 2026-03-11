@@ -7,7 +7,14 @@ namespace App\Infrastructure\Gitlab;
 use Exception;
 use GuzzleHttp\Client;
 
-final readonly class GitlabApiClient implements GitlabApiClientInterface
+final readonly class GitlabApiClient implements
+    GitlabApiClientProjectInterface,
+    GitlabApiClientUserInterface,
+    GitlabApiClientMergeRequestInterface,
+    GitlabApiClientEventInterface,
+    GitlabApiClientCommitInterface,
+    GitlabApiClientLabelInterface,
+    GitlabApiClientResourceLabelEventInterface
 {
     private Client $client;
     private int $groupId;

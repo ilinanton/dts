@@ -11,7 +11,7 @@ use App\Domain\Gitlab\ResourceLabelEvent\ResourceLabelEventFactory;
 final readonly class GitlabApiResourceLabelEventRepository implements GitlabApiResourceLabelEventRepositoryInterface
 {
     public function __construct(
-        private GitlabApiClientInterface $client,
+        private GitlabApiClientResourceLabelEventInterface $client,
     ) {
     }
 

@@ -11,7 +11,7 @@ use App\Domain\Gitlab\Label\Repository\GitlabApiLabelRepositoryInterface;
 final readonly class GitlabApiLabelRepository implements GitlabApiLabelRepositoryInterface
 {
     public function __construct(
-        private GitlabApiClientInterface $client,
+        private GitlabApiClientLabelInterface $client,
     ) {
     }
 
