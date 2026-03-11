@@ -7,6 +7,7 @@ namespace App\Infrastructure\Report;
 use App\Domain\Report\DeveloperStatistics;
 use App\Domain\Report\ReportCriteria;
 use App\Domain\Report\Repository\DevReportRepositoryInterface;
+use App\Domain\Report\ValueObject\LabelName;
 use PDO;
 
 final readonly class DevReportMySqlRepository implements DevReportRepositoryInterface
@@ -159,7 +160,7 @@ SQL;
     }
 
     /**
-     * @param array<string> $labels
+     * @param array<LabelName> $labels
      */
     private function buildLabelPlaceholders(array $labels): string
     {
@@ -171,12 +172,12 @@ SQL;
     }
 
     /**
-     * @param array<string> $labels
+     * @param array<LabelName> $labels
      */
     private function bindLabelValues(\PDOStatement $stmt, array $labels): void
     {
         foreach (array_values($labels) as $i => $label) {
-            $stmt->bindValue(':LABEL_' . $i, $label);
+            $stmt->bindValue(':LABEL_' . $i, $label->value);
         }
     }
 }

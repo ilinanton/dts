@@ -8,6 +8,7 @@ use App\Application\UseCaseInterface;
 use App\Domain\Report\ReportCriteria;
 use App\Domain\Report\Repository\DevReportRepositoryInterface;
 use App\Domain\Report\ScoringService;
+use App\Domain\Report\ValueObject\LabelName;
 use App\Domain\Report\ValueObject\ReportStartDate;
 use DateInterval;
 use DateTime;
@@ -15,7 +16,7 @@ use DateTime;
 final readonly class DevReportUseCase implements UseCaseInterface
 {
     /**
-     * @param array<string> $testedLabelNames
+     * @param array<LabelName> $testedLabelNames
      */
     public function __construct(
         private DevReportRepositoryInterface $repository,

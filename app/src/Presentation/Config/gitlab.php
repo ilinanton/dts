@@ -18,6 +18,7 @@ use App\Application\UseCaseInterface;
 use App\Domain\Git\Common\GitRepositoryInterface;
 use App\Domain\Report\Repository\DevReportRepositoryInterface;
 use App\Domain\Report\ScoringConfiguration;
+use App\Domain\Report\ValueObject\LabelName;
 use App\Domain\Report\ScoringService;
 use App\Infrastructure\Report\DevReportMySqlRepository;
 use App\Application\Report\DevReportPresenterInterface;
@@ -159,7 +160,10 @@ return [
         if ($value === '') {
             return [];
         }
-        return array_map('trim', explode(',', $value));
+        return array_map(
+            static fn(string $name): LabelName => new LabelName(trim($name)),
+            explode(',', $value),
+        );
     },
     ScoringConfiguration::class => function (): ScoringConfiguration {
         return new ScoringConfiguration(
