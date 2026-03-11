@@ -226,6 +226,33 @@ dts/
 └── tests/                # Tests
 ```
 
+## Architect Review Workflow
+
+Two slash commands for architectural code review:
+
+- **`/arch-review`** — Senior PHP architect agent reviews code applying DDD and SOLID principles. Produces a structured JSON list of issues (bug/task) with priority levels. Can target a specific module or the entire codebase.
+- **`/arch-tasks`** — Saves review results as individual task files from the current conversation.
+
+### Task File Structure
+
+```
+tasks/
+└── arch-review/
+    ├── high-bug-domain-layer-violation.md
+    ├── medium-task-extract-value-object.md
+    ├── low-task-improve-naming.md
+    └── done/           # Completed tasks are moved here
+```
+
+File naming: `{priority}-{type}-{short-name}.md`
+
+### Typical Flow
+
+1. Run `/arch-review` (optionally specify a module, e.g., `/arch-review Domain/Report`)
+2. Review the findings
+3. Run `/arch-tasks` to save issues as task files
+4. Work through tasks; move completed ones to `tasks/arch-review/done/`
+
 ## Common Workflows
 
 ### Adding a New GitLab Entity Sync
