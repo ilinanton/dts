@@ -6,3 +6,6 @@
 /data
 /app/vendor
 /projects/**/
+/tasks
+/.claude
+/CLAUDE.md
