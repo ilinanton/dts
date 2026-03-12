@@ -5,22 +5,27 @@ declare(strict_types=1);
 namespace App\Application\Cli;
 
 use App\Application\UseCaseInterface;
-use App\Presentation\Cli\Command;
 
 final readonly class MenuUseCase implements UseCaseInterface
 {
+    /** @param array<string> $categories */
+    public function __construct(
+        private MenuItemCollection $menuItems,
+        private array $categories,
+    ) {
+    }
+
     public function execute(): void
     {
         echo 'Command list:' . PHP_EOL;
 
-        $commands = Command::cases();
         $grouped = [];
 
-        foreach ($commands as $index => $command) {
-            $grouped[$command->category()][$index] = $command;
+        foreach ($this->menuItems as $item) {
+            $grouped[$item->category][$item->index] = $item;
         }
 
-        foreach (Command::CATEGORY as $category) {
+        foreach ($this->categories as $category) {
             if (empty($grouped[$category])) {
                 continue;
             }
@@ -28,8 +33,8 @@ final readonly class MenuUseCase implements UseCaseInterface
             echo '- ' . $category . ':' . PHP_EOL;
             ksort($grouped[$category]);
 
-            foreach ($grouped[$category] as $index => $command) {
-                echo '  [' . $index . '] - ' . $command->value . PHP_EOL;
+            foreach ($grouped[$category] as $index => $item) {
+                echo '  [' . $index . '] - ' . $item->name . PHP_EOL;
             }
         }
     }
