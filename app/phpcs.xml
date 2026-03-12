@@ -41,6 +41,13 @@
     <rule ref="SlevomatCodingStandard.Classes.ClassConstantVisibility"/>
     <rule ref="SlevomatCodingStandard.TypeHints.ClassConstantTypeHint"/>
 
+    <rule ref="SlevomatCodingStandard.Commenting.DocCommentSpacing"/>
+    <rule ref="SlevomatCodingStandard.Commenting.RequireOneLineDocComment"/>
+    <rule ref="SlevomatCodingStandard.Commenting.EmptyComment"/>
+    <rule ref="SlevomatCodingStandard.Commenting.UselessFunctionDocComment"/>
+    <rule ref="SlevomatCodingStandard.Commenting.UselessInheritDocComment"/>
+    <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration"/>
+
     <file>cli.php</file>
     <file>src/</file>
 </ruleset>
