@@ -10,9 +10,7 @@ use App\Domain\Git\Stats\ValueObject\StatsFiles;
 
 final class StatsFactory
 {
-    /**
-     * @param array{files?: int, additions?: int, deletions?: int} $data
-     */
+    /** @param array{files?: int, additions?: int, deletions?: int} $data */
     public function create(array $data): Stats
     {
         return new Stats(

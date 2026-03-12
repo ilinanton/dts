@@ -64,9 +64,7 @@ final class CommitFactoryTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider commitsData
-     */
+    /** @dataProvider commitsData */
     public function testParseCommitId(string $commitData): void
     {
         $commitFactory = new CommitFactory(new StatsFactory());
@@ -75,9 +73,7 @@ final class CommitFactoryTest extends TestCase
         $this->assertStringContainsString($commitId->value, $commitData);
     }
 
-    /**
-     * @dataProvider commitsData
-     */
+    /** @dataProvider commitsData */
     public function testParseAuthorName(string $commitData): void
     {
         $commitFactory = new CommitFactory(new StatsFactory());
@@ -85,9 +81,7 @@ final class CommitFactoryTest extends TestCase
         $this->assertContains($authorName->value, self::NAMES);
     }
 
-    /**
-     * @dataProvider commitsData
-     */
+    /** @dataProvider commitsData */
     public function testParseAuthorEmail(string $commitData): void
     {
         $commitFactory = new CommitFactory(new StatsFactory());
@@ -95,9 +89,7 @@ final class CommitFactoryTest extends TestCase
         $this->assertContains($authorEmail->value, self::EMAILS);
     }
 
-    /**
-     * @dataProvider commitsData
-     */
+    /** @dataProvider commitsData */
     public function testParseCommitAuthorDate(string $commitData): void
     {
         $commitFactory = new CommitFactory(new StatsFactory());
@@ -109,9 +101,7 @@ final class CommitFactoryTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider commitsData
-     */
+    /** @dataProvider commitsData */
     public function testParseCommitStats(string $commitData): void
     {
         $commitFactory = new CommitFactory(new StatsFactory());

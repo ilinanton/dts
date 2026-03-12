@@ -18,9 +18,7 @@ final readonly class DevReportTablePresenter implements DevReportPresenterInterf
     ) {
     }
 
-    /**
-     * @param array<float> $scores
-     */
+    /** @param array<float> $scores */
     public function render(DeveloperStatisticsCollection $statistics, array $scores): void
     {
         $rows = $this->prepareRows($statistics, $scores);

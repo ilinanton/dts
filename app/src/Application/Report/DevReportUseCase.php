@@ -16,9 +16,7 @@ use DateTime;
 
 final readonly class DevReportUseCase implements UseCaseInterface
 {
-    /**
-     * @param array<LabelName> $testedLabelNames
-     */
+    /** @param array<LabelName> $testedLabelNames */
     public function __construct(
         private DevReportRepositoryInterface $repository,
         private ScoringService $scoringService,
@@ -45,9 +43,7 @@ final readonly class DevReportUseCase implements UseCaseInterface
         );
     }
 
-    /**
-     * @return array<float>
-     */
+    /** @return array<float> */
     private function calculateScores(DeveloperStatisticsCollection $statistics): array
     {
         $scores = [];

@@ -8,9 +8,7 @@ use App\Domain\Gitlab\Note\ValueObject\NoteBody;
 
 final class NoteFactory
 {
-    /**
-     * @param array{body?: string} $data
-     */
+    /** @param array{body?: string} $data */
     public function create(array $data): Note
     {
         return new Note(

@@ -9,9 +9,7 @@ use App\Domain\Report\ValueObject\ReportStartDate;
 
 final readonly class ReportCriteria
 {
-    /**
-     * @param array<LabelName> $testedLabelNames
-     */
+    /** @param array<LabelName> $testedLabelNames */
     public function __construct(
         public ReportStartDate $startDate,
         public array $testedLabelNames = [],

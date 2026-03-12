@@ -10,9 +10,7 @@ use App\Domain\Gitlab\Label\ValueObject\LabelName;
 
 final readonly class LabelFactory
 {
-    /**
-     * @param array{id: int, name: string, color: string} $data
-     */
+    /** @param array{id: int, name: string, color: string} $data */
     public function create(array $data): Label
     {
         return new Label(

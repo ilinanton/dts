@@ -162,9 +162,7 @@ SQL;
         return $collection;
     }
 
-    /**
-     * @param array<LabelName> $labels
-     */
+    /** @param array<LabelName> $labels */
     private function buildLabelPlaceholders(array $labels): string
     {
         $keys = [];
@@ -174,9 +172,7 @@ SQL;
         return implode(', ', $keys);
     }
 
-    /**
-     * @param array<LabelName> $labels
-     */
+    /** @param array<LabelName> $labels */
     private function bindLabelValues(\PDOStatement $stmt, array $labels): void
     {
         foreach (array_values($labels) as $i => $label) {

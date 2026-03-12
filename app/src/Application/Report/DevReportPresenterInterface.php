@@ -8,8 +8,6 @@ use App\Domain\Report\DeveloperStatisticsCollection;
 
 interface DevReportPresenterInterface
 {
-    /**
-     * @param array<float> $scores
-     */
+    /** @param array<float> $scores */
     public function render(DeveloperStatisticsCollection $statistics, array $scores): void;
 }
