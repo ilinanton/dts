@@ -13,6 +13,7 @@ use App\Application\Gitlab\SyncGitlabProjectsUseCase;
 use App\Application\Gitlab\SyncGitlabUserEventsUseCase;
 use App\Application\Gitlab\SyncGitlabUsersUseCase;
 use App\Application\Report\DevReportUseCase;
+use App\Application\Report\ReportDateProviderInterface;
 use App\Application\UseCaseCollection;
 use App\Application\UseCaseInterface;
 use App\Domain\Git\Commit\CommitSinceDate;
@@ -23,6 +24,7 @@ use App\Domain\Report\ValueObject\LabelName;
 use App\Domain\Report\ScoringService;
 use App\Infrastructure\Report\DevReportMySqlRepository;
 use App\Application\Report\DevReportPresenterInterface;
+use App\Presentation\Report\CliReportDateProvider;
 use App\Presentation\Report\DevReportTablePresenter;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;
@@ -194,11 +196,15 @@ return [
             new ConsoleOutput(),
         );
     },
+    ReportDateProviderInterface::class => function (): ReportDateProviderInterface {
+        return new CliReportDateProvider();
+    },
     DevReportUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new DevReportUseCase(
             $c->get(DevReportRepositoryInterface::class),
             $c->get(ScoringService::class),
             $c->get(DevReportPresenterInterface::class),
+            $c->get(ReportDateProviderInterface::class),
             $c->get('REPORT_TESTED_LABELS'),
         );
     },

@@ -10,9 +10,6 @@ use App\Domain\Report\ReportCriteria;
 use App\Domain\Report\Repository\DevReportRepositoryInterface;
 use App\Domain\Report\ScoringService;
 use App\Domain\Report\ValueObject\LabelName;
-use App\Domain\Report\ValueObject\ReportStartDate;
-use DateInterval;
-use DateTime;
 
 final readonly class DevReportUseCase implements UseCaseInterface
 {
@@ -21,6 +18,7 @@ final readonly class DevReportUseCase implements UseCaseInterface
         private DevReportRepositoryInterface $repository,
         private ScoringService $scoringService,
         private DevReportPresenterInterface $presenter,
+        private ReportDateProviderInterface $dateProvider,
         private array $testedLabelNames = [],
     ) {
     }
@@ -36,9 +34,8 @@ final readonly class DevReportUseCase implements UseCaseInterface
 
     private function createReportCriteria(): ReportCriteria
     {
-        $date = $this->getDateFromUser();
         return new ReportCriteria(
-            startDate: new ReportStartDate($date->format('Y-m-d'), 'Y-m-d'),
+            startDate: $this->dateProvider->getReportStartDate(),
             testedLabelNames: $this->testedLabelNames,
         );
     }
@@ -65,18 +62,5 @@ final readonly class DevReportUseCase implements UseCaseInterface
             $sorted->add($item);
         }
         return $sorted;
-    }
-
-    private function getDateFromUser(): DateTime
-    {
-        $defaultDate = new DateTime();
-        $defaultDate->sub(new DateInterval('P2W'));
-        $input = trim(readline('Enter the start date for the report (YYYY-MM-DD): '));
-        $inputDateTime = DateTime::createFromFormat('Y-m-d', $input);
-        if ($inputDateTime === false) {
-            echo $defaultDate->format('Y-m-d') . PHP_EOL;
-            return $defaultDate;
-        }
-        return $inputDateTime;
     }
 }
