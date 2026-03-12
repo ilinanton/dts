@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Report;
 
 use App\Domain\Report\DeveloperStatistics;
+use App\Domain\Report\DeveloperStatisticsCollection;
 use App\Domain\Report\ReportCriteria;
 use App\Domain\Report\Repository\DevReportRepositoryInterface;
 use App\Domain\Report\ValueObject\LabelName;
@@ -17,7 +18,7 @@ final readonly class DevReportMySqlRepository implements DevReportRepositoryInte
     ) {
     }
 
-    public function getStatistics(ReportCriteria $criteria): array
+    public function getStatistics(ReportCriteria $criteria): DeveloperStatisticsCollection
     {
         $afterAt = $criteria->startDate->getValue();
         $hasTestedLabels = $criteria->testedLabelNames !== [];
@@ -139,9 +140,9 @@ SQL;
 
         $stmt->execute();
 
-        $results = [];
+        $collection = new DeveloperStatisticsCollection();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $results[] = new DeveloperStatistics(
+            $collection->add(new DeveloperStatistics(
                 userId: (int)$row['id'],
                 userName: (string)$row['user'],
                 mergeRequestsCreated: (int)$row['mr_created'],
@@ -153,10 +154,10 @@ SQL;
                 linesDeleted: (int)$row['loc_del'],
                 mergeRequestsSelfApproved: (int)$row['mr_self_approved'],
                 commitsToDefaultBranch: (int)$row['committed_to_default_branch'],
-            );
+            ));
         }
 
-        return $results;
+        return $collection;
     }
 
     /**

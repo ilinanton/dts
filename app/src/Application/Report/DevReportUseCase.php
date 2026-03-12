@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Report;
 
 use App\Application\UseCaseInterface;
+use App\Domain\Report\DeveloperStatisticsCollection;
 use App\Domain\Report\ReportCriteria;
 use App\Domain\Report\Repository\DevReportRepositoryInterface;
 use App\Domain\Report\ScoringService;
@@ -31,8 +32,8 @@ final readonly class DevReportUseCase implements UseCaseInterface
         $criteria = $this->createReportCriteria();
         $statistics = $this->repository->getStatistics($criteria);
         $scores = $this->calculateScores($statistics);
-        $this->sortByScore($statistics, $scores);
-        $this->presenter->render($statistics, $scores);
+        $sorted = $this->sortByScore($statistics, $scores);
+        $this->presenter->render($sorted, $scores);
     }
 
     private function createReportCriteria(): ReportCriteria
@@ -44,7 +45,10 @@ final readonly class DevReportUseCase implements UseCaseInterface
         );
     }
 
-    private function calculateScores(array $statistics): array
+    /**
+     * @return array<float>
+     */
+    private function calculateScores(DeveloperStatisticsCollection $statistics): array
     {
         $scores = [];
         foreach ($statistics as $stat) {
@@ -53,9 +57,18 @@ final readonly class DevReportUseCase implements UseCaseInterface
         return $scores;
     }
 
-    private function sortByScore(array &$statistics, array &$scores): void
-    {
-        array_multisort($scores, SORT_DESC, $statistics);
+    private function sortByScore(
+        DeveloperStatisticsCollection $statistics,
+        array &$scores,
+    ): DeveloperStatisticsCollection {
+        $items = iterator_to_array($statistics);
+        array_multisort($scores, SORT_DESC, $items);
+
+        $sorted = new DeveloperStatisticsCollection();
+        foreach ($items as $item) {
+            $sorted->add($item);
+        }
+        return $sorted;
     }
 
     private function getDateFromUser(): DateTime

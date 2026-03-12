@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Presentation\Report;
 
 use App\Application\Report\DevReportPresenterInterface;
-use App\Domain\Report\DeveloperStatistics;
+use App\Domain\Report\DeveloperStatisticsCollection;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Helper\TableCellStyle;
@@ -19,16 +19,15 @@ final readonly class DevReportTablePresenter implements DevReportPresenterInterf
     }
 
     /**
-     * @param array<DeveloperStatistics> $statistics
      * @param array<float> $scores
      */
-    public function render(array $statistics, array $scores): void
+    public function render(DeveloperStatisticsCollection $statistics, array $scores): void
     {
         $rows = $this->prepareRows($statistics, $scores);
         $this->printTable($rows);
     }
 
-    private function prepareRows(array $statistics, array $scores): array
+    private function prepareRows(DeveloperStatisticsCollection $statistics, array $scores): array
     {
         $rows = [];
         foreach ($statistics as $index => $stat) {
