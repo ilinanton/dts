@@ -15,6 +15,7 @@ use App\Application\Gitlab\SyncGitlabUsersUseCase;
 use App\Application\Report\DevReportUseCase;
 use App\Application\UseCaseCollection;
 use App\Application\UseCaseInterface;
+use App\Domain\Git\Commit\CommitSinceDate;
 use App\Domain\Git\Common\GitRepositoryInterface;
 use App\Domain\Report\Repository\DevReportRepositoryInterface;
 use App\Domain\Report\ScoringConfiguration;
@@ -129,7 +130,7 @@ return [
     },
     SyncGitlabProjectCommitStatsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncGitlabProjectCommitStatsUseCase(
-            $c->get('GITLAB_SYNC_DATE_AFTER'),
+            new CommitSinceDate($c->get('GITLAB_SYNC_DATE_AFTER')),
             $c->get(GitRepositoryInterface::class),
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
             $c->get(GitlabDataBaseCommitStatsRepositoryInterface::class),

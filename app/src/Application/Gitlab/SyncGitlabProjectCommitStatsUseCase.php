@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Gitlab;
 
 use App\Application\UseCaseInterface;
+use App\Domain\Git\Commit\CommitSinceDate;
 use App\Domain\Git\Common\GitRepositoryInterface;
 use App\Domain\Gitlab\CommitStats\CommitStatsFactory;
 use App\Domain\Gitlab\CommitStats\Repository\GitlabDataBaseCommitStatsRepositoryInterface;
@@ -14,7 +15,7 @@ use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterfac
 final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInterface
 {
     public function __construct(
-        private string $syncDateAfter,
+        private CommitSinceDate $syncDateAfter,
         private GitRepositoryInterface $gitRepository,
         private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
         private GitlabDataBaseCommitStatsRepositoryInterface $dataBaseCommitStatsRepository,
@@ -23,7 +24,7 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
 
     public function execute(): void
     {
-        echo 'Load project commit stats after ' . $this->syncDateAfter . PHP_EOL;
+        echo 'Load project commit stats after ' . $this->syncDateAfter->getValueInMainFormat() . PHP_EOL;
         $gitProjectCollection = $this->gitRepository->getProjects();
         foreach ($gitProjectCollection as $project) {
             $this->syncProject($project);

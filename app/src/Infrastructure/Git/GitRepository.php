@@ -6,6 +6,7 @@ namespace App\Infrastructure\Git;
 
 use App\Domain\Git\Commit\CommitCollection;
 use App\Domain\Git\Commit\CommitFactory;
+use App\Domain\Git\Commit\CommitSinceDate;
 use App\Domain\Git\Common\GitRepositoryInterface;
 use App\Domain\Git\Project\Project;
 use App\Domain\Git\Project\ProjectCollection;
@@ -45,7 +46,7 @@ final readonly class GitRepository implements GitRepositoryInterface
         return $collection;
     }
 
-    public function getCommits(Project $project, string $since): CommitCollection
+    public function getCommits(Project $project, CommitSinceDate $since): CommitCollection
     {
         $collection = new CommitCollection();
 
@@ -57,7 +58,7 @@ final readonly class GitRepository implements GitRepositoryInterface
         }
 
         $log = shell_exec(sprintf('cd %s ', $project->path->value) .
-            sprintf("&& git log --shortstat --no-merges --date=iso-local --since='%s'", $since) .
+            sprintf("&& git log --shortstat --no-merges --date=iso-local --since='%s'", $since->getValueInMainFormat()) .
             " --format='{|c|}{|p|}commit: %H{|p|}date: %aI{|p|}name: %aN{|p|}email: %aE{|p|}stat:'" .
             ($exclude . ' | tr \'
 \' \' \'')) ?? '';
