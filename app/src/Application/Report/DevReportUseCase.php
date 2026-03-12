@@ -28,8 +28,8 @@ final readonly class DevReportUseCase implements UseCaseInterface
         $criteria = $this->createReportCriteria();
         $statistics = $this->repository->getStatistics($criteria);
         $scores = $this->calculateScores($statistics);
-        $sorted = $this->sortByScore($statistics, $scores);
-        $this->presenter->render($sorted, $scores);
+        $result = $statistics->sortByScoreDescending($scores);
+        $this->presenter->render($result['collection'], $result['scores']);
     }
 
     private function createReportCriteria(): ReportCriteria
@@ -48,19 +48,5 @@ final readonly class DevReportUseCase implements UseCaseInterface
             $scores[] = $this->scoringService->calculateScore($stat);
         }
         return $scores;
-    }
-
-    private function sortByScore(
-        DeveloperStatisticsCollection $statistics,
-        array &$scores,
-    ): DeveloperStatisticsCollection {
-        $items = iterator_to_array($statistics);
-        array_multisort($scores, SORT_DESC, $items);
-
-        $sorted = new DeveloperStatisticsCollection();
-        foreach ($items as $item) {
-            $sorted->add($item);
-        }
-        return $sorted;
     }
 }
