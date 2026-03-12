@@ -32,8 +32,8 @@ final readonly class DevReportTablePresenter implements DevReportPresenterInterf
         $rows = [];
         foreach ($statistics as $index => $stat) {
             $rows[] = [
-                $stat->userId,
-                $stat->userName,
+                $stat->userId->value,
+                $stat->userName->value,
                 $stat->mergeRequestsCreated,
                 $stat->approvalsGiven,
                 $stat->mergeRequestsMerged,

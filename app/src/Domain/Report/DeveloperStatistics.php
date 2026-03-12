@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Domain\Report;
 
+use App\Domain\Report\ValueObject\DeveloperUserId;
+use App\Domain\Report\ValueObject\DeveloperUserName;
+
 final readonly class DeveloperStatistics
 {
     public function __construct(
-        public int $userId,
-        public string $userName,
+        public DeveloperUserId $userId,
+        public DeveloperUserName $userName,
         public int $mergeRequestsCreated,
         public int $approvalsGiven,
         public int $mergeRequestsMerged,

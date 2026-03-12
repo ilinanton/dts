@@ -8,6 +8,8 @@ use App\Domain\Report\DeveloperStatistics;
 use App\Domain\Report\DeveloperStatisticsCollection;
 use App\Domain\Report\ReportCriteria;
 use App\Domain\Report\Repository\DevReportRepositoryInterface;
+use App\Domain\Report\ValueObject\DeveloperUserId;
+use App\Domain\Report\ValueObject\DeveloperUserName;
 use App\Domain\Report\ValueObject\LabelName;
 use PDO;
 
@@ -143,8 +145,8 @@ SQL;
         $collection = new DeveloperStatisticsCollection();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $collection->add(new DeveloperStatistics(
-                userId: (int)$row['id'],
-                userName: (string)$row['user'],
+                userId: new DeveloperUserId((int)$row['id']),
+                userName: new DeveloperUserName((string)$row['user']),
                 mergeRequestsCreated: (int)$row['mr_created'],
                 approvalsGiven: (int)$row['approvals_given'],
                 mergeRequestsMerged: (int)$row['mr_merged'],
