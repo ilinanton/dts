@@ -19,6 +19,22 @@ use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestRequiredWebUrl;
 
 final class MergeRequestFactory
 {
+    /**
+     * @param array{
+     *     id: int,
+     *     iid: int,
+     *     project_id: int,
+     *     title: string,
+     *     state: string,
+     *     merged_at?: string,
+     *     created_at: string,
+     *     updated_at?: string,
+     *     target_branch: string,
+     *     source_branch: string,
+     *     author_id: int,
+     *     web_url: string,
+     * } $data
+     */
     public function create(array $data, string $dateFormat = DATE_RFC3339_EXTENDED): MergeRequest
     {
         return new MergeRequest(

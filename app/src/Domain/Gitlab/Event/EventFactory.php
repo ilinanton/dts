@@ -26,6 +26,21 @@ final readonly class EventFactory
     ) {
     }
 
+    /**
+     * @param array{
+     *     id: int,
+     *     project_id: int,
+     *     action_name: string,
+     *     target_id?: int,
+     *     target_iid?: int,
+     *     target_type?: string,
+     *     author_id: int,
+     *     target_title?: string,
+     *     created_at: string,
+     *     push_data?: array<string, mixed>,
+     *     note?: array<string, mixed>,
+     * } $data
+     */
     public function create(array $data): Event
     {
         return new Event(

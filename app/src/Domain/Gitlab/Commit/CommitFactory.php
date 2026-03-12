@@ -19,6 +19,20 @@ use App\Domain\Gitlab\Commit\ValueObject\CommitWebUrl;
 
 final readonly class CommitFactory
 {
+    /**
+     * @param array{
+     *     id?: string,
+     *     title?: string,
+     *     created_at: string,
+     *     web_url: string,
+     *     author_name: string,
+     *     author_email: string,
+     *     authored_date: string,
+     *     committer_name: string,
+     *     committer_email: string,
+     *     committed_date: string,
+     * } $data
+     */
     public function create(int $projectId, array $data): Commit
     {
         $commitId = new CommitId($data['id'] ?? '');

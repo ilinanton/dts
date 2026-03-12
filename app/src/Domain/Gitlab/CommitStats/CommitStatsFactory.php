@@ -12,6 +12,14 @@ use App\Domain\Gitlab\CommitStats\ValueObject\CommitStatsProjectId;
 
 final class CommitStatsFactory
 {
+    /**
+     * @param array{
+     *     id?: string,
+     *     files?: int,
+     *     additions?: int,
+     *     deletions?: int,
+     * } $data
+     */
     public function create(int $projectId, array $data): CommitStats
     {
         return new CommitStats(

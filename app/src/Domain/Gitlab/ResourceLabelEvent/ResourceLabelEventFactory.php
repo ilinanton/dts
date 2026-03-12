@@ -15,6 +15,18 @@ use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventUserId;
 
 final readonly class ResourceLabelEventFactory
 {
+    /**
+     * @param array{
+     *     id: int,
+     *     user: array{id: int},
+     *     created_at: string,
+     *     resource_type: string,
+     *     resource_id: int,
+     *     label_id: int,
+     *     action: string,
+     *     project_id: int,
+     * } $data
+     */
     public function create(array $data): ResourceLabelEvent
     {
         return new ResourceLabelEvent(

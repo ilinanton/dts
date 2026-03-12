@@ -16,6 +16,18 @@ use App\Domain\Gitlab\PushData\ValueObject\PushDataRefType;
 
 final readonly class PushDataFromArray
 {
+    /**
+     * @param array{
+     *     action?: string,
+     *     commit_title?: string,
+     *     commit_count?: int,
+     *     commit_from?: string,
+     *     commit_to?: string,
+     *     ref?: string,
+     *     ref_count?: int,
+     *     ref_type?: string,
+     * } $data
+     */
     public function create(array $data): PushData
     {
         if ([] === $data) {
