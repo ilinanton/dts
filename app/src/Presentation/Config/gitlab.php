@@ -5,6 +5,8 @@ declare(strict_types=1);
 use App\Application\Gitlab\SyncGitlabDataUseCase;
 use App\Application\Gitlab\SyncGitlabMergeRequestLabelEventsUseCase;
 use App\Application\Gitlab\SyncGitlabLabelsUseCase;
+use App\Domain\Gitlab\Event\EventFilter;
+use App\Domain\Gitlab\Event\EventFilterCollection;
 use App\Application\Gitlab\SyncGitlabProjectCommitStatsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectCommitsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectEventsUseCase;
@@ -114,12 +116,21 @@ return [
             $c->get(GitlabDataBaseProjectRepositoryInterface::class)
         );
     },
+    EventFilterCollection::class => function (): EventFilterCollection {
+        $collection = new EventFilterCollection();
+        $collection->add(new EventFilter('action', 'pushed'));
+        $collection->add(new EventFilter('action', 'commented'));
+        $collection->add(new EventFilter('target_type', 'merge_request'));
+
+        return $collection;
+    },
     SyncGitlabProjectEventsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncGitlabProjectEventsUseCase(
             $c->get('GITLAB_SYNC_DATE_AFTER'),
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
             $c->get(GitlabApiEventRepositoryInterface::class),
             $c->get(GitlabDataBaseEventRepositoryInterface::class),
+            $c->get(EventFilterCollection::class),
         );
     },
     SyncGitlabProjectCommitsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
