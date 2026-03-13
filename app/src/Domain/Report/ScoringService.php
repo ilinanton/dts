@@ -14,14 +14,14 @@ final readonly class ScoringService
     public function calculateScore(DeveloperStatistics $statistics): float
     {
         return
-            $statistics->mergeRequestsCreated * $this->configuration->mergeRequestCreated +
-            $statistics->approvalsGiven * $this->configuration->approvalsGiven +
-            $statistics->mergeRequestsMerged * $this->configuration->mergeRequestMerged +
-            $statistics->mergeRequestsMergedWithApproval * $this->configuration->mergeRequestApproved +
-            $statistics->mergeRequestsTested * $this->configuration->mergeRequestTested +
-            $statistics->linesAdded * $this->configuration->linesAdded +
-            $statistics->linesDeleted * $this->configuration->linesRemoved +
-            $statistics->mergeRequestsSelfApproved * $this->configuration->selfApprovals +
-            $statistics->commitsToDefaultBranch * $this->configuration->directCommitsToMain;
+            $statistics->mergeRequestsCreated * $this->configuration->mergeRequestCreated->value +
+            $statistics->approvalsGiven * $this->configuration->approvalsGiven->value +
+            $statistics->mergeRequestsMerged * $this->configuration->mergeRequestMerged->value +
+            $statistics->mergeRequestsMergedWithApproval * $this->configuration->mergeRequestApproved->value +
+            $statistics->mergeRequestsTested * $this->configuration->mergeRequestTested->value +
+            $statistics->linesAdded * $this->configuration->linesAdded->value +
+            $statistics->linesDeleted * $this->configuration->linesRemoved->value +
+            $statistics->mergeRequestsSelfApproved * $this->configuration->selfApprovals->value +
+            $statistics->commitsToDefaultBranch * $this->configuration->directCommitsToMain->value;
     }
 }

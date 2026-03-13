@@ -23,6 +23,8 @@ use App\Domain\Git\Common\GitRepositoryInterface;
 use App\Domain\Report\Repository\DevReportRepositoryInterface;
 use App\Domain\Report\ScoringConfiguration;
 use App\Domain\Report\ValueObject\LabelName;
+use App\Domain\Report\ValueObject\ScoringPenalty;
+use App\Domain\Report\ValueObject\ScoringWeight;
 use App\Domain\Report\ScoringService;
 use App\Infrastructure\Report\DevReportMySqlRepository;
 use App\Application\Report\DevReportPresenterInterface;
@@ -181,15 +183,15 @@ return [
     },
     ScoringConfiguration::class => function (): ScoringConfiguration {
         return new ScoringConfiguration(
-            mergeRequestCreated: (float)$_ENV['POINTS_MERGE_REQUEST_CREATED'],
-            approvalsGiven: (float)$_ENV['POINTS_APPROVALS_GIVEN'],
-            mergeRequestMerged: (float)$_ENV['POINTS_MERGE_REQUEST_MERGED'],
-            mergeRequestApproved: (float)$_ENV['POINTS_MERGE_REQUEST_APPROVED'],
-            mergeRequestTested: (float)$_ENV['POINTS_MERGE_REQUEST_TESTED'],
-            linesAdded: (float)$_ENV['POINTS_LINES_ADDED'],
-            linesRemoved: (float)$_ENV['POINTS_LINES_REMOVED'],
-            selfApprovals: (float)$_ENV['POINTS_SELF_APPROVALS'],
-            directCommitsToMain: (float)$_ENV['POINTS_DIRECT_COMMITS_TO_MAIN'],
+            mergeRequestCreated: new ScoringWeight((float)$_ENV['POINTS_MERGE_REQUEST_CREATED']),
+            approvalsGiven: new ScoringWeight((float)$_ENV['POINTS_APPROVALS_GIVEN']),
+            mergeRequestMerged: new ScoringWeight((float)$_ENV['POINTS_MERGE_REQUEST_MERGED']),
+            mergeRequestApproved: new ScoringWeight((float)$_ENV['POINTS_MERGE_REQUEST_APPROVED']),
+            mergeRequestTested: new ScoringWeight((float)$_ENV['POINTS_MERGE_REQUEST_TESTED']),
+            linesAdded: new ScoringWeight((float)$_ENV['POINTS_LINES_ADDED']),
+            linesRemoved: new ScoringWeight((float)$_ENV['POINTS_LINES_REMOVED']),
+            selfApprovals: new ScoringPenalty((float)$_ENV['POINTS_SELF_APPROVALS']),
+            directCommitsToMain: new ScoringPenalty((float)$_ENV['POINTS_DIRECT_COMMITS_TO_MAIN']),
         );
     },
     ScoringService::class => function (ContainerInterface $c): ScoringService {
