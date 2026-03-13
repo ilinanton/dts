@@ -12,8 +12,9 @@ use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventProjectId
 use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventResourceId;
 use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventResourceType;
 use App\Domain\Gitlab\ResourceLabelEvent\ValueObject\ResourceLabelEventUserId;
+use App\Domain\Common\EntityInterface;
 
-final readonly class ResourceLabelEvent
+final readonly class ResourceLabelEvent implements EntityInterface
 {
     public function __construct(
         public ResourceLabelEventId $id,

@@ -16,8 +16,9 @@ use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestTargetBranch;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestTitle;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestUpdatedAt;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestRequiredWebUrl;
+use App\Domain\Common\EntityInterface;
 
-final readonly class MergeRequest
+final readonly class MergeRequest implements EntityInterface
 {
     public function __construct(
         public MergeRequestId $id,

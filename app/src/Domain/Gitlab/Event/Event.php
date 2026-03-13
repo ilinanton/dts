@@ -15,8 +15,9 @@ use App\Domain\Gitlab\Event\ValueObject\EventTargetId;
 use App\Domain\Gitlab\Event\ValueObject\EventTargetIid;
 use App\Domain\Gitlab\Event\ValueObject\EventTargetTitle;
 use App\Domain\Gitlab\Event\ValueObject\EventTargetType;
+use App\Domain\Common\EntityInterface;
 
-final readonly class Event
+final readonly class Event implements EntityInterface
 {
     public function __construct(
         public EventId $id,
