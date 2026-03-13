@@ -4,30 +4,18 @@ declare(strict_types=1);
 
 namespace App\Domain\Gitlab\CommitStats;
 
-use App\Domain\Gitlab\CommitStats\ValueObject\CommitStatsAdditions;
-use App\Domain\Gitlab\CommitStats\ValueObject\CommitStatsDeletions;
-use App\Domain\Gitlab\CommitStats\ValueObject\CommitStatsFiles;
+use App\Domain\Git\Stats\Stats;
 use App\Domain\Gitlab\CommitStats\ValueObject\CommitStatsGitCommitId;
 use App\Domain\Gitlab\CommitStats\ValueObject\CommitStatsProjectId;
 
-final class CommitStatsFactory
+final readonly class CommitStatsFactory
 {
-    /**
-     * @param array{
-     *     id?: string,
-     *     files?: int,
-     *     additions?: int,
-     *     deletions?: int,
-     * } $data
-     */
-    public function create(int $projectId, array $data): CommitStats
+    public function create(int $projectId, string $gitCommitId, Stats $stats): CommitStats
     {
         return new CommitStats(
-            new CommitStatsGitCommitId($data['id'] ?? 0),
+            new CommitStatsGitCommitId($gitCommitId),
             new CommitStatsProjectId($projectId),
-            new CommitStatsFiles($data['files'] ?? 0),
-            new CommitStatsAdditions($data['additions'] ?? 0),
-            new CommitStatsDeletions($data['deletions'] ?? 0),
+            $stats,
         );
     }
 }

@@ -41,9 +41,9 @@ SQL;
         $stmt->execute([
             ':GIT_COMMIT_ID' => $object->gitCommitId->value,
             ':PROJECT_ID' => $object->projectId->value,
-            ':FILES' => $object->files->value,
-            ':ADDITIONS' => $object->additions->value,
-            ':DELETIONS' => $object->deletions->value,
+            ':FILES' => $object->stats->files->value,
+            ':ADDITIONS' => $object->stats->additions->value,
+            ':DELETIONS' => $object->stats->deletions->value,
         ]);
     }
 }

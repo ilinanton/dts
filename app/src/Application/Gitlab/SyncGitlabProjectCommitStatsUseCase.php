@@ -47,17 +47,11 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
         $counter = 0;
         foreach ($gitCommitCollection as $gitCommit) {
             $counter++;
-            $gitCommitStats = $gitCommit->stats->value;
-            $gitStatsData = [
-                'id' => $gitCommit->id->value,
-                'files' => $gitCommitStats->files->value,
-                'additions' => $gitCommitStats->additions->value,
-                'deletions' => $gitCommitStats->deletions->value,
-            ];
             foreach ($gitlabProjectCollection as $gitlabProject) {
                 $gitlabCommitStats = $gitCommitStatsFactory->create(
                     $gitlabProject->id->value,
-                    $gitStatsData,
+                    $gitCommit->id->value,
+                    $gitCommit->stats->value,
                 );
                 $this->dataBaseCommitStatsRepository->save($gitlabCommitStats);
             }
