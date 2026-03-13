@@ -11,13 +11,7 @@
 >
     <testsuites>
         <testsuite name="Application">
-            <directory suffix="Test.php">./engine/Application/</directory>
-        </testsuite>
-        <testsuite name="Domain">
-            <directory suffix="Test.php">./modules/Domain/</directory>
-        </testsuite>
-        <testsuite name="Infrastructure">
-            <directory suffix="Test.php">./src/Infrastructure/</directory>
+            <directory suffix="Test.php">./src</directory>
         </testsuite>
     </testsuites>
     <php>
