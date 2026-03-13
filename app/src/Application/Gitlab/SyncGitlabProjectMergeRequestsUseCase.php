@@ -6,6 +6,7 @@ namespace App\Application\Gitlab;
 
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
+use App\Domain\Gitlab\Common\ItemsPerPage;
 use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabApiMergeRequestRepositoryInterface;
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
@@ -13,14 +14,13 @@ use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterfac
 
 final readonly class SyncGitlabProjectMergeRequestsUseCase implements UseCaseInterface
 {
-    private const int COUNT_ITEMS_PER_PAGE = 40;
-
     public function __construct(
         private SyncDateAfter $syncDateAfter,
         private GitlabApiMergeRequestRepositoryInterface $apiMergeRequestRepository,
         private GitlabDataBaseMergeRequestRepositoryInterface $dataBaseMergeRequestRepository,
         private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
         private SyncOutputInterface $output,
+        private ItemsPerPage $itemsPerPage,
     ) {
     }
 
@@ -38,7 +38,7 @@ final readonly class SyncGitlabProjectMergeRequestsUseCase implements UseCaseInt
 
                 $mergeRequestCollection = $this->apiMergeRequestRepository->get($projectId, [
                     'page' => $page,
-                    'per_page' => self::COUNT_ITEMS_PER_PAGE,
+                    'per_page' => $this->itemsPerPage->value,
                     'created_after' => $this->syncDateAfter->getValueInMainFormat(),
                 ]);
 
@@ -46,7 +46,7 @@ final readonly class SyncGitlabProjectMergeRequestsUseCase implements UseCaseInt
                     $this->dataBaseMergeRequestRepository->save($mergeRequest);
                 }
                 $this->output->write(' .');
-            } while (self::COUNT_ITEMS_PER_PAGE === count($mergeRequestCollection));
+            } while ($this->itemsPerPage->value === count($mergeRequestCollection));
             $this->output->writeLine(' done');
         }
     }

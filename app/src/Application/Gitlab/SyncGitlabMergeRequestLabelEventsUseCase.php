@@ -6,6 +6,7 @@ namespace App\Application\Gitlab;
 
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
+use App\Domain\Gitlab\Common\ItemsPerPage;
 use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabApiResourceLabelEventRepositoryInterface;
@@ -13,14 +14,13 @@ use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabDataBaseResourceLabelE
 
 final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCaseInterface
 {
-    private const int COUNT_ITEMS_PER_PAGE = 60;
-
     public function __construct(
         private SyncDateAfter $syncDateAfter,
         private GitlabApiResourceLabelEventRepositoryInterface $apiResourceLabelEventRepository,
         private GitlabDataBaseResourceLabelEventRepositoryInterface $databaseResourceLabelEventRepository,
         private GitlabDataBaseMergeRequestRepositoryInterface $dataBaseMergeRequestRepository,
         private SyncOutputInterface $output,
+        private ItemsPerPage $itemsPerPage,
     ) {
     }
 
@@ -41,7 +41,7 @@ final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCase
                     $mergeRequestIid,
                     [
                         'page' => $page,
-                        'per_page' => self::COUNT_ITEMS_PER_PAGE,
+                        'per_page' => $this->itemsPerPage->value,
                         'created_after' => $this->syncDateAfter->getValueInMainFormat(),
                     ],
                 );
@@ -50,7 +50,7 @@ final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCase
                     $this->databaseResourceLabelEventRepository->save($resourceLabelEvent);
                 }
                 $this->output->write(' .');
-            } while (self::COUNT_ITEMS_PER_PAGE === count($resourceLabelEventCollection));
+            } while ($this->itemsPerPage->value === count($resourceLabelEventCollection));
             $this->output->writeLine(' done');
         }
     }

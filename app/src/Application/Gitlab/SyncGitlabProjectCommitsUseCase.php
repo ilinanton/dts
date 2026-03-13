@@ -6,6 +6,7 @@ namespace App\Application\Gitlab;
 
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
+use App\Domain\Gitlab\Common\ItemsPerPage;
 use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;
 use App\Domain\Gitlab\Commit\Repository\GitlabDataBaseCommitRepositoryInterface;
@@ -14,14 +15,13 @@ use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterfac
 
 final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
 {
-    private const int COUNT_ITEMS_PER_PAGE = 40;
-
     public function __construct(
         private SyncDateAfter $syncDateAfter,
         private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
         private GitlabApiCommitRepositoryInterface $apiCommitRepository,
         private GitlabDataBaseCommitRepositoryInterface $dataBaseCommitRepository,
         private SyncOutputInterface $output,
+        private ItemsPerPage $itemsPerPage,
     ) {
     }
 
@@ -46,7 +46,7 @@ final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
 
             $params = [
                 'page' => $page,
-                'per_page' => self::COUNT_ITEMS_PER_PAGE,
+                'per_page' => $this->itemsPerPage->value,
                 'since' => $this->syncDateAfter->getValueInMainFormat(),
                 'ref_name' => $refName,
                 'with_stats' => true,
@@ -58,7 +58,7 @@ final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
                 $this->dataBaseCommitRepository->save($commit);
             }
             $this->output->write(' .');
-        } while (self::COUNT_ITEMS_PER_PAGE === count($commitCollection));
+        } while ($this->itemsPerPage->value === count($commitCollection));
         $this->output->writeLine(' done');
     }
 }

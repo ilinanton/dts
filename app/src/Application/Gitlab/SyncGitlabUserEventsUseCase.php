@@ -6,6 +6,7 @@ namespace App\Application\Gitlab;
 
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
+use App\Domain\Gitlab\Common\ItemsPerPage;
 use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Gitlab\Event\Repository\GitlabApiEventRepositoryInterface;
 use App\Domain\Gitlab\Event\Repository\GitlabDataBaseEventRepositoryInterface;
@@ -13,14 +14,13 @@ use App\Domain\Gitlab\User\Repository\GitlabDataBaseUserRepositoryInterface;
 
 final readonly class SyncGitlabUserEventsUseCase implements UseCaseInterface
 {
-    private const int COUNT_ITEMS_PER_PAGE = 20;
-
     public function __construct(
         private SyncDateAfter $syncDateAfter,
         private GitlabDataBaseUserRepositoryInterface $dataBaseUserRepository,
         private GitlabApiEventRepositoryInterface $apiEventRepository,
         private GitlabDataBaseEventRepositoryInterface $dataBaseEventRepository,
         private SyncOutputInterface $output,
+        private ItemsPerPage $itemsPerPage,
     ) {
     }
 
@@ -38,7 +38,7 @@ final readonly class SyncGitlabUserEventsUseCase implements UseCaseInterface
 
                 $eventCollection = $this->apiEventRepository->getByUserId($userId, [
                     'page' => $page,
-                    'per_page' => self::COUNT_ITEMS_PER_PAGE,
+                    'per_page' => $this->itemsPerPage->value,
                     'after' => $this->syncDateAfter->getValueInMainFormat(),
                     'target_type' => 'merge_request',
                 ]);
@@ -47,7 +47,7 @@ final readonly class SyncGitlabUserEventsUseCase implements UseCaseInterface
                     $this->dataBaseEventRepository->save($event);
                 }
                 $this->output->write(' .');
-            } while (self::COUNT_ITEMS_PER_PAGE === count($eventCollection));
+            } while ($this->itemsPerPage->value === count($eventCollection));
             $this->output->writeLine(' done');
         }
     }

@@ -21,6 +21,7 @@ use App\Application\UseCaseCollection;
 use App\Application\UseCaseInterface;
 use App\Domain\Git\Commit\CommitSinceDate;
 use App\Domain\Git\Common\GitRepositoryInterface;
+use App\Domain\Gitlab\Common\ItemsPerPage;
 use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Report\Repository\DevReportRepositoryInterface;
 use App\Domain\Report\ScoringConfiguration;
@@ -125,6 +126,7 @@ return [
             $c->get(GitlabApiProjectRepositoryInterface::class),
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
             $c->get(SyncOutputInterface::class),
+            new ItemsPerPage(60),
         );
     },
     EventFilterCollection::class => function (): EventFilterCollection {
@@ -143,6 +145,7 @@ return [
             $c->get(GitlabDataBaseEventRepositoryInterface::class),
             $c->get(EventFilterCollection::class),
             $c->get(SyncOutputInterface::class),
+            new ItemsPerPage(40),
         );
     },
     SyncGitlabProjectCommitsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
@@ -152,6 +155,7 @@ return [
             $c->get(GitlabApiCommitRepositoryInterface::class),
             $c->get(GitlabDataBaseCommitRepositoryInterface::class),
             $c->get(SyncOutputInterface::class),
+            new ItemsPerPage(40),
         );
     },
     SyncGitlabProjectCommitStatsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
@@ -169,6 +173,7 @@ return [
             $c->get(GitlabApiUserRepositoryInterface::class),
             $c->get(GitlabDataBaseUserRepositoryInterface::class),
             $c->get(SyncOutputInterface::class),
+            new ItemsPerPage(40),
         );
     },
     SyncGitlabLabelsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
@@ -176,6 +181,7 @@ return [
             $c->get(GitlabApiLabelRepositoryInterface::class),
             $c->get(GitlabDataBaseLabelRepositoryInterface::class),
             $c->get(SyncOutputInterface::class),
+            new ItemsPerPage(60),
         );
     },
     SyncGitlabMergeRequestLabelEventsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
@@ -185,6 +191,7 @@ return [
             $c->get(GitlabDataBaseResourceLabelEventRepositoryInterface::class),
             $c->get(GitlabDataBaseMergeRequestRepositoryInterface::class),
             $c->get(SyncOutputInterface::class),
+            new ItemsPerPage(60),
         );
     },
     'REPORT_TESTED_LABELS' => function (): array {
@@ -244,6 +251,7 @@ return [
             $c->get(GitlabDataBaseMergeRequestRepositoryInterface::class),
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
             $c->get(SyncOutputInterface::class),
+            new ItemsPerPage(40),
         );
     },
     SyncGitlabUserEventsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
@@ -253,6 +261,7 @@ return [
             $c->get(GitlabApiEventRepositoryInterface::class),
             $c->get(GitlabDataBaseEventRepositoryInterface::class),
             $c->get(SyncOutputInterface::class),
+            new ItemsPerPage(20),
         );
     },
 
