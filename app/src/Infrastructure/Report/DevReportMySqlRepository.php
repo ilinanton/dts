@@ -8,9 +8,13 @@ use App\Domain\Report\DeveloperStatistics;
 use App\Domain\Report\DeveloperStatisticsCollection;
 use App\Domain\Report\ReportCriteria;
 use App\Domain\Report\Repository\DevReportRepositoryInterface;
+use App\Domain\Report\ValueObject\ApprovalCount;
+use App\Domain\Report\ValueObject\CommitCount;
 use App\Domain\Report\ValueObject\DeveloperUserId;
 use App\Domain\Report\ValueObject\DeveloperUserName;
 use App\Domain\Report\ValueObject\LabelName;
+use App\Domain\Report\ValueObject\LineCount;
+use App\Domain\Report\ValueObject\MergeRequestCount;
 use PDO;
 
 final readonly class DevReportMySqlRepository implements DevReportRepositoryInterface
@@ -147,15 +151,15 @@ SQL;
             $collection->add(new DeveloperStatistics(
                 userId: new DeveloperUserId((int)$row['id']),
                 userName: new DeveloperUserName((string)$row['user']),
-                mergeRequestsCreated: (int)$row['mr_created'],
-                approvalsGiven: (int)$row['approvals_given'],
-                mergeRequestsMerged: (int)$row['mr_merged'],
-                mergeRequestsMergedWithApproval: (int)$row['mr_merged_with_approval'],
-                mergeRequestsTested: (int)$row['mr_tested'],
-                linesAdded: (int)$row['loc_add'],
-                linesDeleted: (int)$row['loc_del'],
-                mergeRequestsSelfApproved: (int)$row['mr_self_approved'],
-                commitsToDefaultBranch: (int)$row['committed_to_default_branch'],
+                mergeRequestsCreated: new MergeRequestCount((int)$row['mr_created']),
+                approvalsGiven: new ApprovalCount((int)$row['approvals_given']),
+                mergeRequestsMerged: new MergeRequestCount((int)$row['mr_merged']),
+                mergeRequestsMergedWithApproval: new MergeRequestCount((int)$row['mr_merged_with_approval']),
+                mergeRequestsTested: new MergeRequestCount((int)$row['mr_tested']),
+                linesAdded: new LineCount((int)$row['loc_add']),
+                linesDeleted: new LineCount((int)$row['loc_del']),
+                mergeRequestsSelfApproved: new MergeRequestCount((int)$row['mr_self_approved']),
+                commitsToDefaultBranch: new CommitCount((int)$row['committed_to_default_branch']),
             ));
         }
 
