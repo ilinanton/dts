@@ -10,7 +10,7 @@
          backupStaticProperties="false"
 >
     <testsuites>
-        <testsuite name="Application">
+        <testsuite name="src">
             <directory suffix="Test.php">./src</directory>
         </testsuite>
     </testsuites>
