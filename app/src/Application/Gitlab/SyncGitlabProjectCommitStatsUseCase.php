@@ -19,6 +19,7 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
         private GitRepositoryInterface $gitRepository,
         private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
         private GitlabDataBaseCommitStatsRepositoryInterface $dataBaseCommitStatsRepository,
+        private CommitStatsFactory $commitStatsFactory,
     ) {
     }
 
@@ -43,12 +44,11 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
         }
 
         $gitCommitCollection = $this->gitRepository->getCommits($gitProject, $this->syncDateAfter);
-        $gitCommitStatsFactory = new CommitStatsFactory();
         $counter = 0;
         foreach ($gitCommitCollection as $gitCommit) {
             $counter++;
             foreach ($gitlabProjectCollection as $gitlabProject) {
-                $gitlabCommitStats = $gitCommitStatsFactory->create(
+                $gitlabCommitStats = $this->commitStatsFactory->create(
                     $gitlabProject->id->value,
                     $gitCommit->id->value,
                     $gitCommit->stats->value,

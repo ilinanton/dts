@@ -55,6 +55,7 @@ use App\Domain\Gitlab\User\Repository\GitlabApiUserRepositoryInterface;
 use App\Domain\Gitlab\User\Repository\GitlabDataBaseUserRepositoryInterface;
 use App\Domain\Git\Commit\CommitFactory;
 use App\Domain\Git\Stats\StatsFactory;
+use App\Domain\Gitlab\CommitStats\CommitStatsFactory;
 use App\Domain\Gitlab\Event\EventFactory;
 use App\Domain\Gitlab\Note\NoteFactory;
 use App\Domain\Gitlab\PushData\Factory\PushDataFromArray;
@@ -149,6 +150,7 @@ return [
             $c->get(GitRepositoryInterface::class),
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
             $c->get(GitlabDataBaseCommitStatsRepositoryInterface::class),
+            $c->get(CommitStatsFactory::class),
         );
     },
     SyncGitlabUsersUseCase::class => function (ContainerInterface $c): UseCaseInterface {
@@ -275,6 +277,9 @@ return [
         return new CommitFactory(
             new StatsFactory(),
         );
+    },
+    CommitStatsFactory::class => function (): CommitStatsFactory {
+        return new CommitStatsFactory();
     },
     GitlabApiEventRepositoryInterface::class => function (ContainerInterface $c): GitlabApiEventRepositoryInterface {
         return new GitlabApiEventRepository(
