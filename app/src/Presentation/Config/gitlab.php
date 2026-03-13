@@ -16,6 +16,7 @@ use App\Application\Gitlab\SyncGitlabUserEventsUseCase;
 use App\Application\Gitlab\SyncGitlabUsersUseCase;
 use App\Application\Report\DevReportUseCase;
 use App\Application\Report\ReportDateProviderInterface;
+use App\Application\SyncOutputInterface;
 use App\Application\UseCaseCollection;
 use App\Application\UseCaseInterface;
 use App\Domain\Git\Commit\CommitSinceDate;
@@ -28,6 +29,7 @@ use App\Domain\Report\ValueObject\ScoringWeight;
 use App\Domain\Report\ScoringService;
 use App\Infrastructure\Report\DevReportMySqlRepository;
 use App\Application\Report\DevReportPresenterInterface;
+use App\Presentation\Cli\StdoutSyncOutput;
 use App\Presentation\Report\CliReportDateProvider;
 use App\Presentation\Report\DevReportTablePresenter;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -105,6 +107,10 @@ return [
         return explode(',', $_ENV['GIT_LOG_EXCLUDE_PATH']);
     },
 
+    SyncOutputInterface::class => function (): SyncOutputInterface {
+        return new StdoutSyncOutput();
+    },
+
     SyncGitlabDataUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         $useCaseCollection = new UseCaseCollection();
         $useCaseCollection->add($c->get(SyncGitlabProjectsUseCase::class));
@@ -116,7 +122,8 @@ return [
     SyncGitlabProjectsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncGitlabProjectsUseCase(
             $c->get(GitlabApiProjectRepositoryInterface::class),
-            $c->get(GitlabDataBaseProjectRepositoryInterface::class)
+            $c->get(GitlabDataBaseProjectRepositoryInterface::class),
+            $c->get(SyncOutputInterface::class),
         );
     },
     EventFilterCollection::class => function (): EventFilterCollection {
@@ -134,6 +141,7 @@ return [
             $c->get(GitlabApiEventRepositoryInterface::class),
             $c->get(GitlabDataBaseEventRepositoryInterface::class),
             $c->get(EventFilterCollection::class),
+            $c->get(SyncOutputInterface::class),
         );
     },
     SyncGitlabProjectCommitsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
@@ -142,6 +150,7 @@ return [
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
             $c->get(GitlabApiCommitRepositoryInterface::class),
             $c->get(GitlabDataBaseCommitRepositoryInterface::class),
+            $c->get(SyncOutputInterface::class),
         );
     },
     SyncGitlabProjectCommitStatsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
@@ -151,18 +160,21 @@ return [
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
             $c->get(GitlabDataBaseCommitStatsRepositoryInterface::class),
             $c->get(CommitStatsFactory::class),
+            $c->get(SyncOutputInterface::class),
         );
     },
     SyncGitlabUsersUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncGitlabUsersUseCase(
             $c->get(GitlabApiUserRepositoryInterface::class),
             $c->get(GitlabDataBaseUserRepositoryInterface::class),
+            $c->get(SyncOutputInterface::class),
         );
     },
     SyncGitlabLabelsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncGitlabLabelsUseCase(
             $c->get(GitlabApiLabelRepositoryInterface::class),
             $c->get(GitlabDataBaseLabelRepositoryInterface::class),
+            $c->get(SyncOutputInterface::class),
         );
     },
     SyncGitlabMergeRequestLabelEventsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
@@ -171,6 +183,7 @@ return [
             $c->get(GitlabApiResourceLabelEventRepositoryInterface::class),
             $c->get(GitlabDataBaseResourceLabelEventRepositoryInterface::class),
             $c->get(GitlabDataBaseMergeRequestRepositoryInterface::class),
+            $c->get(SyncOutputInterface::class),
         );
     },
     'REPORT_TESTED_LABELS' => function (): array {
@@ -229,6 +242,7 @@ return [
             $c->get(GitlabApiMergeRequestRepositoryInterface::class),
             $c->get(GitlabDataBaseMergeRequestRepositoryInterface::class),
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
+            $c->get(SyncOutputInterface::class),
         );
     },
     SyncGitlabUserEventsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
@@ -237,6 +251,7 @@ return [
             $c->get(GitlabDataBaseUserRepositoryInterface::class),
             $c->get(GitlabApiEventRepositoryInterface::class),
             $c->get(GitlabDataBaseEventRepositoryInterface::class),
+            $c->get(SyncOutputInterface::class),
         );
     },
 

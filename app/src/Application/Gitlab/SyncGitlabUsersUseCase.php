@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Gitlab;
 
+use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 use App\Domain\Gitlab\User\Repository\GitlabApiUserRepositoryInterface;
 use App\Domain\Gitlab\User\Repository\GitlabDataBaseUserRepositoryInterface;
@@ -15,6 +16,7 @@ final readonly class SyncGitlabUsersUseCase implements UseCaseInterface
     public function __construct(
         private GitlabApiUserRepositoryInterface $apiUserRepository,
         private GitlabDataBaseUserRepositoryInterface $dataBaseUserRepository,
+        private SyncOutputInterface $output,
     ) {
     }
 
@@ -28,9 +30,8 @@ final readonly class SyncGitlabUsersUseCase implements UseCaseInterface
                 'per_page' => self::COUNT_ITEMS_PER_PAGE,
             ]);
             foreach ($userCollection as $user) {
-                echo 'Load user #' . $user->id->value . ' ' . $user->name->value;
                 $this->dataBaseUserRepository->save($user);
-                echo ' done ' . PHP_EOL;
+                $this->output->writeLine('Load user #' . $user->id->value . ' ' . $user->name->value . ' done');
             }
         } while (self::COUNT_ITEMS_PER_PAGE === count($userCollection));
     }

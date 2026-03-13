@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Gitlab;
 
+use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 use App\Domain\Gitlab\Label\Repository\GitlabApiLabelRepositoryInterface;
 use App\Domain\Gitlab\Label\Repository\GitlabDataBaseLabelRepositoryInterface;
@@ -15,6 +16,7 @@ final readonly class SyncGitlabLabelsUseCase implements UseCaseInterface
     public function __construct(
         private GitlabApiLabelRepositoryInterface $apiLabelRepository,
         private GitlabDataBaseLabelRepositoryInterface $dataBaseLabelRepository,
+        private SyncOutputInterface $output,
     ) {
     }
 
@@ -28,9 +30,8 @@ final readonly class SyncGitlabLabelsUseCase implements UseCaseInterface
                 'per_page' => self::COUNT_ITEMS_PER_PAGE,
             ]);
             foreach ($collection as $item) {
-                echo 'Load label #' . $item->id->value . ' ' . $item->name->value;
                 $this->dataBaseLabelRepository->save($item);
-                echo ' done ' . PHP_EOL;
+                $this->output->writeLine('Load label #' . $item->id->value . ' ' . $item->name->value . ' done');
             }
         } while (self::COUNT_ITEMS_PER_PAGE === count($collection));
     }

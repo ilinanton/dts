@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Gitlab;
 
+use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabApiResourceLabelEventRepositoryInterface;
@@ -18,18 +19,19 @@ final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCase
         private GitlabApiResourceLabelEventRepositoryInterface $apiResourceLabelEventRepository,
         private GitlabDataBaseResourceLabelEventRepositoryInterface $databaseResourceLabelEventRepository,
         private GitlabDataBaseMergeRequestRepositoryInterface $dataBaseMergeRequestRepository,
+        private SyncOutputInterface $output,
     ) {
     }
 
     public function execute(): void
     {
-        echo 'Load label events that created after ' . $this->syncDateAfter . PHP_EOL;
+        $this->output->writeLine('Load label events that created after ' . $this->syncDateAfter);
         $mergeRequestCollection = $this->dataBaseMergeRequestRepository->getUpdatedAfter($this->syncDateAfter);
         foreach ($mergeRequestCollection as $mergeRequest) {
             $page = 0;
             $projectId = $mergeRequest->projectId->value;
             $mergeRequestIid = $mergeRequest->iid->value;
-            echo ' - # project_id: ' . $projectId . ' merge_request_iid: ' . $mergeRequestIid;
+            $this->output->write(' - # project_id: ' . $projectId . ' merge_request_iid: ' . $mergeRequestIid);
             do {
                 ++$page;
 
@@ -46,9 +48,9 @@ final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCase
                 foreach ($resourceLabelEventCollection as $resourceLabelEvent) {
                     $this->databaseResourceLabelEventRepository->save($resourceLabelEvent);
                 }
-                echo ' .';
+                $this->output->write(' .');
             } while (self::COUNT_ITEMS_PER_PAGE === count($resourceLabelEventCollection));
-            echo ' done ' . PHP_EOL;
+            $this->output->writeLine(' done');
         }
     }
 }

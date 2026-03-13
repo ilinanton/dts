@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Gitlab;
 
+use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;
 use App\Domain\Gitlab\Commit\Repository\GitlabDataBaseCommitRepositoryInterface;
@@ -19,12 +20,13 @@ final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
         private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
         private GitlabApiCommitRepositoryInterface $apiCommitRepository,
         private GitlabDataBaseCommitRepositoryInterface $dataBaseCommitRepository,
+        private SyncOutputInterface $output,
     ) {
     }
 
     public function execute(): void
     {
-        echo 'Load project commits that made after ' . $this->syncDateAfter . PHP_EOL;
+        $this->output->writeLine('Load project commits that made after ' . $this->syncDateAfter);
         $projectCollection = $this->dataBaseProjectRepository->getAll();
         foreach ($projectCollection as $project) {
             $this->syncProject($project);
@@ -36,7 +38,7 @@ final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
         $projectId = $project->id->value;
         $projectName = $project->name->value;
         $refName = $project->defaultBranch->value;
-        echo ' - #' . $projectId . ' ' . $projectName;
+        $this->output->write(' - #' . $projectId . ' ' . $projectName);
         $page = 0;
         do {
             ++$page;
@@ -54,8 +56,8 @@ final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
             foreach ($commitCollection as $commit) {
                 $this->dataBaseCommitRepository->save($commit);
             }
-            echo ' .';
+            $this->output->write(' .');
         } while (self::COUNT_ITEMS_PER_PAGE === count($commitCollection));
-        echo ' done ' . PHP_EOL;
+        $this->output->writeLine(' done');
     }
 }

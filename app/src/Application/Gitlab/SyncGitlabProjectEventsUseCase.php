@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Gitlab;
 
+use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 use App\Domain\Gitlab\Event\EventFilterCollection;
 use App\Domain\Gitlab\Event\Repository\GitlabApiEventRepositoryInterface;
@@ -21,12 +22,13 @@ final readonly class SyncGitlabProjectEventsUseCase implements UseCaseInterface
         private GitlabApiEventRepositoryInterface $apiEventRepository,
         private GitlabDataBaseEventRepositoryInterface $dataBaseEventRepository,
         private EventFilterCollection $eventFilters,
+        private SyncOutputInterface $output,
     ) {
     }
 
     public function execute(): void
     {
-        echo 'Load project events that happened after ' . $this->syncDateAfter . PHP_EOL;
+        $this->output->writeLine('Load project events that happened after ' . $this->syncDateAfter);
         $projectCollection = $this->dataBaseProjectRepository->getAll();
         foreach ($projectCollection as $project) {
             $this->syncProject($project);
@@ -37,9 +39,9 @@ final readonly class SyncGitlabProjectEventsUseCase implements UseCaseInterface
     {
         $projectId = $project->id->value;
         $projectName = $project->name->value;
-        echo ' - #' . $projectId . ' ' . $projectName . PHP_EOL;
+        $this->output->writeLine(' - #' . $projectId . ' ' . $projectName);
         foreach ($this->eventFilters as $filter) {
-            echo '   - ' . $filter->paramName . ': ' . $filter->value;
+            $this->output->write('   - ' . $filter->paramName . ': ' . $filter->value);
             $page = 0;
             do {
                 ++$page;
@@ -56,9 +58,9 @@ final readonly class SyncGitlabProjectEventsUseCase implements UseCaseInterface
                 foreach ($eventCollection as $event) {
                     $this->dataBaseEventRepository->save($event);
                 }
-                echo ' .';
+                $this->output->write(' .');
             } while (self::COUNT_ITEMS_PER_PAGE === count($eventCollection));
-            echo ' done ' . PHP_EOL;
+            $this->output->writeLine(' done');
         }
     }
 }

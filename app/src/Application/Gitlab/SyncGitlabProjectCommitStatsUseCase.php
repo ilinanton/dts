@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Gitlab;
 
+use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 use App\Domain\Git\Commit\CommitSinceDate;
 use App\Domain\Git\Common\GitRepositoryInterface;
@@ -20,12 +21,13 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
         private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
         private GitlabDataBaseCommitStatsRepositoryInterface $dataBaseCommitStatsRepository,
         private CommitStatsFactory $commitStatsFactory,
+        private SyncOutputInterface $output,
     ) {
     }
 
     public function execute(): void
     {
-        echo 'Load project commit stats after ' . $this->syncDateAfter->getValueInMainFormat() . PHP_EOL;
+        $this->output->writeLine('Load project commit stats after ' . $this->syncDateAfter->getValueInMainFormat());
         $gitProjectCollection = $this->gitRepository->getProjects();
         foreach ($gitProjectCollection as $project) {
             $this->syncProject($project);
@@ -34,12 +36,12 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
 
     private function syncProject(GitProject $gitProject): void
     {
-        echo ' - Git project ' . $gitProject->name->value;
+        $this->output->write(' - Git project ' . $gitProject->name->value);
         $gitlabProjectCollection =
             $this->dataBaseProjectRepository->findByUrlToRepo($gitProject->url->value);
 
         if (0 === $gitlabProjectCollection->count()) {
-            echo ' gitlab projects not found!' . PHP_EOL;
+            $this->output->writeLine(' gitlab projects not found!');
             return;
         }
 
@@ -57,9 +59,9 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
             }
 
             if (0 === $counter % 500) {
-                echo ' .';
+                $this->output->write(' .');
             }
         }
-        echo ' done ' . PHP_EOL;
+        $this->output->writeLine(' done');
     }
 }

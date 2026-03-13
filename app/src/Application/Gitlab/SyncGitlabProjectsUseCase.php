@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Gitlab;
 
+use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 use App\Domain\Gitlab\Project\Repository\GitlabApiProjectRepositoryInterface;
 use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterface;
@@ -15,6 +16,7 @@ final readonly class SyncGitlabProjectsUseCase implements UseCaseInterface
     public function __construct(
         private GitlabApiProjectRepositoryInterface $apiProjectRepository,
         private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
+        private SyncOutputInterface $output,
     ) {
     }
 
@@ -28,9 +30,8 @@ final readonly class SyncGitlabProjectsUseCase implements UseCaseInterface
                 'per_page' => self::COUNT_ITEMS_PER_PAGE,
             ]);
             foreach ($projectCollection as $project) {
-                echo 'Load project #' . $project->id->value . ' ' . $project->name->value;
                 $this->dataBaseProjectRepository->save($project);
-                echo ' done ' . PHP_EOL;
+                $this->output->writeLine('Load project #' . $project->id->value . ' ' . $project->name->value . ' done');
             }
         } while (self::COUNT_ITEMS_PER_PAGE === count($projectCollection));
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Gitlab;
 
+use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabApiMergeRequestRepositoryInterface;
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
@@ -18,18 +19,19 @@ final readonly class SyncGitlabProjectMergeRequestsUseCase implements UseCaseInt
         private GitlabApiMergeRequestRepositoryInterface $apiMergeRequestRepository,
         private GitlabDataBaseMergeRequestRepositoryInterface $dataBaseMergeRequestRepository,
         private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
+        private SyncOutputInterface $output,
     ) {
     }
 
     public function execute(): void
     {
-        echo 'Load merge requests that created after ' . $this->syncDateAfter . PHP_EOL;
+        $this->output->writeLine('Load merge requests that created after ' . $this->syncDateAfter);
         $projectCollection = $this->dataBaseProjectRepository->getAll();
         foreach ($projectCollection as $project) {
             $page = 0;
             $projectId = $project->id->value;
             $projectName = $project->name->value;
-            echo ' - #' . $projectId . ' ' . $projectName;
+            $this->output->write(' - #' . $projectId . ' ' . $projectName);
             do {
                 ++$page;
 
@@ -42,9 +44,9 @@ final readonly class SyncGitlabProjectMergeRequestsUseCase implements UseCaseInt
                 foreach ($mergeRequestCollection as $mergeRequest) {
                     $this->dataBaseMergeRequestRepository->save($mergeRequest);
                 }
-                echo ' .';
+                $this->output->write(' .');
             } while (self::COUNT_ITEMS_PER_PAGE === count($mergeRequestCollection));
-            echo ' done ' . PHP_EOL;
+            $this->output->writeLine(' done');
         }
     }
 }
