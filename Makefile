@@ -55,6 +55,15 @@ phinx_rollback:
 	${PHINX} rollback ${PHINX_CONF}
 
 ##################
+#    TESTING     #
+##################
+test:
+	${DC} exec php ./vendor/bin/phpunit
+
+test_filter:
+	${DC} exec php ./vendor/bin/phpunit --filter $(filter)
+
+##################
 #      APP       #
 ##################
 app_run:
