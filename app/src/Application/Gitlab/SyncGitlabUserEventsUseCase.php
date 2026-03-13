@@ -6,6 +6,7 @@ namespace App\Application\Gitlab;
 
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
+use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Gitlab\Event\Repository\GitlabApiEventRepositoryInterface;
 use App\Domain\Gitlab\Event\Repository\GitlabDataBaseEventRepositoryInterface;
 use App\Domain\Gitlab\User\Repository\GitlabDataBaseUserRepositoryInterface;
@@ -15,7 +16,7 @@ final readonly class SyncGitlabUserEventsUseCase implements UseCaseInterface
     private const int COUNT_ITEMS_PER_PAGE = 20;
 
     public function __construct(
-        private string $syncDateAfter,
+        private SyncDateAfter $syncDateAfter,
         private GitlabDataBaseUserRepositoryInterface $dataBaseUserRepository,
         private GitlabApiEventRepositoryInterface $apiEventRepository,
         private GitlabDataBaseEventRepositoryInterface $dataBaseEventRepository,
@@ -26,7 +27,7 @@ final readonly class SyncGitlabUserEventsUseCase implements UseCaseInterface
     public function execute(): void
     {
         $userCollection = $this->dataBaseUserRepository->getAll();
-        $this->output->writeLine('Load events that happened after ' . $this->syncDateAfter);
+        $this->output->writeLine('Load events that happened after ' . $this->syncDateAfter->getValueInMainFormat());
         foreach ($userCollection as $user) {
             $page = 0;
             $userId = $user->id->value;
@@ -38,7 +39,7 @@ final readonly class SyncGitlabUserEventsUseCase implements UseCaseInterface
                 $eventCollection = $this->apiEventRepository->getByUserId($userId, [
                     'page' => $page,
                     'per_page' => self::COUNT_ITEMS_PER_PAGE,
-                    'after' => $this->syncDateAfter,
+                    'after' => $this->syncDateAfter->getValueInMainFormat(),
                     'target_type' => 'merge_request',
                 ]);
 

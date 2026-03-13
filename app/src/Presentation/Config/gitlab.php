@@ -21,6 +21,7 @@ use App\Application\UseCaseCollection;
 use App\Application\UseCaseInterface;
 use App\Domain\Git\Commit\CommitSinceDate;
 use App\Domain\Git\Common\GitRepositoryInterface;
+use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Report\Repository\DevReportRepositoryInterface;
 use App\Domain\Report\ScoringConfiguration;
 use App\Domain\Report\ValueObject\LabelName;
@@ -136,7 +137,7 @@ return [
     },
     SyncGitlabProjectEventsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncGitlabProjectEventsUseCase(
-            $c->get('GITLAB_SYNC_DATE_AFTER'),
+            new SyncDateAfter($c->get('GITLAB_SYNC_DATE_AFTER')),
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
             $c->get(GitlabApiEventRepositoryInterface::class),
             $c->get(GitlabDataBaseEventRepositoryInterface::class),
@@ -146,7 +147,7 @@ return [
     },
     SyncGitlabProjectCommitsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncGitlabProjectCommitsUseCase(
-            $c->get('GITLAB_SYNC_DATE_AFTER'),
+            new SyncDateAfter($c->get('GITLAB_SYNC_DATE_AFTER')),
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
             $c->get(GitlabApiCommitRepositoryInterface::class),
             $c->get(GitlabDataBaseCommitRepositoryInterface::class),
@@ -179,7 +180,7 @@ return [
     },
     SyncGitlabMergeRequestLabelEventsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncGitlabMergeRequestLabelEventsUseCase(
-            $c->get('GITLAB_SYNC_DATE_AFTER'),
+            new SyncDateAfter($c->get('GITLAB_SYNC_DATE_AFTER')),
             $c->get(GitlabApiResourceLabelEventRepositoryInterface::class),
             $c->get(GitlabDataBaseResourceLabelEventRepositoryInterface::class),
             $c->get(GitlabDataBaseMergeRequestRepositoryInterface::class),
@@ -238,7 +239,7 @@ return [
     },
     SyncGitlabProjectMergeRequestsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncGitlabProjectMergeRequestsUseCase(
-            $c->get('GITLAB_SYNC_DATE_AFTER'),
+            new SyncDateAfter($c->get('GITLAB_SYNC_DATE_AFTER')),
             $c->get(GitlabApiMergeRequestRepositoryInterface::class),
             $c->get(GitlabDataBaseMergeRequestRepositoryInterface::class),
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
@@ -247,7 +248,7 @@ return [
     },
     SyncGitlabUserEventsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncGitlabUserEventsUseCase(
-            $c->get('GITLAB_SYNC_DATE_AFTER'),
+            new SyncDateAfter($c->get('GITLAB_SYNC_DATE_AFTER')),
             $c->get(GitlabDataBaseUserRepositoryInterface::class),
             $c->get(GitlabApiEventRepositoryInterface::class),
             $c->get(GitlabDataBaseEventRepositoryInterface::class),

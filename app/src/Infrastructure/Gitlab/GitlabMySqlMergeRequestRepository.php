@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
+use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Gitlab\MergeRequest\MergeRequest;
 use App\Domain\Gitlab\MergeRequest\MergeRequestCollection;
 use App\Domain\Gitlab\MergeRequest\MergeRequestFactory;
@@ -100,7 +101,7 @@ SQL;
         return $this->buildCollection($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
-    public function getUpdatedAfter(string $date): MergeRequestCollection
+    public function getUpdatedAfter(SyncDateAfter $date): MergeRequestCollection
     {
         $sql = <<<SQL
 SELECT
@@ -120,7 +121,7 @@ FROM gitlab_merge_request
 WHERE updated_at >= :DATE
 SQL;
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':DATE' => $date]);
+        $stmt->execute([':DATE' => $date->getValue()]);
 
         return $this->buildCollection($stmt->fetchAll(PDO::FETCH_ASSOC));
     }

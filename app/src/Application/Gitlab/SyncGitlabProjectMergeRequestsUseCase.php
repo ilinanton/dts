@@ -6,6 +6,7 @@ namespace App\Application\Gitlab;
 
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
+use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabApiMergeRequestRepositoryInterface;
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
 use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterface;
@@ -15,7 +16,7 @@ final readonly class SyncGitlabProjectMergeRequestsUseCase implements UseCaseInt
     private const int COUNT_ITEMS_PER_PAGE = 40;
 
     public function __construct(
-        private string $syncDateAfter,
+        private SyncDateAfter $syncDateAfter,
         private GitlabApiMergeRequestRepositoryInterface $apiMergeRequestRepository,
         private GitlabDataBaseMergeRequestRepositoryInterface $dataBaseMergeRequestRepository,
         private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
@@ -25,7 +26,7 @@ final readonly class SyncGitlabProjectMergeRequestsUseCase implements UseCaseInt
 
     public function execute(): void
     {
-        $this->output->writeLine('Load merge requests that created after ' . $this->syncDateAfter);
+        $this->output->writeLine('Load merge requests that created after ' . $this->syncDateAfter->getValueInMainFormat());
         $projectCollection = $this->dataBaseProjectRepository->getAll();
         foreach ($projectCollection as $project) {
             $page = 0;
@@ -38,7 +39,7 @@ final readonly class SyncGitlabProjectMergeRequestsUseCase implements UseCaseInt
                 $mergeRequestCollection = $this->apiMergeRequestRepository->get($projectId, [
                     'page' => $page,
                     'per_page' => self::COUNT_ITEMS_PER_PAGE,
-                    'created_after' => $this->syncDateAfter,
+                    'created_after' => $this->syncDateAfter->getValueInMainFormat(),
                 ]);
 
                 foreach ($mergeRequestCollection as $mergeRequest) {

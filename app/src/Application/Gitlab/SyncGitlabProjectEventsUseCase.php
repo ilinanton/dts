@@ -6,6 +6,7 @@ namespace App\Application\Gitlab;
 
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
+use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Gitlab\Event\EventFilterCollection;
 use App\Domain\Gitlab\Event\Repository\GitlabApiEventRepositoryInterface;
 use App\Domain\Gitlab\Event\Repository\GitlabDataBaseEventRepositoryInterface;
@@ -17,7 +18,7 @@ final readonly class SyncGitlabProjectEventsUseCase implements UseCaseInterface
     private const int COUNT_ITEMS_PER_PAGE = 40;
 
     public function __construct(
-        private string $syncDateAfter,
+        private SyncDateAfter $syncDateAfter,
         private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
         private GitlabApiEventRepositoryInterface $apiEventRepository,
         private GitlabDataBaseEventRepositoryInterface $dataBaseEventRepository,
@@ -28,7 +29,7 @@ final readonly class SyncGitlabProjectEventsUseCase implements UseCaseInterface
 
     public function execute(): void
     {
-        $this->output->writeLine('Load project events that happened after ' . $this->syncDateAfter);
+        $this->output->writeLine('Load project events that happened after ' . $this->syncDateAfter->getValueInMainFormat());
         $projectCollection = $this->dataBaseProjectRepository->getAll();
         foreach ($projectCollection as $project) {
             $this->syncProject($project);
@@ -49,7 +50,7 @@ final readonly class SyncGitlabProjectEventsUseCase implements UseCaseInterface
                 $params = [
                     'page' => $page,
                     'per_page' => self::COUNT_ITEMS_PER_PAGE,
-                    'after' => $this->syncDateAfter,
+                    'after' => $this->syncDateAfter->getValueInMainFormat(),
                     $filter->paramName => $filter->value,
                 ];
 

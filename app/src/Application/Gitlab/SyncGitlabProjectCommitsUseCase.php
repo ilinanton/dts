@@ -6,6 +6,7 @@ namespace App\Application\Gitlab;
 
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
+use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;
 use App\Domain\Gitlab\Commit\Repository\GitlabDataBaseCommitRepositoryInterface;
 use App\Domain\Gitlab\Project\Project;
@@ -16,7 +17,7 @@ final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
     private const int COUNT_ITEMS_PER_PAGE = 40;
 
     public function __construct(
-        private string $syncDateAfter,
+        private SyncDateAfter $syncDateAfter,
         private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
         private GitlabApiCommitRepositoryInterface $apiCommitRepository,
         private GitlabDataBaseCommitRepositoryInterface $dataBaseCommitRepository,
@@ -26,7 +27,7 @@ final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
 
     public function execute(): void
     {
-        $this->output->writeLine('Load project commits that made after ' . $this->syncDateAfter);
+        $this->output->writeLine('Load project commits that made after ' . $this->syncDateAfter->getValueInMainFormat());
         $projectCollection = $this->dataBaseProjectRepository->getAll();
         foreach ($projectCollection as $project) {
             $this->syncProject($project);
@@ -46,7 +47,7 @@ final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
             $params = [
                 'page' => $page,
                 'per_page' => self::COUNT_ITEMS_PER_PAGE,
-                'since' => $this->syncDateAfter,
+                'since' => $this->syncDateAfter->getValueInMainFormat(),
                 'ref_name' => $refName,
                 'with_stats' => true,
             ];

@@ -6,6 +6,7 @@ namespace App\Application\Gitlab;
 
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
+use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabApiResourceLabelEventRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabDataBaseResourceLabelEventRepositoryInterface;
@@ -15,7 +16,7 @@ final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCase
     private const int COUNT_ITEMS_PER_PAGE = 60;
 
     public function __construct(
-        private string $syncDateAfter,
+        private SyncDateAfter $syncDateAfter,
         private GitlabApiResourceLabelEventRepositoryInterface $apiResourceLabelEventRepository,
         private GitlabDataBaseResourceLabelEventRepositoryInterface $databaseResourceLabelEventRepository,
         private GitlabDataBaseMergeRequestRepositoryInterface $dataBaseMergeRequestRepository,
@@ -25,7 +26,7 @@ final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCase
 
     public function execute(): void
     {
-        $this->output->writeLine('Load label events that created after ' . $this->syncDateAfter);
+        $this->output->writeLine('Load label events that created after ' . $this->syncDateAfter->getValueInMainFormat());
         $mergeRequestCollection = $this->dataBaseMergeRequestRepository->getUpdatedAfter($this->syncDateAfter);
         foreach ($mergeRequestCollection as $mergeRequest) {
             $page = 0;
@@ -41,7 +42,7 @@ final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCase
                     [
                         'page' => $page,
                         'per_page' => self::COUNT_ITEMS_PER_PAGE,
-                        'created_after' => $this->syncDateAfter,
+                        'created_after' => $this->syncDateAfter->getValueInMainFormat(),
                     ],
                 );
 
