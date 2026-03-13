@@ -12,4 +12,6 @@ interface GitlabDataBaseMergeRequestRepositoryInterface
     public function save(MergeRequest $object): void;
 
     public function getAll(): MergeRequestCollection;
+
+    public function getUpdatedAfter(string $date): MergeRequestCollection;
 }

@@ -25,10 +25,10 @@ INSERT INTO gitlab_merge_request
      id,
      iid,
      project_id,
-     title, 
+     title,
      state,
      merged_at,
-     created_at, 
+     created_at,
      updated_at,
      target_branch,
      source_branch,
@@ -40,10 +40,10 @@ VALUES
      :ID,
      :IID,
      :PROJECT_ID,
-     :TITLE, 
+     :TITLE,
      :STATE,
      :MERGED_AT,
-     :CREATED_AT, 
+     :CREATED_AT,
      :UPDATED_AT,
      :TARGET_BRANCH,
      :SOURCE_BRANCH,
@@ -51,7 +51,7 @@ VALUES
      :WEB_URL
     )
 ON DUPLICATE KEY UPDATE
-     title = :TITLE, 
+     title = :TITLE,
      state = :STATE,
      merged_at = :MERGED_AT,
      updated_at = :UPDATED_AT,
@@ -83,10 +83,10 @@ SELECT
      id,
      iid,
      project_id,
-     title, 
+     title,
      state,
      merged_at,
-     created_at, 
+     created_at,
      updated_at,
      target_branch,
      source_branch,
@@ -96,8 +96,38 @@ FROM gitlab_merge_request
 SQL;
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        return $this->buildCollection($stmt->fetchAll(PDO::FETCH_ASSOC));
+    }
+
+    public function getUpdatedAfter(string $date): MergeRequestCollection
+    {
+        $sql = <<<SQL
+SELECT
+     id,
+     iid,
+     project_id,
+     title,
+     state,
+     merged_at,
+     created_at,
+     updated_at,
+     target_branch,
+     source_branch,
+     author_id,
+     web_url
+FROM gitlab_merge_request
+WHERE updated_at >= :DATE
+SQL;
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':DATE' => $date]);
+
+        return $this->buildCollection($stmt->fetchAll(PDO::FETCH_ASSOC));
+    }
+
+    /** @param array<int, array<string, mixed>> $data */
+    private function buildCollection(array $data): MergeRequestCollection
+    {
         $collection = new MergeRequestCollection();
         $factory = new MergeRequestFactory();
 
@@ -107,6 +137,7 @@ SQL;
                 $collection->add($factory->create($item, 'Y-m-d H:i:s'));
             },
         );
+
         return $collection;
     }
 }

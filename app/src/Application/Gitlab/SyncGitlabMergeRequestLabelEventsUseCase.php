@@ -24,7 +24,7 @@ final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCase
     public function execute(): void
     {
         echo 'Load label events that created after ' . $this->syncDateAfter . PHP_EOL;
-        $mergeRequestCollection = $this->dataBaseMergeRequestRepository->getAll();
+        $mergeRequestCollection = $this->dataBaseMergeRequestRepository->getUpdatedAfter($this->syncDateAfter);
         foreach ($mergeRequestCollection as $mergeRequest) {
             $page = 0;
             $projectId = $mergeRequest->projectId->value;
