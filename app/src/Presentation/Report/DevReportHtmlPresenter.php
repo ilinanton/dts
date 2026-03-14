@@ -78,8 +78,8 @@ final readonly class DevReportHtmlPresenter implements DevReportPresenterInterfa
 <th data-col="7">add</th>
 <th data-col="8">del</th>
 <th data-col="9">total</th>
-<th data-col="10" class="penalty">self approved</th>
-<th data-col="11" class="penalty">to main</th>
+<th data-col="10">self approved</th>
+<th data-col="11">to main</th>
 <th data-col="12">score</th>
 </tr>
 </thead>
@@ -109,8 +109,7 @@ HTML;
     {
         $s = $dev->statistics;
         $name = $this->escape($s->userName->value);
-        $score = number_format($dev->score, 2);
-        $scoreClass = $this->scoreClass($dev->score);
+        $score = number_format($dev->score, 2, '.', '');
 
         return <<<HTML
 <tr>
@@ -124,9 +123,9 @@ HTML;
 <td>{$s->linesAdded->value}</td>
 <td>{$s->linesDeleted->value}</td>
 <td>{$s->getTotalLinesChanged()}</td>
-<td class="penalty">{$s->mergeRequestsSelfApproved->value}</td>
-<td class="penalty">{$s->commitsToDefaultBranch->value}</td>
-<td class="score {$scoreClass}">{$score}</td>
+<td>{$s->mergeRequestsSelfApproved->value}</td>
+<td>{$s->commitsToDefaultBranch->value}</td>
+<td class="score">{$score}</td>
 </tr>
 HTML;
     }
@@ -134,17 +133,6 @@ HTML;
     private function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-    }
-
-    private function scoreClass(float $score): string
-    {
-        if ($score >= 100) {
-            return 'high';
-        }
-        if ($score >= 50) {
-            return 'mid';
-        }
-        return 'low';
     }
 
     private function css(): string
@@ -156,7 +144,7 @@ body { font-family: system-ui, sans-serif; font-size: 14px; background: #f5f7fa;
 h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
 .meta { color: #666; font-size: 12px; margin-bottom: 20px; }
 .scroll { overflow-x: auto; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
-table { width: 100%; border-collapse: collapse; background: #fff; }
+table { width: 100%; border-collapse: collapse; background: #fff; font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace; }
 thead { background: #1e3a5f; color: #fff; }
 tr.group th { padding: 8px 12px; font-size: 11px; font-weight: 500; text-transform: uppercase;
     letter-spacing: .06em; border-right: 1px solid rgba(255,255,255,.15); text-align: center; }
@@ -169,17 +157,14 @@ tr.cols th:last-child { border-right: none; }
 tr.cols th:hover { background: rgba(255,255,255,.1); }
 tr.cols th.asc::after { content: " \2191"; opacity: .7; }
 tr.cols th.desc::after { content: " \2193"; opacity: .7; }
-tbody tr { border-bottom: 1px solid #eef0f4; transition: background .1s; }
+tbody tr { border-bottom: 1px solid #eef0f4; transition: background .15s; }
 tbody tr:last-child { border-bottom: none; }
+tbody tr.top { background: #eaf7ef; }
 tbody tr:hover { background: #f0f4ff; }
 td { padding: 8px 12px; text-align: right; white-space: nowrap; }
 td:nth-child(1), td.name { text-align: left; }
 td.name { font-weight: 500; min-width: 120px; }
-td.penalty { color: #c0392b; }
 td.score { font-weight: 700; min-width: 80px; }
-td.score.high { color: #1a7a4a; }
-td.score.mid  { color: #b07d00; }
-td.score.low  { color: #c0392b; }
 CSS;
     }
 
@@ -217,7 +202,17 @@ function sortTable(col, asc) {
         return asc ? cmp : -cmp;
     });
     rows.forEach(r => tbody.appendChild(r));
+    highlightTop();
 }
+
+function highlightTop() {
+    const rows = table.tBodies[0].rows;
+    for (let i = 0; i < rows.length; i++) {
+        rows[i].classList.toggle("top", i < 3);
+    }
+}
+
+highlightTop();
 JS;
     }
 }
