@@ -40,7 +40,7 @@ enum Command: string
             return $list[$index];
         }
 
-        throw new \Exception('Command not found!');
+        throw new CommandNotFoundException('Command not found!');
     }
 
     public function id(): int
@@ -48,7 +48,7 @@ enum Command: string
         $list = Command::cases();
         $matchingCommandIndex = array_search($this->name, array_column($list, 'name'), true);
         if (false === $matchingCommandIndex) {
-            throw new \Exception('Command not found!');
+            throw new CommandNotFoundException('Command not found!');
         }
         return $matchingCommandIndex;
     }
