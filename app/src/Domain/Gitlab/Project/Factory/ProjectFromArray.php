@@ -12,22 +12,17 @@ use App\Domain\Gitlab\Project\ValueObject\ProjectName;
 use App\Domain\Gitlab\Project\ValueObject\ProjectRequiredWebUrl;
 use App\Domain\Gitlab\Project\ValueObject\ProjectSshUrlToRepo;
 
-final class ProjectFromArray
+final readonly class ProjectFromArray
 {
-    public function __construct(
-        private array $data,
-    ) {
-    }
-
-    public function create(): Project
+    public function create(array $data): Project
     {
         return new Project(
-            new ProjectId($this->data['id'] ?? 0),
-            new ProjectName($this->data['name'] ?? ''),
-            new ProjectDefaultBranch($this->data['default_branch'] ?? ''),
-            new ProjectSshUrlToRepo($this->data['ssh_url_to_repo'] ?? ''),
-            new ProjectHttpUrlToRepoRequired($this->data['http_url_to_repo'] ?? ''),
-            new ProjectRequiredWebUrl($this->data['web_url'] ?? ''),
+            new ProjectId($data['id'] ?? 0),
+            new ProjectName($data['name'] ?? ''),
+            new ProjectDefaultBranch($data['default_branch'] ?? ''),
+            new ProjectSshUrlToRepo($data['ssh_url_to_repo'] ?? ''),
+            new ProjectHttpUrlToRepoRequired($data['http_url_to_repo'] ?? ''),
+            new ProjectRequiredWebUrl($data['web_url'] ?? ''),
         );
     }
 }

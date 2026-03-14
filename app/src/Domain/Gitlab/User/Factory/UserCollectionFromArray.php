@@ -6,21 +6,16 @@ namespace App\Domain\Gitlab\User\Factory;
 
 use App\Domain\Gitlab\User\UserCollection;
 
-final class UserCollectionFromArray
+final readonly class UserCollectionFromArray
 {
-    public function __construct(
-        private array $data,
-    ) {
-    }
-
-    public function create(): UserCollection
+    public function create(array $data): UserCollection
     {
         $userCollection = new UserCollection();
+        $userFactory = new UserFromArray();
         array_walk(
-            $this->data,
-            function (array &$item) use ($userCollection): void {
-                $userFactory = new UserFromArray($item);
-                $userCollection->add($userFactory->create());
+            $data,
+            function (array $item) use ($userCollection, $userFactory): void {
+                $userCollection->add($userFactory->create($item));
             },
         );
 

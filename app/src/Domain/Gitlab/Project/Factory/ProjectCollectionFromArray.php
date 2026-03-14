@@ -6,21 +6,16 @@ namespace App\Domain\Gitlab\Project\Factory;
 
 use App\Domain\Gitlab\Project\ProjectCollection;
 
-final class ProjectCollectionFromArray
+final readonly class ProjectCollectionFromArray
 {
-    public function __construct(
-        private array $data,
-    ) {
-    }
-
-    public function create(): ProjectCollection
+    public function create(array $data): ProjectCollection
     {
         $projectCollection = new ProjectCollection();
+        $projectFactory = new ProjectFromArray();
         array_walk(
-            $this->data,
-            function (array &$item) use ($projectCollection): void {
-                $projectFactory = new ProjectFromArray($item);
-                $projectCollection->add($projectFactory->create());
+            $data,
+            function (array $item) use ($projectCollection, $projectFactory): void {
+                $projectCollection->add($projectFactory->create($item));
             },
         );
         return $projectCollection;

@@ -23,7 +23,7 @@ final readonly class GitlabApiProjectRepository implements GitlabApiProjectRepos
         $data = array_filter($data, function (array $value): bool {
             return !in_array($value['id'], $this->excludedProjectIds);
         });
-        $projectCollectionFactory = new ProjectCollectionFromArray($data);
-        return $projectCollectionFactory->create();
+        $projectCollectionFactory = new ProjectCollectionFromArray();
+        return $projectCollectionFactory->create($data);
     }
 }

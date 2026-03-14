@@ -46,7 +46,7 @@ SQL;
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $userFactory = new UserCollectionFromArray($data);
-        return $userFactory->create();
+        $userFactory = new UserCollectionFromArray();
+        return $userFactory->create($data);
     }
 }

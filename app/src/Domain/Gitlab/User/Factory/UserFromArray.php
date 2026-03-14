@@ -14,20 +14,15 @@ use App\Domain\Gitlab\User\ValueObject\UserUsername;
 
 final readonly class UserFromArray
 {
-    public function __construct(
-        private array $data,
-    ) {
-    }
-
-    public function create(): User
+    public function create(array $data): User
     {
         return new User(
-            new UserId($this->data['id'] ?? 0),
-            new UserUsername($this->data['username'] ?? ''),
-            new UserName($this->data['name'] ?? ''),
-            new UserAvatarUrlRequired($this->data['avatar_url'] ?? ''),
-            new UserRequiredWebUrl($this->data['web_url'] ?? ''),
-            UserState::from($this->data['state'] ?? 'active')
+            new UserId($data['id'] ?? 0),
+            new UserUsername($data['username'] ?? ''),
+            new UserName($data['name'] ?? ''),
+            new UserAvatarUrlRequired($data['avatar_url'] ?? ''),
+            new UserRequiredWebUrl($data['web_url'] ?? ''),
+            UserState::from($data['state'] ?? 'active')
         );
     }
 }

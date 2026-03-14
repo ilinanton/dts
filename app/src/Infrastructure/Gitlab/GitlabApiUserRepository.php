@@ -23,7 +23,7 @@ final readonly class GitlabApiUserRepository implements GitlabApiUserRepositoryI
         $data = array_filter($data, function (array $value): bool {
             return !in_array($value['id'], $this->excludedUserIds);
         });
-        $userCollectionFactory = new UserCollectionFromArray($data);
-        return $userCollectionFactory->create();
+        $userCollectionFactory = new UserCollectionFromArray();
+        return $userCollectionFactory->create($data);
     }
 }
