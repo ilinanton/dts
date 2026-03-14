@@ -5,6 +5,8 @@
 /**/.phpcs-cache
 /data
 /app/vendor
+/reports/*
+!/reports/.gitkeep
 /projects/**/
 /tasks
 /plans
