@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Presentation\Report;
 
 use App\Application\Report\DevReportPresenterInterface;
-use App\Domain\Report\DeveloperStatisticsCollection;
+use App\Application\Report\ScoredDeveloper;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Helper\TableCellStyle;
@@ -18,17 +18,19 @@ final readonly class DevReportTablePresenter implements DevReportPresenterInterf
     ) {
     }
 
-    /** @param array<float> $scores */
-    public function render(DeveloperStatisticsCollection $statistics, array $scores): void
+    /** @param array<ScoredDeveloper> $scoredDevelopers */
+    public function render(array $scoredDevelopers): void
     {
-        $rows = $this->prepareRows($statistics, $scores);
+        $rows = $this->prepareRows($scoredDevelopers);
         $this->printTable($rows);
     }
 
-    private function prepareRows(DeveloperStatisticsCollection $statistics, array $scores): array
+    /** @param array<ScoredDeveloper> $scoredDevelopers */
+    private function prepareRows(array $scoredDevelopers): array
     {
         $rows = [];
-        foreach ($statistics as $index => $stat) {
+        foreach ($scoredDevelopers as $scoredDeveloper) {
+            $stat = $scoredDeveloper->statistics;
             $rows[] = [
                 $stat->userId->value,
                 $stat->userName->value,
@@ -42,7 +44,7 @@ final readonly class DevReportTablePresenter implements DevReportPresenterInterf
                 $stat->getTotalLinesChanged(),
                 $stat->mergeRequestsSelfApproved->value,
                 $stat->commitsToDefaultBranch->value,
-                $scores[$index],
+                $scoredDeveloper->score,
             ];
         }
         return $rows;

@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Application\Report;
 
-use App\Domain\Report\DeveloperStatisticsCollection;
-
 interface DevReportPresenterInterface
 {
-    /** @param array<float> $scores */
-    public function render(DeveloperStatisticsCollection $statistics, array $scores): void;
+    /** @param array<ScoredDeveloper> $scoredDevelopers */
+    public function render(array $scoredDevelopers): void;
 }
