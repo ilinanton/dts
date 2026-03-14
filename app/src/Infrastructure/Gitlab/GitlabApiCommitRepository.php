@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
+use App\Domain\Gitlab\ApiClient\GitlabApiClientCommitInterface;
 use App\Domain\Gitlab\Commit\CommitCollection;
 use App\Domain\Gitlab\Commit\CommitFactory;
 use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;

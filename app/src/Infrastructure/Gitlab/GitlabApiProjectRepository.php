@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
+use App\Domain\Gitlab\ApiClient\GitlabApiClientProjectInterface;
 use App\Domain\Gitlab\Project\Factory\ProjectCollectionFromArray;
 use App\Domain\Gitlab\Project\ProjectCollection;
 use App\Domain\Gitlab\Project\Repository\GitlabApiProjectRepositoryInterface;

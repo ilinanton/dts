@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
+use App\Domain\Gitlab\ApiClient\GitlabApiClientResourceLabelEventInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabApiResourceLabelEventRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\ResourceLabelEventCollection;
 use App\Domain\Gitlab\ResourceLabelEvent\ResourceLabelEventFactory;

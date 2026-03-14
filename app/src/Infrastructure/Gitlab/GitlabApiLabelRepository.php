@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
+use App\Domain\Gitlab\ApiClient\GitlabApiClientLabelInterface;
 use App\Domain\Gitlab\Label\LabelCollection;
 use App\Domain\Gitlab\Label\LabelFactory;
 use App\Domain\Gitlab\Label\Repository\GitlabApiLabelRepositoryInterface;

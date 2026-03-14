@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
+use App\Domain\Gitlab\ApiClient\GitlabApiClientEventInterface;
 use App\Domain\Gitlab\Event\EventCollection;
 use App\Domain\Gitlab\Event\EventFactory;
 use App\Domain\Gitlab\Event\Repository\GitlabApiEventRepositoryInterface;

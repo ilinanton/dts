@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Gitlab;
+namespace App\Domain\Gitlab\ApiClient;
 
 interface GitlabApiClientLabelInterface
 {

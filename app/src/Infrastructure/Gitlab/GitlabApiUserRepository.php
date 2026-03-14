@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
+use App\Domain\Gitlab\ApiClient\GitlabApiClientUserInterface;
 use App\Domain\Gitlab\User\Factory\UserCollectionFromArray;
 use App\Domain\Gitlab\User\Repository\GitlabApiUserRepositoryInterface;
 use App\Domain\Gitlab\User\UserCollection;

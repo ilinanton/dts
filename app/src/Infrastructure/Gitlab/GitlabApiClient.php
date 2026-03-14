@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
+use App\Domain\Gitlab\ApiClient\GitlabApiClientCommitInterface;
+use App\Domain\Gitlab\ApiClient\GitlabApiClientEventInterface;
+use App\Domain\Gitlab\ApiClient\GitlabApiClientLabelInterface;
+use App\Domain\Gitlab\ApiClient\GitlabApiClientMergeRequestInterface;
+use App\Domain\Gitlab\ApiClient\GitlabApiClientProjectInterface;
+use App\Domain\Gitlab\ApiClient\GitlabApiClientResourceLabelEventInterface;
+use App\Domain\Gitlab\ApiClient\GitlabApiClientUserInterface;
 use Exception;
 use GuzzleHttp\Client;
 
