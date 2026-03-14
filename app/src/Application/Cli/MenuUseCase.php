@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Cli;
 
+use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 
 final readonly class MenuUseCase implements UseCaseInterface
@@ -12,12 +13,13 @@ final readonly class MenuUseCase implements UseCaseInterface
     public function __construct(
         private MenuItemCollection $menuItems,
         private array $categories,
+        private SyncOutputInterface $output,
     ) {
     }
 
     public function execute(): void
     {
-        echo 'Command list:' . PHP_EOL;
+        $this->output->writeLine('Command list:');
 
         $grouped = [];
 
@@ -30,11 +32,11 @@ final readonly class MenuUseCase implements UseCaseInterface
                 continue;
             }
 
-            echo '- ' . $category . ':' . PHP_EOL;
+            $this->output->writeLine('- ' . $category . ':');
             ksort($grouped[$category]);
 
             foreach ($grouped[$category] as $index => $item) {
-                echo '  [' . $index . '] - ' . $item->name . PHP_EOL;
+                $this->output->writeLine('  [' . $index . '] - ' . $item->name);
             }
         }
     }

@@ -6,6 +6,7 @@ use App\Application\Cli\ExitUseCase;
 use App\Application\Cli\MenuItem;
 use App\Application\Cli\MenuItemCollection;
 use App\Application\Cli\MenuUseCase;
+use App\Application\SyncOutputInterface;
 use App\Application\Gitlab\SyncGitlabDataUseCase;
 use App\Application\Gitlab\SyncGitlabMergeRequestLabelEventsUseCase;
 use App\Application\Gitlab\SyncGitlabLabelsUseCase;
@@ -67,7 +68,7 @@ return [
         foreach (Command::cases() as $index => $command) {
             $menuItems->add(new MenuItem($index, $command->value, $command->category()));
         }
-        return new MenuUseCase($menuItems, Command::CATEGORY);
+        return new MenuUseCase($menuItems, Command::CATEGORY, $c->get(SyncOutputInterface::class));
     },
     ExitUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new ExitUseCase();
