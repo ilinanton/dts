@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Application\Gitlab;
 
+use App\Application\Common\Paginator;
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
-use App\Domain\Gitlab\Common\ItemsPerPage;
 use App\Domain\Gitlab\User\Repository\GitlabApiUserRepositoryInterface;
 use App\Domain\Gitlab\User\Repository\GitlabDataBaseUserRepositoryInterface;
+use App\Domain\Gitlab\User\UserCollection;
 
 final readonly class SyncGitlabUsersUseCase implements UseCaseInterface
 {
@@ -16,23 +17,18 @@ final readonly class SyncGitlabUsersUseCase implements UseCaseInterface
         private GitlabApiUserRepositoryInterface $apiUserRepository,
         private GitlabDataBaseUserRepositoryInterface $dataBaseUserRepository,
         private SyncOutputInterface $output,
-        private ItemsPerPage $itemsPerPage,
+        private Paginator $paginator,
     ) {
     }
 
     public function execute(): void
     {
-        $page = 0;
-        do {
-            ++$page;
-            $userCollection = $this->apiUserRepository->get([
-                'page' => $page,
-                'per_page' => $this->itemsPerPage->value,
-            ]);
-            foreach ($userCollection as $user) {
-                $this->dataBaseUserRepository->save($user);
-                $this->output->writeLine('Load user #' . $user->id->value . ' ' . $user->name->value . ' done');
-            }
-        } while ($this->itemsPerPage->value === count($userCollection));
+        $items = $this->paginator->paginate(
+            fn(array $params): UserCollection => $this->apiUserRepository->get($params),
+        );
+        foreach ($items as $user) {
+            $this->dataBaseUserRepository->save($user);
+            $this->output->writeLine('Load user #' . $user->id->value . ' ' . $user->name->value . ' done');
+        }
     }
 }

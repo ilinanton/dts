@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\Gitlab;
 
+use App\Application\Common\Paginator;
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
-use App\Domain\Gitlab\Common\ItemsPerPage;
+use App\Domain\Gitlab\Label\LabelCollection;
 use App\Domain\Gitlab\Label\Repository\GitlabApiLabelRepositoryInterface;
 use App\Domain\Gitlab\Label\Repository\GitlabDataBaseLabelRepositoryInterface;
 
@@ -16,23 +17,18 @@ final readonly class SyncGitlabLabelsUseCase implements UseCaseInterface
         private GitlabApiLabelRepositoryInterface $apiLabelRepository,
         private GitlabDataBaseLabelRepositoryInterface $dataBaseLabelRepository,
         private SyncOutputInterface $output,
-        private ItemsPerPage $itemsPerPage,
+        private Paginator $paginator,
     ) {
     }
 
     public function execute(): void
     {
-        $page = 0;
-        do {
-            ++$page;
-            $collection = $this->apiLabelRepository->get([
-                'page' => $page,
-                'per_page' => $this->itemsPerPage->value,
-            ]);
-            foreach ($collection as $item) {
-                $this->dataBaseLabelRepository->save($item);
-                $this->output->writeLine('Load label #' . $item->id->value . ' ' . $item->name->value . ' done');
-            }
-        } while ($this->itemsPerPage->value === count($collection));
+        $items = $this->paginator->paginate(
+            fn(array $params): LabelCollection => $this->apiLabelRepository->get($params),
+        );
+        foreach ($items as $item) {
+            $this->dataBaseLabelRepository->save($item);
+            $this->output->writeLine('Load label #' . $item->id->value . ' ' . $item->name->value . ' done');
+        }
     }
 }

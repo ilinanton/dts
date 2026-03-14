@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Application\Gitlab;
 
+use App\Application\Common\Paginator;
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
-use App\Domain\Gitlab\Common\ItemsPerPage;
 use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabApiResourceLabelEventRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabDataBaseResourceLabelEventRepositoryInterface;
+use App\Domain\Gitlab\ResourceLabelEvent\ResourceLabelEventCollection;
 
 final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCaseInterface
 {
@@ -20,7 +21,7 @@ final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCase
         private GitlabDataBaseResourceLabelEventRepositoryInterface $databaseResourceLabelEventRepository,
         private GitlabDataBaseMergeRequestRepositoryInterface $dataBaseMergeRequestRepository,
         private SyncOutputInterface $output,
-        private ItemsPerPage $itemsPerPage,
+        private Paginator $paginator,
     ) {
     }
 
@@ -29,28 +30,27 @@ final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCase
         $this->output->writeLine('Load label events that created after ' . $this->syncDateAfter->getValueInMainFormat());
         $mergeRequestCollection = $this->dataBaseMergeRequestRepository->getUpdatedAfter($this->syncDateAfter);
         foreach ($mergeRequestCollection as $mergeRequest) {
-            $page = 0;
             $projectId = $mergeRequest->projectId->value;
             $mergeRequestIid = $mergeRequest->iid->value;
             $this->output->write(' - # project_id: ' . $projectId . ' merge_request_iid: ' . $mergeRequestIid);
-            do {
-                ++$page;
 
-                $resourceLabelEventCollection = $this->apiResourceLabelEventRepository->getMergeRequestLabelEvents(
-                    $projectId,
-                    $mergeRequestIid,
-                    [
-                        'page' => $page,
-                        'per_page' => $this->itemsPerPage->value,
-                        'created_after' => $this->syncDateAfter->getValueInMainFormat(),
-                    ],
-                );
+            $baseParams = ['created_after' => $this->syncDateAfter->getValueInMainFormat()];
 
-                foreach ($resourceLabelEventCollection as $resourceLabelEvent) {
-                    $this->databaseResourceLabelEventRepository->save($resourceLabelEvent);
-                }
-                $this->output->write(' .');
-            } while ($this->itemsPerPage->value === count($resourceLabelEventCollection));
+            $items = $this->paginator->paginate(
+                function (array $params) use ($projectId, $mergeRequestIid): ResourceLabelEventCollection {
+                    $this->output->write(' .');
+                    return $this->apiResourceLabelEventRepository->getMergeRequestLabelEvents(
+                        $projectId,
+                        $mergeRequestIid,
+                        $params,
+                    );
+                },
+                $baseParams,
+            );
+
+            foreach ($items as $resourceLabelEvent) {
+                $this->databaseResourceLabelEventRepository->save($resourceLabelEvent);
+            }
             $this->output->writeLine(' done');
         }
     }

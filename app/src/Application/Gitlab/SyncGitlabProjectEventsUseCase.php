@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Application\Gitlab;
 
+use App\Application\Common\Paginator;
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
-use App\Domain\Gitlab\Common\ItemsPerPage;
 use App\Domain\Gitlab\Common\SyncDateAfter;
+use App\Domain\Gitlab\Event\EventCollection;
 use App\Domain\Gitlab\Event\EventFilterCollection;
 use App\Domain\Gitlab\Event\Repository\GitlabApiEventRepositoryInterface;
 use App\Domain\Gitlab\Event\Repository\GitlabDataBaseEventRepositoryInterface;
@@ -23,7 +24,7 @@ final readonly class SyncGitlabProjectEventsUseCase implements UseCaseInterface
         private GitlabDataBaseEventRepositoryInterface $dataBaseEventRepository,
         private EventFilterCollection $eventFilters,
         private SyncOutputInterface $output,
-        private ItemsPerPage $itemsPerPage,
+        private Paginator $paginator,
     ) {
     }
 
@@ -43,24 +44,23 @@ final readonly class SyncGitlabProjectEventsUseCase implements UseCaseInterface
         $this->output->writeLine(' - #' . $projectId . ' ' . $projectName);
         foreach ($this->eventFilters as $filter) {
             $this->output->write('   - ' . $filter->paramName . ': ' . $filter->value);
-            $page = 0;
-            do {
-                ++$page;
 
-                $params = [
-                    'page' => $page,
-                    'per_page' => $this->itemsPerPage->value,
-                    'after' => $this->syncDateAfter->getValueInMainFormat(),
-                    $filter->paramName => $filter->value,
-                ];
+            $baseParams = [
+                'after' => $this->syncDateAfter->getValueInMainFormat(),
+                $filter->paramName => $filter->value,
+            ];
 
-                $eventCollection = $this->apiEventRepository->getByProjectId($projectId, $params);
+            $items = $this->paginator->paginate(
+                function (array $params) use ($projectId): EventCollection {
+                    $this->output->write(' .');
+                    return $this->apiEventRepository->getByProjectId($projectId, $params);
+                },
+                $baseParams,
+            );
 
-                foreach ($eventCollection as $event) {
-                    $this->dataBaseEventRepository->save($event);
-                }
-                $this->output->write(' .');
-            } while ($this->itemsPerPage->value === count($eventCollection));
+            foreach ($items as $event) {
+                $this->dataBaseEventRepository->save($event);
+            }
             $this->output->writeLine(' done');
         }
     }

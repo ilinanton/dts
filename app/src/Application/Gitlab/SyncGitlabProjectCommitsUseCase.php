@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\Gitlab;
 
+use App\Application\Common\Paginator;
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
-use App\Domain\Gitlab\Common\ItemsPerPage;
+use App\Domain\Gitlab\Commit\CommitCollection;
 use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;
 use App\Domain\Gitlab\Commit\Repository\GitlabDataBaseCommitRepositoryInterface;
@@ -21,7 +22,7 @@ final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
         private GitlabApiCommitRepositoryInterface $apiCommitRepository,
         private GitlabDataBaseCommitRepositoryInterface $dataBaseCommitRepository,
         private SyncOutputInterface $output,
-        private ItemsPerPage $itemsPerPage,
+        private Paginator $paginator,
     ) {
     }
 
@@ -40,25 +41,24 @@ final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
         $projectName = $project->name->value;
         $refName = $project->defaultBranch->value;
         $this->output->write(' - #' . $projectId . ' ' . $projectName);
-        $page = 0;
-        do {
-            ++$page;
 
-            $params = [
-                'page' => $page,
-                'per_page' => $this->itemsPerPage->value,
-                'since' => $this->syncDateAfter->getValueInMainFormat(),
-                'ref_name' => $refName,
-                'with_stats' => true,
-            ];
+        $baseParams = [
+            'since' => $this->syncDateAfter->getValueInMainFormat(),
+            'ref_name' => $refName,
+            'with_stats' => true,
+        ];
 
-            $commitCollection = $this->apiCommitRepository->get($projectId, $params);
+        $items = $this->paginator->paginate(
+            function (array $params) use ($projectId): CommitCollection {
+                $this->output->write(' .');
+                return $this->apiCommitRepository->get($projectId, $params);
+            },
+            $baseParams,
+        );
 
-            foreach ($commitCollection as $commit) {
-                $this->dataBaseCommitRepository->save($commit);
-            }
-            $this->output->write(' .');
-        } while ($this->itemsPerPage->value === count($commitCollection));
+        foreach ($items as $commit) {
+            $this->dataBaseCommitRepository->save($commit);
+        }
         $this->output->writeLine(' done');
     }
 }
