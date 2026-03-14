@@ -32,6 +32,7 @@ use App\Domain\Report\ScoringService;
 use App\Infrastructure\Report\DevReportMySqlRepository;
 use App\Application\Report\DevReportPresenterInterface;
 use App\Presentation\Cli\StdoutSyncOutput;
+use App\Presentation\Config\GitlabConfiguration;
 use App\Presentation\Report\CliReportDateProvider;
 use App\Presentation\Report\DevReportTablePresenter;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -86,30 +87,8 @@ use App\Infrastructure\Gitlab\GitlabMySqlUserRepository;
 use Psr\Container\ContainerInterface;
 
 return [
-    'GITLAB_URL' => $_ENV['GITLAB_URL'],
-    'GITLAB_TOKEN' => $_ENV['GITLAB_TOKEN'],
-    'GITLAB_GROUP_ID' => (int)$_ENV['GITLAB_GROUP_ID'],
-    'GITLAB_SYNC_DATE_AFTER' => $_ENV['GITLAB_SYNC_DATE_AFTER'],
-    'GITLAB_EXCLUDED_PROJECT_IDS' => function (ContainerInterface $c): array {
-        $ids = explode(',', $_ENV['GITLAB_EXCLUDED_PROJECT_IDS']);
-        array_walk($ids, function (&$value): void {
-            $value = (int)trim($value);
-        });
-        return $ids;
-    },
-    'GITLAB_EXCLUDED_USER_IDS' => function (ContainerInterface $c): array {
-        $ids = explode(',', $_ENV['GITLAB_EXCLUDED_USER_IDS']);
-        array_walk($ids, function (&$value): void {
-            $value = (int)trim($value);
-        });
-        return $ids;
-    },
     'GITLAB_URI' => function (ContainerInterface $c): string {
-        return $c->get('GITLAB_URL') . '/api/v4/';
-    },
-
-    'GIT_LOG_EXCLUDE_PATH' => function () {
-        return explode(',', $_ENV['GIT_LOG_EXCLUDE_PATH']);
+        return $c->get(GitlabConfiguration::class)->gitlabUrl . '/api/v4/';
     },
 
     SyncOutputInterface::class => function (): SyncOutputInterface {
@@ -142,7 +121,7 @@ return [
     },
     SyncGitlabProjectEventsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncGitlabProjectEventsUseCase(
-            new SyncDateAfter($c->get('GITLAB_SYNC_DATE_AFTER')),
+            new SyncDateAfter($c->get(GitlabConfiguration::class)->syncDateAfter),
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
             $c->get(GitlabApiEventRepositoryInterface::class),
             $c->get(GitlabDataBaseEventRepositoryInterface::class),
@@ -153,7 +132,7 @@ return [
     },
     SyncGitlabProjectCommitsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncGitlabProjectCommitsUseCase(
-            new SyncDateAfter($c->get('GITLAB_SYNC_DATE_AFTER')),
+            new SyncDateAfter($c->get(GitlabConfiguration::class)->syncDateAfter),
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
             $c->get(GitlabApiCommitRepositoryInterface::class),
             $c->get(GitlabDataBaseCommitRepositoryInterface::class),
@@ -163,7 +142,7 @@ return [
     },
     SyncGitlabProjectCommitStatsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncGitlabProjectCommitStatsUseCase(
-            new CommitSinceDate($c->get('GITLAB_SYNC_DATE_AFTER')),
+            new CommitSinceDate($c->get(GitlabConfiguration::class)->syncDateAfter),
             $c->get(GitRepositoryInterface::class),
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
             $c->get(GitlabDataBaseCommitStatsRepositoryInterface::class),
@@ -189,7 +168,7 @@ return [
     },
     SyncGitlabMergeRequestLabelEventsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncGitlabMergeRequestLabelEventsUseCase(
-            new SyncDateAfter($c->get('GITLAB_SYNC_DATE_AFTER')),
+            new SyncDateAfter($c->get(GitlabConfiguration::class)->syncDateAfter),
             $c->get(GitlabApiResourceLabelEventRepositoryInterface::class),
             $c->get(GitlabDataBaseResourceLabelEventRepositoryInterface::class),
             $c->get(GitlabDataBaseMergeRequestRepositoryInterface::class),
@@ -197,27 +176,24 @@ return [
             new Paginator(60),
         );
     },
-    'REPORT_TESTED_LABELS' => function (): array {
-        $value = trim($_ENV['REPORT_TESTED_LABELS'] ?? '');
-        if ($value === '') {
-            return [];
-        }
+    'REPORT_TESTED_LABELS' => function (ContainerInterface $c): array {
         return array_map(
-            static fn(string $name): LabelName => new LabelName(trim($name)),
-            explode(',', $value),
+            static fn(string $name): LabelName => new LabelName($name),
+            $c->get(GitlabConfiguration::class)->reportTestedLabels,
         );
     },
-    ScoringConfiguration::class => function (): ScoringConfiguration {
+    ScoringConfiguration::class => function (ContainerInterface $c): ScoringConfiguration {
+        $config = $c->get(GitlabConfiguration::class);
         return new ScoringConfiguration(
-            mergeRequestCreated: new ScoringWeight((float)$_ENV['POINTS_MERGE_REQUEST_CREATED']),
-            approvalsGiven: new ScoringWeight((float)$_ENV['POINTS_APPROVALS_GIVEN']),
-            mergeRequestMerged: new ScoringWeight((float)$_ENV['POINTS_MERGE_REQUEST_MERGED']),
-            mergeRequestApproved: new ScoringWeight((float)$_ENV['POINTS_MERGE_REQUEST_APPROVED']),
-            mergeRequestTested: new ScoringWeight((float)$_ENV['POINTS_MERGE_REQUEST_TESTED']),
-            linesAdded: new ScoringWeight((float)$_ENV['POINTS_LINES_ADDED']),
-            linesRemoved: new ScoringWeight((float)$_ENV['POINTS_LINES_REMOVED']),
-            selfApprovals: new ScoringPenalty((float)$_ENV['POINTS_SELF_APPROVALS']),
-            directCommitsToMain: new ScoringPenalty((float)$_ENV['POINTS_DIRECT_COMMITS_TO_MAIN']),
+            mergeRequestCreated: new ScoringWeight($config->pointsMergeRequestCreated),
+            approvalsGiven: new ScoringWeight($config->pointsApprovalsGiven),
+            mergeRequestMerged: new ScoringWeight($config->pointsMergeRequestMerged),
+            mergeRequestApproved: new ScoringWeight($config->pointsMergeRequestApproved),
+            mergeRequestTested: new ScoringWeight($config->pointsMergeRequestTested),
+            linesAdded: new ScoringWeight($config->pointsLinesAdded),
+            linesRemoved: new ScoringWeight($config->pointsLinesRemoved),
+            selfApprovals: new ScoringPenalty($config->pointsSelfApprovals),
+            directCommitsToMain: new ScoringPenalty($config->pointsDirectCommitsToMain),
         );
     },
     ScoringService::class => function (ContainerInterface $c): ScoringService {
@@ -249,7 +225,7 @@ return [
     },
     SyncGitlabProjectMergeRequestsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncGitlabProjectMergeRequestsUseCase(
-            new SyncDateAfter($c->get('GITLAB_SYNC_DATE_AFTER')),
+            new SyncDateAfter($c->get(GitlabConfiguration::class)->syncDateAfter),
             $c->get(GitlabApiMergeRequestRepositoryInterface::class),
             $c->get(GitlabDataBaseMergeRequestRepositoryInterface::class),
             $c->get(GitlabDataBaseProjectRepositoryInterface::class),
@@ -259,7 +235,7 @@ return [
     },
     SyncGitlabUserEventsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         return new SyncGitlabUserEventsUseCase(
-            new SyncDateAfter($c->get('GITLAB_SYNC_DATE_AFTER')),
+            new SyncDateAfter($c->get(GitlabConfiguration::class)->syncDateAfter),
             $c->get(GitlabDataBaseUserRepositoryInterface::class),
             $c->get(GitlabApiEventRepositoryInterface::class),
             $c->get(GitlabDataBaseEventRepositoryInterface::class),
@@ -271,13 +247,13 @@ return [
     GitlabApiProjectRepositoryInterface::class => function (ContainerInterface $c): GitlabApiProjectRepositoryInterface {
         return new GitlabApiProjectRepository(
             $c->get(GitlabApiClientProjectInterface::class),
-            $c->get('GITLAB_EXCLUDED_PROJECT_IDS'),
+            $c->get(GitlabConfiguration::class)->excludedProjectIds,
         );
     },
     GitlabApiUserRepositoryInterface::class => function (ContainerInterface $c): GitlabApiUserRepositoryInterface {
         return new GitlabApiUserRepository(
             $c->get(GitlabApiClientUserInterface::class),
-            $c->get('GITLAB_EXCLUDED_USER_IDS'),
+            $c->get(GitlabConfiguration::class)->excludedUserIds,
         );
     },
     GitlabApiLabelRepositoryInterface::class => function (ContainerInterface $c): GitlabApiLabelRepositoryInterface {
@@ -326,7 +302,7 @@ return [
     },
     GitRepositoryInterface::class => function (ContainerInterface $c): GitRepositoryInterface {
         return new GitRepository(
-            $c->get('GIT_LOG_EXCLUDE_PATH'),
+            $c->get(GitlabConfiguration::class)->gitLogExcludePath,
             $c->get(CommitFactory::class),
         );
     },
@@ -337,10 +313,11 @@ return [
         );
     },
     GitlabApiClient::class => function (ContainerInterface $c): GitlabApiClient {
+        $config = $c->get(GitlabConfiguration::class);
         return new GitlabApiClient(
             $c->get('GITLAB_URI'),
-            $c->get('GITLAB_TOKEN'),
-            $c->get('GITLAB_GROUP_ID'),
+            $config->gitlabToken,
+            $config->gitlabGroupId,
         );
     },
     GitlabApiClientProjectInterface::class => function (ContainerInterface $c): GitlabApiClientProjectInterface {
