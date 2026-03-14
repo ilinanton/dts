@@ -9,12 +9,12 @@ use App\Application\Report\ScoredDeveloper;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Helper\TableCellStyle;
-use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 
 final readonly class DevReportTablePresenter implements DevReportPresenterInterface
 {
     public function __construct(
-        private ConsoleOutput $output,
+        private OutputInterface $output,
     ) {
     }
 
