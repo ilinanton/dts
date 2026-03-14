@@ -18,9 +18,11 @@ final readonly class GitlabApiClient implements
 {
     private Client $client;
     private int $groupId;
+    private int $requestDelaySeconds;
 
-    public function __construct(string $baseUri, string $privateToken, int $groupId)
+    public function __construct(string $baseUri, string $privateToken, int $groupId, int $requestDelaySeconds = 1)
     {
+        $this->requestDelaySeconds = $requestDelaySeconds;
         $this->client = new Client([
             'base_uri' => $baseUri,
             'verify' => false,
@@ -38,7 +40,7 @@ final readonly class GitlabApiClient implements
 
     public function get(string $uri, array $params = []): array
     {
-        sleep(1);
+        sleep($this->requestDelaySeconds);
         if ($params !== []) {
             $uri .= '?' . http_build_query($params);
         }
