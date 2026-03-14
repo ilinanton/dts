@@ -12,6 +12,7 @@ final readonly class GitlabApiCommitRepository implements GitlabApiCommitReposit
 {
     public function __construct(
         private GitlabApiClientCommitInterface $client,
+        private CommitFactory $commitFactory,
     ) {
     }
 
@@ -19,10 +20,9 @@ final readonly class GitlabApiCommitRepository implements GitlabApiCommitReposit
     {
         $data = $this->client->getProjectRepositoryCommits($projectId, $params);
         $collection = new CommitCollection();
-        $factory = new CommitFactory();
 
         foreach ($data as $item) {
-            $commit = $factory->create($projectId, $item);
+            $commit = $this->commitFactory->create($projectId, $item);
             $collection->add($commit);
         }
 

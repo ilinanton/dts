@@ -59,9 +59,12 @@ use App\Domain\Gitlab\User\Repository\GitlabApiUserRepositoryInterface;
 use App\Domain\Gitlab\User\Repository\GitlabDataBaseUserRepositoryInterface;
 use App\Domain\Git\Commit\CommitFactory;
 use App\Domain\Git\Stats\StatsFactory;
+use App\Domain\Gitlab\Commit\CommitFactory as GitlabCommitFactory;
 use App\Domain\Gitlab\CommitStats\CommitStatsFactory;
 use App\Domain\Gitlab\Event\EventFactory;
+use App\Domain\Gitlab\MergeRequest\MergeRequestFactory;
 use App\Domain\Gitlab\Note\NoteFactory;
+use App\Domain\Gitlab\Project\Factory\ProjectFactory;
 use App\Domain\Gitlab\PushData\Factory\PushDataFromArray;
 use App\Infrastructure\Git\GitRepository;
 use App\Infrastructure\Gitlab\GitlabApiClient;
@@ -306,6 +309,15 @@ return [
     CommitStatsFactory::class => function (): CommitStatsFactory {
         return new CommitStatsFactory();
     },
+    GitlabCommitFactory::class => function (): GitlabCommitFactory {
+        return new GitlabCommitFactory();
+    },
+    MergeRequestFactory::class => function (): MergeRequestFactory {
+        return new MergeRequestFactory();
+    },
+    ProjectFactory::class => function (): ProjectFactory {
+        return new ProjectFactory();
+    },
     GitlabApiEventRepositoryInterface::class => function (ContainerInterface $c): GitlabApiEventRepositoryInterface {
         return new GitlabApiEventRepository(
             $c->get(GitlabApiClientEventInterface::class),
@@ -321,6 +333,7 @@ return [
     GitlabApiCommitRepositoryInterface::class => function (ContainerInterface $c): GitlabApiCommitRepositoryInterface {
         return new GitlabApiCommitRepository(
             $c->get(GitlabApiClientCommitInterface::class),
+            $c->get(GitlabCommitFactory::class),
         );
     },
     GitlabApiClient::class => function (ContainerInterface $c): GitlabApiClient {
@@ -354,6 +367,7 @@ return [
     GitlabDataBaseProjectRepositoryInterface::class => function (ContainerInterface $c): GitlabDataBaseProjectRepositoryInterface {
         return new GitlabMySqlProjectRepository(
             $c->get(PDO::class),
+            $c->get(ProjectFactory::class),
         );
     },
     GitlabDataBaseUserRepositoryInterface::class => function (ContainerInterface $c): GitlabDataBaseUserRepositoryInterface {
@@ -374,6 +388,7 @@ return [
     GitlabDataBaseMergeRequestRepositoryInterface::class => function (ContainerInterface $c): GitlabDataBaseMergeRequestRepositoryInterface {
         return new GitlabMySqlMergeRequestRepository(
             $c->get(PDO::class),
+            $c->get(MergeRequestFactory::class),
         );
     },
     GitlabDataBaseEventRepositoryInterface::class => function (ContainerInterface $c): GitlabDataBaseEventRepositoryInterface {

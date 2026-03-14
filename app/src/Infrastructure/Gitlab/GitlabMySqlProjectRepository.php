@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
-use App\Domain\Gitlab\Project\Factory\ProjectCollectionFromArray;
+use App\Domain\Gitlab\Project\Factory\ProjectFactory;
 use App\Domain\Gitlab\Project\Project;
 use App\Domain\Gitlab\Project\ProjectCollection;
 use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterface;
@@ -14,6 +14,7 @@ final readonly class GitlabMySqlProjectRepository implements GitlabDataBaseProje
 {
     public function __construct(
         private PDO $pdo,
+        private ProjectFactory $projectFactory,
     ) {
     }
 
@@ -49,9 +50,8 @@ FROM gitlab_project
 SQL;
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $projectCollectionFactory = new ProjectCollectionFromArray($data);
-        return $projectCollectionFactory->create();
+
+        return $this->buildCollection($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     public function findByUrlToRepo(string $url): ProjectCollection
@@ -66,8 +66,21 @@ SQL;
             ':URL' => $url,
         ]);
 
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $projectCollectionFactory = new ProjectCollectionFromArray($data);
-        return $projectCollectionFactory->create();
+        return $this->buildCollection($stmt->fetchAll(PDO::FETCH_ASSOC));
+    }
+
+    /** @param array<int, array<string, mixed>> $data */
+    private function buildCollection(array $data): ProjectCollection
+    {
+        $collection = new ProjectCollection();
+
+        array_walk(
+            $data,
+            function (array $item) use ($collection): void {
+                $collection->add($this->projectFactory->create($item));
+            },
+        );
+
+        return $collection;
     }
 }

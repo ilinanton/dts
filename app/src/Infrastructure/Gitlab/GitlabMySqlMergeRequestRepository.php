@@ -15,6 +15,7 @@ final readonly class GitlabMySqlMergeRequestRepository implements GitlabDataBase
 {
     public function __construct(
         private PDO $pdo,
+        private MergeRequestFactory $mergeRequestFactory,
     ) {
     }
 
@@ -130,12 +131,11 @@ SQL;
     private function buildCollection(array $data): MergeRequestCollection
     {
         $collection = new MergeRequestCollection();
-        $factory = new MergeRequestFactory();
 
         array_walk(
             $data,
-            function (array $item) use ($collection, $factory): void {
-                $collection->add($factory->create($item, 'Y-m-d H:i:s'));
+            function (array $item) use ($collection): void {
+                $collection->add($this->mergeRequestFactory->create($item, 'Y-m-d H:i:s'));
             },
         );
 
