@@ -6,37 +6,51 @@ namespace App\Domain\Common\ValueObject;
 
 use DateTime;
 use DateTimeZone;
+use InvalidArgumentException;
 
-abstract readonly class AbstractDate extends AbstractRequiredDate
+abstract readonly class AbstractDate
 {
-    protected DateTime $value;
-    protected string $format;
-    private bool $isEmpty;
+    private ?DateTime $value;
+    private string $format;
+
     public function __construct(string $value, string $format = DATE_RFC3339_EXTENDED)
     {
-        if (strlen($value) > 0) {
-            $this->format = $format;
-            $this->assertValueIsValid($value);
-            $this->value = DateTime::createFromFormat($this->format, $value);
-            $this->isEmpty = false;
-        } else {
-            $this->isEmpty = true;
-            $this->format = $format;
-            $this->value = new DateTime();
+        $this->format = $format;
+
+        if ($value === '') {
+            $this->value = null;
+            return;
         }
+
+        $this->assertValueIsValid($value);
+        $this->value = DateTime::createFromFormat($this->format, $value);
     }
 
     public function getValue(DateTimeZone $timeZone = new DateTimeZone('Etc/GMT+0')): string
     {
-        if ($this->isEmpty) {
+        if (!$this->value instanceof DateTime) {
             return '';
         }
-        return parent::getValue($timeZone);
+
+        $this->value->setTimezone($timeZone);
+
+        return $this->value->format('Y-m-d H:i:s');
     }
 
     public function getDbValue(DateTimeZone $timeZone = new DateTimeZone('Etc/GMT+0')): ?string
     {
-        $value = $this->getValue($timeZone);
-        return $value === '' || $value === '0' ? null : $value;
+        if (!$this->value instanceof DateTime) {
+            return null;
+        }
+
+        return $this->getValue($timeZone);
+    }
+
+    private function assertValueIsValid(string $value): void
+    {
+        $dateTime = DateTime::createFromFormat($this->format, $value);
+        if ($dateTime === false) {
+            throw new InvalidArgumentException(get_class($this) . ' is incorrect!');
+        }
     }
 }
