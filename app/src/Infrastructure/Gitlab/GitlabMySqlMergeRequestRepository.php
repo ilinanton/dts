@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
-use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Gitlab\MergeRequest\MergeRequest;
 use App\Domain\Gitlab\MergeRequest\MergeRequestCollection;
 use App\Domain\Gitlab\MergeRequest\MergeRequestFactory;
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
+use App\Domain\Gitlab\MergeRequest\ValueObject\UpdatedAfterDate;
 use PDO;
 
 final readonly class GitlabMySqlMergeRequestRepository implements GitlabDataBaseMergeRequestRepositoryInterface
@@ -102,7 +102,7 @@ SQL;
         return $this->buildCollection($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
-    public function getUpdatedAfter(SyncDateAfter $date): MergeRequestCollection
+    public function getUpdatedAfter(UpdatedAfterDate $date): MergeRequestCollection
     {
         $sql = <<<SQL
 SELECT

@@ -9,6 +9,7 @@ use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
+use App\Domain\Gitlab\MergeRequest\ValueObject\UpdatedAfterDate;
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabApiResourceLabelEventRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabDataBaseResourceLabelEventRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\ResourceLabelEventCollection;
@@ -28,7 +29,8 @@ final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCase
     public function execute(): void
     {
         $this->output->writeLine('Load label events that created after ' . $this->syncDateAfter->getValueInMainFormat());
-        $mergeRequestCollection = $this->dataBaseMergeRequestRepository->getUpdatedAfter($this->syncDateAfter);
+        $updatedAfterDate = new UpdatedAfterDate($this->syncDateAfter->getValueInMainFormat());
+        $mergeRequestCollection = $this->dataBaseMergeRequestRepository->getUpdatedAfter($updatedAfterDate);
         foreach ($mergeRequestCollection as $mergeRequest) {
             $projectId = $mergeRequest->projectId->value;
             $mergeRequestIid = $mergeRequest->iid->value;
