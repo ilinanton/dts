@@ -62,6 +62,9 @@ return [
     Command::dev_report->diId() => function (ContainerInterface $c) {
         return $c->get(DevReportUseCase::class);
     },
+    Command::dev_report_html->diId() => function (ContainerInterface $c) {
+        return $c->get('DevReportHtmlUseCase');
+    },
 
     MenuUseCase::class => function (ContainerInterface $c): UseCaseInterface {
         $menuItems = new MenuItemCollection();

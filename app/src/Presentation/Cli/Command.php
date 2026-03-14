@@ -17,6 +17,7 @@ enum Command: string
     case exit = 'Exit';
     case menu = 'Menu';
     case dev_report = 'Dev report';
+    case dev_report_html = 'Dev report (HTML)';
     case sync_gitlab_data = 'Sync users, projects and labels';
     case sync_gitlab_merge_requests = 'Sync project merge requests';
     case sync_gitlab_project_events = 'Sync project events';
@@ -57,7 +58,8 @@ enum Command: string
     {
         return match ($this) {
             self::exit,
-            self::dev_report => self::CATEGORY_GENERAL,
+            self::dev_report,
+            self::dev_report_html => self::CATEGORY_GENERAL,
 
             self::sync_gitlab_data,
             self::sync_gitlab_merge_requests,

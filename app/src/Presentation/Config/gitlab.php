@@ -31,6 +31,7 @@ use App\Domain\Report\ValueObject\ScoringWeight;
 use App\Domain\Report\ScoringService;
 use App\Infrastructure\Report\DevReportMySqlRepository;
 use App\Application\Report\DevReportPresenterInterface;
+use App\Presentation\Report\DevReportHtmlPresenter;
 use App\Presentation\Cli\StdoutSyncOutput;
 use App\Presentation\Config\GitlabConfiguration;
 use App\Presentation\Report\CliReportDateProvider;
@@ -209,6 +210,15 @@ return [
     DevReportPresenterInterface::class => function (): DevReportPresenterInterface {
         return new DevReportTablePresenter(
             new ConsoleOutput(),
+        );
+    },
+    'DevReportHtmlUseCase' => function (ContainerInterface $c): UseCaseInterface {
+        return new DevReportUseCase(
+            $c->get(DevReportRepositoryInterface::class),
+            $c->get(ScoringService::class),
+            new DevReportHtmlPresenter('/var/www/reports', new ConsoleOutput()),
+            $c->get(ReportDateProviderInterface::class),
+            $c->get('REPORT_TESTED_LABELS'),
         );
     },
     ReportDateProviderInterface::class => function (): ReportDateProviderInterface {

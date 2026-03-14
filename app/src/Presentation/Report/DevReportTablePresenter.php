@@ -6,6 +6,7 @@ namespace App\Presentation\Report;
 
 use App\Application\Report\DevReportPresenterInterface;
 use App\Application\Report\ScoredDeveloper;
+use App\Domain\Report\ReportCriteria;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Helper\TableCellStyle;
@@ -19,7 +20,7 @@ final readonly class DevReportTablePresenter implements DevReportPresenterInterf
     }
 
     /** @param array<ScoredDeveloper> $scoredDevelopers */
-    public function render(array $scoredDevelopers): void
+    public function render(array $scoredDevelopers, ReportCriteria $criteria): void
     {
         $rows = $this->prepareRows($scoredDevelopers);
         $this->printTable($rows);

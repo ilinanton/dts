@@ -30,6 +30,7 @@ services:
     volumes:
       - ./app:/var/www/app
       - ${GIT_PROJECTS_PATH}:/var/www/projects
+      - ./reports:/var/www/reports
     logging: *logging
 
   mysql:
