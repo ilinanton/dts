@@ -29,40 +29,40 @@ final readonly class CommitFactory
         );
     }
 
-    public function parseCommitId(string $data): CommitId
+    private function parseCommitId(string $data): CommitId
     {
         $result = [];
         preg_match('/(?P<commit>\{\|p\|}commit: (?P<value>[a-f0-9]{32}))/', $data, $result);
         return new CommitId($result['value'] ?? '');
     }
 
-    public function parseTextProperty(string $propertyName, string $data): string
+    private function parseTextProperty(string $propertyName, string $data): string
     {
         $result = [];
         preg_match('/(?P<property>\{\|p\|}' . $propertyName . ': (?P<value>.+?(?={)))/', $data, $result);
         return trim($result['value'] ?? '');
     }
 
-    public function parseAuthorEmail(string $data): CommitAuthorEmail
+    private function parseAuthorEmail(string $data): CommitAuthorEmail
     {
         $value = $this->parseTextProperty('email', $data);
         return new CommitAuthorEmail($value);
     }
 
-    public function parseAuthorName(string $data): CommitAuthorName
+    private function parseAuthorName(string $data): CommitAuthorName
     {
         $value = $this->parseTextProperty('name', $data);
         return new CommitAuthorName($value);
     }
 
-    public function parseCommitAuthorDate(string $data): CommitAuthorDate
+    private function parseCommitAuthorDate(string $data): CommitAuthorDate
     {
         $result = [];
         preg_match('/(?P<date>\{\|p\|}date: (?P<value>.+?(?={)))/', $data, $result);
         return new CommitAuthorDate($result['value'] ?? '', DATE_ISO8601_EXPANDED);
     }
 
-    public function parseCommitStats(string $date): CommitStats
+    private function parseCommitStats(string $date): CommitStats
     {
         $result = [];
         preg_match(

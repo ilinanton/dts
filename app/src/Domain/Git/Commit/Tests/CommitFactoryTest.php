@@ -65,50 +65,43 @@ final class CommitFactoryTest extends TestCase
     }
 
     /** @dataProvider commitsData */
-    public function testParseCommitId(string $commitData): void
+    public function testCreateCommitId(string $commitData): void
     {
-        $commitFactory = new CommitFactory(new StatsFactory());
-        $commitId = $commitFactory->parseCommitId($commitData);
-        $this->assertTrue(32 === strlen($commitId->value));
-        $this->assertStringContainsString($commitId->value, $commitData);
+        $commit = new CommitFactory(new StatsFactory())->create($commitData);
+        $this->assertTrue(32 === strlen($commit->id->value));
+        $this->assertStringContainsString($commit->id->value, $commitData);
     }
 
     /** @dataProvider commitsData */
-    public function testParseAuthorName(string $commitData): void
+    public function testCreateAuthorName(string $commitData): void
     {
-        $commitFactory = new CommitFactory(new StatsFactory());
-        $authorName = $commitFactory->parseAuthorName($commitData);
-        $this->assertContains($authorName->value, self::NAMES);
+        $commit = new CommitFactory(new StatsFactory())->create($commitData);
+        $this->assertContains($commit->authorName->value, self::NAMES);
     }
 
     /** @dataProvider commitsData */
-    public function testParseAuthorEmail(string $commitData): void
+    public function testCreateAuthorEmail(string $commitData): void
     {
-        $commitFactory = new CommitFactory(new StatsFactory());
-        $authorEmail = $commitFactory->parseAuthorEmail($commitData);
-        $this->assertContains($authorEmail->value, self::EMAILS);
+        $commit = new CommitFactory(new StatsFactory())->create($commitData);
+        $this->assertContains($commit->authorEmail->value, self::EMAILS);
     }
 
     /** @dataProvider commitsData */
-    public function testParseCommitAuthorDate(string $commitData): void
+    public function testCreateAuthorDate(string $commitData): void
     {
-        $commitFactory = new CommitFactory(new StatsFactory());
-        $commitAuthorDate = $commitFactory->parseCommitAuthorDate($commitData);
-
+        $commit = new CommitFactory(new StatsFactory())->create($commitData);
         $this->assertStringContainsString(
-            ltrim($commitAuthorDate->getValueInMainFormat(), '+'),
+            ltrim($commit->authorDate->getValueInMainFormat(), '+'),
             $commitData
         );
     }
 
     /** @dataProvider commitsData */
-    public function testParseCommitStats(string $commitData): void
+    public function testCreateStats(string $commitData): void
     {
-        $commitFactory = new CommitFactory(new StatsFactory());
-        $commitStats = $commitFactory->parseCommitStats($commitData);
-
-        $this->assertTrue($commitStats->value->files->value > 0);
-        $this->assertTrue($commitStats->value->additions->value > 0);
-        $this->assertTrue($commitStats->value->deletions->value >= 0);
+        $commit = new CommitFactory(new StatsFactory())->create($commitData);
+        $this->assertTrue($commit->stats->value->files->value > 0);
+        $this->assertTrue($commit->stats->value->additions->value > 0);
+        $this->assertTrue($commit->stats->value->deletions->value >= 0);
     }
 }
