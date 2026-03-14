@@ -4,13 +4,14 @@ A PHP CLI tool that syncs GitLab data and generates developer performance report
 
 ## Overview
 
-DTS synchronizes data from GitLab (projects, users, merge requests, commits, events) into a local MySQL database and generates comprehensive developer performance reports. The tool uses a points-based scoring system to evaluate developer contributions and activity.
+DTS synchronizes data from GitLab (projects, users, merge requests, commits, events, labels) into a local MySQL database and generates comprehensive developer performance reports. The tool uses a points-based scoring system to evaluate developer contributions and activity.
 
 ## Features
 
 - Sync GitLab resources (projects, users, merge requests, commits, events, labels)
 - Store data locally in MySQL for fast querying and reporting
 - Generate developer performance reports with customizable scoring
+- Dual report output: Markdown table (CLI) and interactive HTML with sortable columns
 - Interactive CLI menu for easy operation
 - Clean Architecture with Domain-Driven Design
 - Full Docker support for easy setup
@@ -34,7 +35,25 @@ cd dts
 make dc_setup
 ```
 
-3. Configure GitLab API access (update configuration as needed)
+3. Copy `.env.example` to `.env` and configure:
+```env
+# GitLab
+GITLAB_URL=https://gitlab.example.com
+GITLAB_TOKEN=your-api-token
+GITLAB_GROUP_ID=123
+GITLAB_SYNC_DATE_AFTER=2024-01-01
+
+# MySQL
+MYSQL_URL=mysql:3306
+MYSQL_DATABASE=dts
+MYSQL_USER=dts
+MYSQL_USER_PASS=secret
+
+# Optional exclusions
+GITLAB_EXCLUDED_PROJECT_IDS=1,2,3
+GITLAB_EXCLUDED_USER_IDS=10,20
+GIT_LOG_EXCLUDE_PATH=vendor,node_modules
+```
 
 ## Usage
 
@@ -50,37 +69,46 @@ Or directly:
 docker compose exec php php cli.php
 ```
 
-The interactive menu will guide you through available operations:
-- Sync GitLab data (projects, users, merge requests, commits, events)
-- Generate developer reports
+The interactive menu provides options to:
+- Sync GitLab data (projects, users, merge requests, commits, events, labels)
+- Generate developer reports (Markdown table or HTML)
 - View statistics
 
-### Code Quality Checks
+### HTML Reports
 
-Run all code quality checks:
+HTML reports are saved to the `reports/` directory with a timestamp in the filename. Reports feature an interactive sortable table with top-3 developer highlighting.
+
+### Code Quality
+
+Run all checks:
 ```bash
 make code_quality
 ```
 
 Individual checks:
 ```bash
-make phpcs          # Check code style (PSR-12)
+make phpcs          # Check code style (PSR-12 + Slevomat)
 make phpcbf         # Auto-fix code style issues
-make phpstan        # Run static analysis (level 5)
+make phpstan        # Static analysis (level 5)
 make rector         # Rector dry-run
 make rectorbf       # Apply Rector fixes
 ```
 
 ### Testing
 
-Run all tests:
 ```bash
-docker compose exec php ./vendor/bin/phpunit
+make test                            # Run all tests
+make test_filter filter=TestClass    # Run specific test
 ```
 
-Run specific test:
+### Database Migrations
+
+Migrations are managed with Phinx (`app/phinx/dts/migrations/`):
+
 ```bash
-docker compose exec php ./vendor/bin/phpunit --filter TestClassName
+make phinx_create name=MigrationName   # Create migration
+make phinx_migrate                     # Run migrations
+make phinx_rollback                    # Rollback last migration
 ```
 
 ## Scoring System
@@ -88,10 +116,10 @@ docker compose exec php ./vendor/bin/phpunit --filter TestClassName
 DTS uses a configurable points-based scoring system to evaluate developer contributions. The final score for each developer is a **weighted sum** of all metrics:
 
 ```
-Score = (MRs Created × W1) + (Approvals Given × W2) + (MRs Merged × W3) +
-        (MRs Merged with Approval × W4) + (MRs Tested × W5) +
-        (Lines Added × W6) + (Lines Deleted × W7) +
-        (Self-Approvals × W8) + (Direct Commits × W9)
+Score = (MRs Created x W1) + (Approvals Given x W2) + (MRs Merged x W3) +
+        (MRs Merged with Approval x W4) + (MRs Tested x W5) +
+        (Lines Added x W6) + (Lines Deleted x W7) +
+        (Self-Approvals x W8) + (Direct Commits x W9)
 ```
 
 All weights are configured via environment variables in `.env`. Reports only include **active users** and only count contributions **after the report start date** (defaults to 2 weeks ago).
@@ -152,75 +180,115 @@ The project follows Clean Architecture principles with Domain-Driven Design:
 
 ```
 app/src/
-├── Application/     # Use cases - orchestrate domain logic
-│   ├── Gitlab/      # Sync* use cases for each GitLab entity
-│   └── Report/      # DevReportUseCase
-├── Domain/          # Pure business logic, no framework dependencies
-│   ├── Gitlab/      # Entities per resource type
-│   └── Git/
-├── Infrastructure/  # External integrations
-│   ├── Gitlab/      # API clients + MySQL repositories
-│   └── Git/
-└── Presentation/    # Entry points and DI
-    ├── Cli/         # Interactive CLI menu
-    └── Config/      # Dependency injection configuration
+├── Application/           # Use cases - orchestrate domain logic
+│   ├── Cli/               # ExitUseCase, MenuUseCase
+│   ├── Common/            # Paginator
+│   ├── Gitlab/            # Sync* use cases for each GitLab entity
+│   └── Report/            # DevReportUseCase, DevReportPresenterInterface,
+│                          # ScoredDeveloper, ReportDateProviderInterface
+├── Domain/                # Pure business logic, no framework dependencies
+│   ├── Common/            # Abstract value objects (string, int, date, url)
+│   ├── Git/               # Git entities (Commit, Project, Stats, User)
+│   ├── Gitlab/            # GitLab entities per resource type
+│   │   ├── Commit/        # Commits with CommitGitCommitId
+│   │   ├── CommitStats/   # Commit statistics (additions/deletions)
+│   │   ├── Event/         # GitLab events
+│   │   ├── Label/         # Labels
+│   │   ├── MergeRequest/  # Merge requests
+│   │   ├── Note/          # MR notes/comments
+│   │   ├── Project/       # Projects with default branch info
+│   │   ├── PushData/      # Push event data
+│   │   ├── ResourceLabelEvent/  # Label change events
+│   │   ├── User/          # GitLab users
+│   │   └── Common/        # Shared GitLab interfaces & value objects
+│   └── Report/            # Developer report domain
+│       ├── DeveloperStatistics         # Readonly DTO with 11 metrics
+│       ├── DeveloperStatisticsCollection
+│       ├── ScoringConfiguration        # 9 scoring weights/penalties
+│       ├── ScoringService              # Weighted sum calculation
+│       ├── ReportCriteria              # Start date + tested labels
+│       ├── Repository/                 # DevReportRepositoryInterface
+│       └── ValueObject/                # ScoringWeight, ScoringPenalty,
+│                                       # MergeRequestCount, ApprovalCount,
+│                                       # CommitCount, LineCount, LabelName, etc.
+├── Infrastructure/        # External integrations & implementations
+│   ├── Gitlab/            # GitlabApiClient, API + MySQL repositories
+│   ├── Git/               # GitRepository
+│   └── Report/            # DevReportMySqlRepository
+└── Presentation/          # Entry points and configuration
+    ├── Cli/               # Interactive menu (Cli, Command enum,
+    │                      # StdoutSyncOutput, CommandNotFoundException)
+    ├── Config/            # DI container configuration
+    │   ├── AppConfiguration      # MySQL env config
+    │   ├── GitlabConfiguration   # GitLab + scoring env config
+    │   ├── main.php              # MySQL PDO setup
+    │   ├── cli.php               # CLI command wiring
+    │   ├── gitlab.php            # GitLab + Report wiring
+    │   └── bootstrap.php         # DI container assembly
+    └── Report/            # Report presenters
+        ├── DevReportTablePresenter   # Markdown table output
+        ├── DevReportHtmlPresenter    # Interactive HTML report
+        └── CliReportDateProvider     # CLI date input
 ```
 
 ### Key Principles
 
-- Domain interfaces defined in Domain layer, implemented in Infrastructure
-- Separation of concerns with clear boundaries
-- Dependency injection for loose coupling
-- Repository pattern for data access
+- **Repository Pattern**: each entity has API repository (fetch from GitLab) and MySQL repository (local storage)
+- **Dependency Inversion**: domain interfaces defined in Domain layer, implemented in Infrastructure
+- **Use Case Pattern**: each business operation is a separate class implementing `UseCaseInterface`
+- **DI Container**: PHP-DI configured in `Presentation/Config/` — all dependencies injected, no static coupling
+- **Value Objects**: rich domain types with validation (counts, weights, penalties, dates, IDs)
+- **Configuration encapsulation**: `AppConfiguration` and `GitlabConfiguration` wrap environment variables
 
 ## Development
 
 ### Code Standards
 
 - PHP 8.4 with strict types (`declare(strict_types=1)`)
-- PSR-12 coding standard
+- PSR-12 + Slevomat coding standard
 - Single quotes for strings
+- camelCase for variables and methods
+- Class constants must have visibility and type hints
 - Cyclomatic complexity: max 5 (absolute 7)
 - Cognitive complexity: max 8
 - Nesting level: max 2 (absolute 3)
-- camelCase for variables
-- Class constants must have visibility and type hints
 
-### Database Migrations
+### Tools
 
-Migrations are managed with Phinx and located in `app/phinx/dts/migrations/`.
-
-Create a new migration:
-```bash
-make phinx_create name=MigrationName
-```
-
-Run migrations:
-```bash
-make phinx_migrate
-```
-
-Rollback last migration:
-```bash
-make phinx_rollback
-```
+- PHP_CodeSniffer with PSR-12 + Slevomat Coding Standard
+- PHPStan level 5
+- Rector for code modernization
+- PHPUnit for testing
 
 ## Project Structure
 
-- `app/src/` - Application source code
-- `app/phinx/` - Database migrations
-- `app/cli.php` - CLI entry point
-- `docker-compose.yml` - Docker services configuration
-- `Makefile` - Convenience commands
+```
+dts/
+├── app/
+│   ├── src/              # Application source code
+│   ├── phinx/            # Database migrations
+│   ├── cli.php           # CLI entry point
+│   └── composer.json      # PHP dependencies
+├── docker/               # Docker configuration (PHP, MySQL)
+├── docker-compose.yml    # Docker services (PHP, MySQL)
+├── Makefile              # Convenience commands
+├── reports/              # Generated HTML reports
+├── projects/             # Local Git repositories (for analysis)
+├── sql/                  # SQL scripts
+└── tests/                # PHPUnit tests
+```
 
 ## Technology Stack
 
-- PHP 8.4
-- MySQL 8.0
-- GitLab API integration
-- PHPUnit for testing
-- PHPStan for static analysis
-- PHP_CodeSniffer for code style
-- Rector for code modernization
-- Phinx for database migrations
-- Docker for containerization
+- **PHP 8.4** — Main language
+- **MySQL 8.0** — Database
+- **GitLab API** — Data source (via Guzzle HTTP client)
+- **PHP-DI** — Dependency injection container
+- **Symfony Console** — CLI components
+- **Symfony Dotenv** — Environment configuration
+- **Phinx** — Database migrations
+- **PHPUnit** — Testing
+- **PHPStan** — Static analysis
+- **PHP_CodeSniffer** — Code style (PSR-12 + Slevomat)
+- **Rector** — Code modernization
+- **Docker** — Containerization
