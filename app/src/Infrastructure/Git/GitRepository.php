@@ -24,7 +24,7 @@ final readonly class GitRepository implements GitRepositoryInterface
 
     public function getProjects(): ProjectCollection
     {
-        $result = trim(shell_exec('cd ' . self::PROJECTS_PATH . ' && ls -d */'));
+        $result = trim(shell_exec('cd ' . escapeshellarg(self::PROJECTS_PATH) . ' && ls -d */'));
         $directories = explode(PHP_EOL, $result);
         $collection = new ProjectCollection();
         $factory = new ProjectFactory();
@@ -32,8 +32,8 @@ final readonly class GitRepository implements GitRepositoryInterface
         foreach ($directories as $directory) {
             $path = self::PROJECTS_PATH . DS . $directory;
             $name = rtrim($directory, DS);
-            $branch = ltrim(trim(shell_exec(sprintf("cd %s && git branch | grep '*'", $path))), '* ');
-            $url = trim(shell_exec(sprintf('cd %s && git config --get remote.origin.url', $path)));
+            $branch = ltrim(trim(shell_exec(sprintf("cd %s && git branch | grep '*'", escapeshellarg($path)))), '* ');
+            $url = trim(shell_exec(sprintf('cd %s && git config --get remote.origin.url', escapeshellarg($path))));
 
             $collection->add($factory->create([
                 'name' => $name,
@@ -52,13 +52,12 @@ final readonly class GitRepository implements GitRepositoryInterface
 
         $exclude = '';
         if ($this->logExcludePath !== []) {
-            $exclude = " -- ':(exclude)" .
-                implode("' ':(exclude)", $this->logExcludePath) .
-                "'";
+            $excludePaths = array_map(fn($p): string => escapeshellarg(':(exclude)' . $p), $this->logExcludePath);
+            $exclude = ' -- ' . implode(' ', $excludePaths);
         }
 
-        $log = shell_exec(sprintf('cd %s ', $project->path->value) .
-            sprintf("&& git log --shortstat --no-merges --date=iso-local --since='%s'", $since->getValueInMainFormat()) .
+        $log = shell_exec(sprintf('cd %s ', escapeshellarg($project->path->value)) .
+            sprintf('&& git log --shortstat --no-merges --date=iso-local --since=%s', escapeshellarg($since->getValueInMainFormat())) .
             " --format='{|c|}{|p|}commit: %H{|p|}date: %aI{|p|}name: %aN{|p|}email: %aE{|p|}stat:'" .
             ($exclude . ' | tr \'
 \' \' \'')) ?? '';
