@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Gitlab\Project\Factory;
 
 use App\Domain\Gitlab\Project\Project;
+use App\Domain\Gitlab\Project\ProjectCollection;
 use App\Domain\Gitlab\Project\ValueObject\ProjectDefaultBranch;
 use App\Domain\Gitlab\Project\ValueObject\ProjectHttpUrlToRepoRequired;
 use App\Domain\Gitlab\Project\ValueObject\ProjectId;
@@ -34,5 +35,19 @@ final readonly class ProjectFactory
             new ProjectHttpUrlToRepoRequired($data['http_url_to_repo'] ?? ''),
             new ProjectRequiredWebUrl($data['web_url'] ?? ''),
         );
+    }
+
+    /** @param array<int, array<string, mixed>> $data */
+    public function createCollection(array $data): ProjectCollection
+    {
+        $collection = new ProjectCollection();
+        array_walk(
+            $data,
+            function (array $item) use ($collection): void {
+                $collection->add($this->create($item));
+            },
+        );
+
+        return $collection;
     }
 }

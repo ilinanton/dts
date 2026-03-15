@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Gitlab;
 
 use App\Domain\Gitlab\Source\GitlabSourceProjectInterface;
-use App\Domain\Gitlab\Project\Factory\ProjectCollectionFromArray;
+use App\Domain\Gitlab\Project\Factory\ProjectFactory;
 use App\Domain\Gitlab\Project\ProjectCollection;
 use App\Domain\Gitlab\Project\Repository\GitlabSourceProjectRepositoryInterface;
 
@@ -13,6 +13,7 @@ final readonly class GitlabApiProjectRepository implements GitlabSourceProjectRe
 {
     public function __construct(
         private GitlabSourceProjectInterface $client,
+        private ProjectFactory $projectFactory,
         private array $excludedProjectIds,
     ) {
     }
@@ -23,7 +24,7 @@ final readonly class GitlabApiProjectRepository implements GitlabSourceProjectRe
         $data = array_filter($data, function (array $value): bool {
             return !in_array($value['id'], $this->excludedProjectIds);
         });
-        $projectCollectionFactory = new ProjectCollectionFromArray();
-        return $projectCollectionFactory->create($data);
+
+        return $this->projectFactory->createCollection($data);
     }
 }

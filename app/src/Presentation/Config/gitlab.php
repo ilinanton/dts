@@ -259,6 +259,7 @@ return [
     GitlabSourceProjectRepositoryInterface::class => function (ContainerInterface $c): GitlabSourceProjectRepositoryInterface {
         return new GitlabApiProjectRepository(
             $c->get(GitlabSourceProjectInterface::class),
+            $c->get(ProjectFactory::class),
             $c->get(GitlabConfiguration::class)->excludedProjectIds,
         );
     },
