@@ -8,6 +8,8 @@ use App\Application\Gitlab\SyncGitlabMergeRequestLabelEventsUseCase;
 use App\Application\Gitlab\SyncGitlabLabelsUseCase;
 use App\Domain\Gitlab\Event\EventFilter;
 use App\Domain\Gitlab\Event\EventFilterCollection;
+use App\Domain\Gitlab\Event\EventFilterParam;
+use App\Domain\Gitlab\Event\EventFilterValue;
 use App\Application\Gitlab\SyncGitlabProjectCommitStatsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectCommitsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectEventsUseCase;
@@ -114,9 +116,9 @@ return [
     },
     EventFilterCollection::class => function (): EventFilterCollection {
         $collection = new EventFilterCollection();
-        $collection->add(new EventFilter('action', 'pushed'));
-        $collection->add(new EventFilter('action', 'commented'));
-        $collection->add(new EventFilter('target_type', 'merge_request'));
+        $collection->add(new EventFilter(EventFilterParam::Action, EventFilterValue::Pushed));
+        $collection->add(new EventFilter(EventFilterParam::Action, EventFilterValue::Commented));
+        $collection->add(new EventFilter(EventFilterParam::TargetType, EventFilterValue::MergeRequest));
 
         return $collection;
     },

@@ -43,11 +43,11 @@ final readonly class SyncGitlabProjectEventsUseCase implements UseCaseInterface
         $projectName = $project->name->value;
         $this->output->writeLine(' - #' . $projectId . ' ' . $projectName);
         foreach ($this->eventFilters as $filter) {
-            $this->output->write('   - ' . $filter->paramName . ': ' . $filter->value);
+            $this->output->write('   - ' . $filter->paramName->value . ': ' . $filter->value->value);
 
             $baseParams = [
                 'after' => $this->syncDateAfter->getValueInMainFormat(),
-                $filter->paramName => $filter->value,
+                $filter->paramName->value => $filter->value->value,
             ];
 
             $items = $this->paginator->paginate(
