@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Report;
 
+use App\Domain\Report\ValueObject\Score;
+
 final readonly class ScoringService
 {
     public function __construct(
@@ -11,9 +13,9 @@ final readonly class ScoringService
     ) {
     }
 
-    public function calculateScore(DeveloperStatistics $statistics): float
+    public function calculateScore(DeveloperStatistics $statistics): Score
     {
-        return
+        return new Score(
             $statistics->mergeRequestsCreated->value * $this->configuration->mergeRequestCreated->value +
             $statistics->approvalsGiven->value * $this->configuration->approvalsGiven->value +
             $statistics->mergeRequestsMerged->value * $this->configuration->mergeRequestMerged->value +
@@ -22,6 +24,7 @@ final readonly class ScoringService
             $statistics->linesAdded->value * $this->configuration->linesAdded->value +
             $statistics->linesDeleted->value * $this->configuration->linesRemoved->value +
             $statistics->mergeRequestsSelfApproved->value * $this->configuration->selfApprovals->value +
-            $statistics->commitsToDefaultBranch->value * $this->configuration->directCommitsToMain->value;
+            $statistics->commitsToDefaultBranch->value * $this->configuration->directCommitsToMain->value,
+        );
     }
 }

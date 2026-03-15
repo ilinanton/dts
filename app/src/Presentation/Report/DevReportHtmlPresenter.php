@@ -109,7 +109,7 @@ HTML;
     {
         $s = $dev->statistics;
         $name = $this->escape($s->userName->value);
-        $score = number_format($dev->score, 2, '.', '');
+        $score = $dev->score->formatted();
 
         return <<<HTML
 <tr>

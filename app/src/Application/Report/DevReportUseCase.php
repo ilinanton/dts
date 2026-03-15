@@ -28,7 +28,7 @@ final readonly class DevReportUseCase implements UseCaseInterface
         $criteria = $this->createReportCriteria();
         $statistics = $this->repository->getStatistics($criteria);
         $scoredDevelopers = $this->buildScoredDevelopers($statistics);
-        usort($scoredDevelopers, static fn(ScoredDeveloper $a, ScoredDeveloper $b): int => $b->score <=> $a->score);
+        usort($scoredDevelopers, static fn(ScoredDeveloper $a, ScoredDeveloper $b): int => $b->score->value <=> $a->score->value);
         $this->presenter->render($scoredDevelopers, $criteria);
     }
 

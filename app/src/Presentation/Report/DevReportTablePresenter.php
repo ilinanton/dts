@@ -45,7 +45,7 @@ final readonly class DevReportTablePresenter implements DevReportPresenterInterf
                 $stat->getTotalLinesChanged(),
                 $stat->mergeRequestsSelfApproved->value,
                 $stat->commitsToDefaultBranch->value,
-                $scoredDeveloper->score,
+                $scoredDeveloper->score->value,
             ];
         }
         return $rows;
