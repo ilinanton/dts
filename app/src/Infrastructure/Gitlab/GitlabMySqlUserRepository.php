@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
-use App\Domain\Gitlab\User\Factory\UserCollectionFromArray;
+use App\Infrastructure\Gitlab\Factory\UserCollectionFromArray;
 use App\Domain\Gitlab\User\Repository\GitlabStorageUserRepositoryInterface;
 use App\Domain\Gitlab\User\User;
 use App\Domain\Gitlab\User\UserCollection;

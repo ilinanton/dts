@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Gitlab\Note;
+namespace App\Infrastructure\Gitlab\Factory;
 
+use App\Domain\Gitlab\Note\Note;
 use App\Domain\Gitlab\Note\ValueObject\NoteBody;
 
 final class NoteFactory

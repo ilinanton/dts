@@ -6,7 +6,7 @@ namespace App\Infrastructure\Gitlab;
 
 use App\Domain\Gitlab\Source\GitlabSourceEventInterface;
 use App\Domain\Gitlab\Event\EventCollection;
-use App\Domain\Gitlab\Event\EventFactory;
+use App\Infrastructure\Gitlab\Factory\EventFactory;
 use App\Domain\Gitlab\Event\Repository\GitlabSourceEventRepositoryInterface;
 
 final readonly class GitlabApiEventRepository implements GitlabSourceEventRepositoryInterface

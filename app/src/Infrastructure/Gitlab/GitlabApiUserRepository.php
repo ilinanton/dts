@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Gitlab;
 
 use App\Domain\Gitlab\Source\GitlabSourceUserInterface;
-use App\Domain\Gitlab\User\Factory\UserCollectionFromArray;
+use App\Infrastructure\Gitlab\Factory\UserCollectionFromArray;
 use App\Domain\Gitlab\User\Repository\GitlabSourceUserRepositoryInterface;
 use App\Domain\Gitlab\User\UserCollection;
 

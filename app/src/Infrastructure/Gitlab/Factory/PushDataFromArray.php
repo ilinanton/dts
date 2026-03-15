@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Gitlab\PushData\Factory;
+namespace App\Infrastructure\Gitlab\Factory;
 
 use App\Domain\Gitlab\PushData\PushData;
 use App\Domain\Gitlab\PushData\ValueObject\PushDataAction;

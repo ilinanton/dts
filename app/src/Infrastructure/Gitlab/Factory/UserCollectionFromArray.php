@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Gitlab\User\Factory;
+namespace App\Infrastructure\Gitlab\Factory;
 
 use App\Domain\Gitlab\User\UserCollection;
 

@@ -2,20 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Gitlab\MergeRequest;
+namespace App\Infrastructure\Gitlab\Factory;
 
+use App\Domain\Gitlab\MergeRequest\MergeRequest;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestAuthorId;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestCreatedAt;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestId;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestIid;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestMergedAt;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestProjectId;
+use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestRequiredWebUrl;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestSourceBranch;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestState;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestTargetBranch;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestTitle;
 use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestUpdatedAt;
-use App\Domain\Gitlab\MergeRequest\ValueObject\MergeRequestRequiredWebUrl;
 
 final class MergeRequestFactory
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Gitlab\Project\Factory;
+namespace App\Infrastructure\Gitlab\Factory;
 
 use App\Domain\Gitlab\Project\Project;
 use App\Domain\Gitlab\Project\ProjectCollection;

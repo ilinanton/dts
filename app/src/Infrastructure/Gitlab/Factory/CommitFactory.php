@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Gitlab\Commit;
+namespace App\Infrastructure\Gitlab\Factory;
 
+use App\Domain\Gitlab\Commit\Commit;
 use App\Domain\Gitlab\Commit\ValueObject\CommitAuthoredDate;
 use App\Domain\Gitlab\Commit\ValueObject\CommitAuthorEmail;
 use App\Domain\Gitlab\Commit\ValueObject\CommitAuthorName;

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Gitlab\Event;
+namespace App\Infrastructure\Gitlab\Factory;
 
+use App\Domain\Gitlab\Event\Event;
 use App\Domain\Gitlab\Event\ValueObject\EventActionName;
 use App\Domain\Gitlab\Event\ValueObject\EventAuthorId;
 use App\Domain\Gitlab\Event\ValueObject\EventCreatedAt;
@@ -15,8 +16,6 @@ use App\Domain\Gitlab\Event\ValueObject\EventTargetId;
 use App\Domain\Gitlab\Event\ValueObject\EventTargetIid;
 use App\Domain\Gitlab\Event\ValueObject\EventTargetTitle;
 use App\Domain\Gitlab\Event\ValueObject\EventTargetType;
-use App\Domain\Gitlab\Note\NoteFactory;
-use App\Domain\Gitlab\PushData\Factory\PushDataFromArray;
 
 final readonly class EventFactory
 {

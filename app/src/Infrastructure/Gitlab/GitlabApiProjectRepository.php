@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Gitlab;
 
 use App\Domain\Gitlab\Source\GitlabSourceProjectInterface;
-use App\Domain\Gitlab\Project\Factory\ProjectFactory;
+use App\Infrastructure\Gitlab\Factory\ProjectFactory;
 use App\Domain\Gitlab\Project\ProjectCollection;
 use App\Domain\Gitlab\Project\Repository\GitlabSourceProjectRepositoryInterface;
 

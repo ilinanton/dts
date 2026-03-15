@@ -6,7 +6,7 @@ namespace App\Infrastructure\Gitlab;
 
 use App\Domain\Gitlab\Source\GitlabSourceMergeRequestInterface;
 use App\Domain\Gitlab\MergeRequest\MergeRequestCollection;
-use App\Domain\Gitlab\MergeRequest\MergeRequestFactory;
+use App\Infrastructure\Gitlab\Factory\MergeRequestFactory;
 use App\Domain\Gitlab\MergeRequest\Repository\GitlabSourceMergeRequestRepositoryInterface;
 
 final readonly class GitlabApiMergeRequestRepository implements GitlabSourceMergeRequestRepositoryInterface
