@@ -7,9 +7,9 @@ namespace App\Infrastructure\Gitlab;
 use App\Domain\Gitlab\ApiClient\GitlabApiClientProjectInterface;
 use App\Domain\Gitlab\Project\Factory\ProjectCollectionFromArray;
 use App\Domain\Gitlab\Project\ProjectCollection;
-use App\Domain\Gitlab\Project\Repository\GitlabApiProjectRepositoryInterface;
+use App\Domain\Gitlab\Project\Repository\GitlabSourceProjectRepositoryInterface;
 
-final readonly class GitlabApiProjectRepository implements GitlabApiProjectRepositoryInterface
+final readonly class GitlabApiProjectRepository implements GitlabSourceProjectRepositoryInterface
 {
     public function __construct(
         private GitlabApiClientProjectInterface $client,

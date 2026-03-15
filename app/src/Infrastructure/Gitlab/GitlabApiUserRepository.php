@@ -6,10 +6,10 @@ namespace App\Infrastructure\Gitlab;
 
 use App\Domain\Gitlab\ApiClient\GitlabApiClientUserInterface;
 use App\Domain\Gitlab\User\Factory\UserCollectionFromArray;
-use App\Domain\Gitlab\User\Repository\GitlabApiUserRepositoryInterface;
+use App\Domain\Gitlab\User\Repository\GitlabSourceUserRepositoryInterface;
 use App\Domain\Gitlab\User\UserCollection;
 
-final readonly class GitlabApiUserRepository implements GitlabApiUserRepositoryInterface
+final readonly class GitlabApiUserRepository implements GitlabSourceUserRepositoryInterface
 {
     public function __construct(
         private GitlabApiClientUserInterface $client,

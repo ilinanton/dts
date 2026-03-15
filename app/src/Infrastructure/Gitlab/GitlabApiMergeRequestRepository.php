@@ -7,9 +7,9 @@ namespace App\Infrastructure\Gitlab;
 use App\Domain\Gitlab\ApiClient\GitlabApiClientMergeRequestInterface;
 use App\Domain\Gitlab\MergeRequest\MergeRequestCollection;
 use App\Domain\Gitlab\MergeRequest\MergeRequestFactory;
-use App\Domain\Gitlab\MergeRequest\Repository\GitlabApiMergeRequestRepositoryInterface;
+use App\Domain\Gitlab\MergeRequest\Repository\GitlabSourceMergeRequestRepositoryInterface;
 
-final readonly class GitlabApiMergeRequestRepository implements GitlabApiMergeRequestRepositoryInterface
+final readonly class GitlabApiMergeRequestRepository implements GitlabSourceMergeRequestRepositoryInterface
 {
     public function __construct(
         private GitlabApiClientMergeRequestInterface $client,

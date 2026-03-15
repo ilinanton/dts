@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Infrastructure\Gitlab;
 
 use App\Domain\Gitlab\Event\Event;
-use App\Domain\Gitlab\Event\Repository\GitlabDataBaseEventRepositoryInterface;
+use App\Domain\Gitlab\Event\Repository\GitlabStorageEventRepositoryInterface;
 use PDO;
 
-final readonly class GitlabMySqlEventRepository implements GitlabDataBaseEventRepositoryInterface
+final readonly class GitlabMySqlEventRepository implements GitlabStorageEventRepositoryInterface
 {
     public function __construct(
         private PDO $pdo,

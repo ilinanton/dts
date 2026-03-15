@@ -7,9 +7,9 @@ namespace App\Infrastructure\Gitlab;
 use App\Domain\Gitlab\ApiClient\GitlabApiClientEventInterface;
 use App\Domain\Gitlab\Event\EventCollection;
 use App\Domain\Gitlab\Event\EventFactory;
-use App\Domain\Gitlab\Event\Repository\GitlabApiEventRepositoryInterface;
+use App\Domain\Gitlab\Event\Repository\GitlabSourceEventRepositoryInterface;
 
-final readonly class GitlabApiEventRepository implements GitlabApiEventRepositoryInterface
+final readonly class GitlabApiEventRepository implements GitlabSourceEventRepositoryInterface
 {
     public function __construct(
         private GitlabApiClientEventInterface $client,

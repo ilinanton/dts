@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Infrastructure\Gitlab;
 
 use App\Domain\Gitlab\CommitStats\CommitStats;
-use App\Domain\Gitlab\CommitStats\Repository\GitlabDataBaseCommitStatsRepositoryInterface;
+use App\Domain\Gitlab\CommitStats\Repository\GitlabStorageCommitStatsRepositoryInterface;
 use PDO;
 
-final readonly class GitlabMySqlCommitStatsRepository implements GitlabDataBaseCommitStatsRepositoryInterface
+final readonly class GitlabMySqlCommitStatsRepository implements GitlabStorageCommitStatsRepositoryInterface
 {
     public function __construct(
         private PDO $pdo,

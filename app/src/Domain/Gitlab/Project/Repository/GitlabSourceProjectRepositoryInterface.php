@@ -6,7 +6,7 @@ namespace App\Domain\Gitlab\Project\Repository;
 
 use App\Domain\Gitlab\Project\ProjectCollection;
 
-interface GitlabApiProjectRepositoryInterface
+interface GitlabSourceProjectRepositoryInterface
 {
     public function get(array $params = []): ProjectCollection;
 }

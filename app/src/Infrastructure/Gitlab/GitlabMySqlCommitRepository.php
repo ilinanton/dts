@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Infrastructure\Gitlab;
 
 use App\Domain\Gitlab\Commit\Commit;
-use App\Domain\Gitlab\Commit\Repository\GitlabDataBaseCommitRepositoryInterface;
+use App\Domain\Gitlab\Commit\Repository\GitlabStorageCommitRepositoryInterface;
 use PDO;
 
-final readonly class GitlabMySqlCommitRepository implements GitlabDataBaseCommitRepositoryInterface
+final readonly class GitlabMySqlCommitRepository implements GitlabStorageCommitRepositoryInterface
 {
     public function __construct(
         private PDO $pdo,

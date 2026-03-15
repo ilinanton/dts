@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Infrastructure\Gitlab;
 
 use App\Domain\Gitlab\Label\Label;
-use App\Domain\Gitlab\Label\Repository\GitlabDataBaseLabelRepositoryInterface;
+use App\Domain\Gitlab\Label\Repository\GitlabStorageLabelRepositoryInterface;
 use PDO;
 
-final readonly class GitlabMySqlLabelRepository implements GitlabDataBaseLabelRepositoryInterface
+final readonly class GitlabMySqlLabelRepository implements GitlabStorageLabelRepositoryInterface
 {
     public function __construct(
         private PDO $pdo,

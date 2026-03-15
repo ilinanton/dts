@@ -7,9 +7,9 @@ namespace App\Infrastructure\Gitlab;
 use App\Domain\Gitlab\ApiClient\GitlabApiClientLabelInterface;
 use App\Domain\Gitlab\Label\LabelCollection;
 use App\Domain\Gitlab\Label\LabelFactory;
-use App\Domain\Gitlab\Label\Repository\GitlabApiLabelRepositoryInterface;
+use App\Domain\Gitlab\Label\Repository\GitlabSourceLabelRepositoryInterface;
 
-final readonly class GitlabApiLabelRepository implements GitlabApiLabelRepositoryInterface
+final readonly class GitlabApiLabelRepository implements GitlabSourceLabelRepositoryInterface
 {
     public function __construct(
         private GitlabApiClientLabelInterface $client,

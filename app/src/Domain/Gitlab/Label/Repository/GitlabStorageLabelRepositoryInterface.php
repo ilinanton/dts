@@ -6,7 +6,7 @@ namespace App\Domain\Gitlab\Label\Repository;
 
 use App\Domain\Gitlab\Label\Label;
 
-interface GitlabDataBaseLabelRepositoryInterface
+interface GitlabStorageLabelRepositoryInterface
 {
     public function save(Label $object): void;
 }

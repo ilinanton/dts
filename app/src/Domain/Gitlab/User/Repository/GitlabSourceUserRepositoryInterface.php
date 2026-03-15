@@ -6,7 +6,7 @@ namespace App\Domain\Gitlab\User\Repository;
 
 use App\Domain\Gitlab\User\UserCollection;
 
-interface GitlabApiUserRepositoryInterface
+interface GitlabSourceUserRepositoryInterface
 {
     public function get(array $params = []): UserCollection;
 }

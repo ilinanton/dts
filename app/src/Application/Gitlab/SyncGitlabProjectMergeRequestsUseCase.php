@@ -9,17 +9,17 @@ use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Gitlab\MergeRequest\MergeRequestCollection;
-use App\Domain\Gitlab\MergeRequest\Repository\GitlabApiMergeRequestRepositoryInterface;
-use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
-use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterface;
+use App\Domain\Gitlab\MergeRequest\Repository\GitlabSourceMergeRequestRepositoryInterface;
+use App\Domain\Gitlab\MergeRequest\Repository\GitlabStorageMergeRequestRepositoryInterface;
+use App\Domain\Gitlab\Project\Repository\GitlabStorageProjectRepositoryInterface;
 
 final readonly class SyncGitlabProjectMergeRequestsUseCase implements UseCaseInterface
 {
     public function __construct(
         private SyncDateAfter $syncDateAfter,
-        private GitlabApiMergeRequestRepositoryInterface $apiMergeRequestRepository,
-        private GitlabDataBaseMergeRequestRepositoryInterface $dataBaseMergeRequestRepository,
-        private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
+        private GitlabSourceMergeRequestRepositoryInterface $apiMergeRequestRepository,
+        private GitlabStorageMergeRequestRepositoryInterface $dataBaseMergeRequestRepository,
+        private GitlabStorageProjectRepositoryInterface $dataBaseProjectRepository,
         private SyncOutputInterface $output,
         private Paginator $paginator,
     ) {

@@ -6,7 +6,7 @@ namespace App\Domain\Gitlab\ResourceLabelEvent\Repository;
 
 use App\Domain\Gitlab\ResourceLabelEvent\ResourceLabelEvent;
 
-interface GitlabDataBaseResourceLabelEventRepositoryInterface
+interface GitlabStorageResourceLabelEventRepositoryInterface
 {
     public function save(ResourceLabelEvent $object): void;
 }

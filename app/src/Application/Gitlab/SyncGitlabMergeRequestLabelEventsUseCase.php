@@ -8,19 +8,19 @@ use App\Application\Common\Paginator;
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 use App\Domain\Gitlab\Common\SyncDateAfter;
-use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
+use App\Domain\Gitlab\MergeRequest\Repository\GitlabStorageMergeRequestRepositoryInterface;
 use App\Domain\Gitlab\MergeRequest\ValueObject\UpdatedAfterDate;
-use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabApiResourceLabelEventRepositoryInterface;
-use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabDataBaseResourceLabelEventRepositoryInterface;
+use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabSourceResourceLabelEventRepositoryInterface;
+use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabStorageResourceLabelEventRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\ResourceLabelEventCollection;
 
 final readonly class SyncGitlabMergeRequestLabelEventsUseCase implements UseCaseInterface
 {
     public function __construct(
         private SyncDateAfter $syncDateAfter,
-        private GitlabApiResourceLabelEventRepositoryInterface $apiResourceLabelEventRepository,
-        private GitlabDataBaseResourceLabelEventRepositoryInterface $databaseResourceLabelEventRepository,
-        private GitlabDataBaseMergeRequestRepositoryInterface $dataBaseMergeRequestRepository,
+        private GitlabSourceResourceLabelEventRepositoryInterface $apiResourceLabelEventRepository,
+        private GitlabStorageResourceLabelEventRepositoryInterface $databaseResourceLabelEventRepository,
+        private GitlabStorageMergeRequestRepositoryInterface $dataBaseMergeRequestRepository,
         private SyncOutputInterface $output,
         private Paginator $paginator,
     ) {

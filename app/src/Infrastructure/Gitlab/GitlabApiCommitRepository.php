@@ -7,9 +7,9 @@ namespace App\Infrastructure\Gitlab;
 use App\Domain\Gitlab\ApiClient\GitlabApiClientCommitInterface;
 use App\Domain\Gitlab\Commit\CommitCollection;
 use App\Domain\Gitlab\Commit\CommitFactory;
-use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;
+use App\Domain\Gitlab\Commit\Repository\GitlabSourceCommitRepositoryInterface;
 
-final readonly class GitlabApiCommitRepository implements GitlabApiCommitRepositoryInterface
+final readonly class GitlabApiCommitRepository implements GitlabSourceCommitRepositoryInterface
 {
     public function __construct(
         private GitlabApiClientCommitInterface $client,

@@ -8,7 +8,7 @@ use App\Domain\Gitlab\MergeRequest\MergeRequest;
 use App\Domain\Gitlab\MergeRequest\MergeRequestCollection;
 use App\Domain\Gitlab\MergeRequest\ValueObject\UpdatedAfterDate;
 
-interface GitlabDataBaseMergeRequestRepositoryInterface
+interface GitlabStorageMergeRequestRepositoryInterface
 {
     public function save(MergeRequest $object): void;
 

@@ -9,17 +9,17 @@ use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Gitlab\Event\EventCollection;
-use App\Domain\Gitlab\Event\Repository\GitlabApiEventRepositoryInterface;
-use App\Domain\Gitlab\Event\Repository\GitlabDataBaseEventRepositoryInterface;
-use App\Domain\Gitlab\User\Repository\GitlabDataBaseUserRepositoryInterface;
+use App\Domain\Gitlab\Event\Repository\GitlabSourceEventRepositoryInterface;
+use App\Domain\Gitlab\Event\Repository\GitlabStorageEventRepositoryInterface;
+use App\Domain\Gitlab\User\Repository\GitlabStorageUserRepositoryInterface;
 
 final readonly class SyncGitlabUserEventsUseCase implements UseCaseInterface
 {
     public function __construct(
         private SyncDateAfter $syncDateAfter,
-        private GitlabDataBaseUserRepositoryInterface $dataBaseUserRepository,
-        private GitlabApiEventRepositoryInterface $apiEventRepository,
-        private GitlabDataBaseEventRepositoryInterface $dataBaseEventRepository,
+        private GitlabStorageUserRepositoryInterface $dataBaseUserRepository,
+        private GitlabSourceEventRepositoryInterface $apiEventRepository,
+        private GitlabStorageEventRepositoryInterface $dataBaseEventRepository,
         private SyncOutputInterface $output,
         private Paginator $paginator,
     ) {

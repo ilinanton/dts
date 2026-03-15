@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
-use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabDataBaseResourceLabelEventRepositoryInterface;
+use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabStorageResourceLabelEventRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\ResourceLabelEvent;
 use PDO;
 
-final readonly class GitlabMySqlResourceLabelEventRepository implements GitlabDataBaseResourceLabelEventRepositoryInterface
+final readonly class GitlabMySqlResourceLabelEventRepository implements GitlabStorageResourceLabelEventRepositoryInterface
 {
     public function __construct(
         private PDO $pdo,

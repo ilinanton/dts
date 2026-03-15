@@ -8,14 +8,14 @@ use App\Application\Common\Paginator;
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 use App\Domain\Gitlab\Project\ProjectCollection;
-use App\Domain\Gitlab\Project\Repository\GitlabApiProjectRepositoryInterface;
-use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterface;
+use App\Domain\Gitlab\Project\Repository\GitlabSourceProjectRepositoryInterface;
+use App\Domain\Gitlab\Project\Repository\GitlabStorageProjectRepositoryInterface;
 
 final readonly class SyncGitlabProjectsUseCase implements UseCaseInterface
 {
     public function __construct(
-        private GitlabApiProjectRepositoryInterface $apiProjectRepository,
-        private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
+        private GitlabSourceProjectRepositoryInterface $apiProjectRepository,
+        private GitlabStorageProjectRepositoryInterface $dataBaseProjectRepository,
         private SyncOutputInterface $output,
         private Paginator $paginator,
     ) {

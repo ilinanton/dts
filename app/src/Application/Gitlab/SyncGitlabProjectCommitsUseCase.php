@@ -9,18 +9,18 @@ use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 use App\Domain\Gitlab\Commit\CommitCollection;
 use App\Domain\Gitlab\Common\SyncDateAfter;
-use App\Domain\Gitlab\Commit\Repository\GitlabApiCommitRepositoryInterface;
-use App\Domain\Gitlab\Commit\Repository\GitlabDataBaseCommitRepositoryInterface;
+use App\Domain\Gitlab\Commit\Repository\GitlabSourceCommitRepositoryInterface;
+use App\Domain\Gitlab\Commit\Repository\GitlabStorageCommitRepositoryInterface;
 use App\Domain\Gitlab\Project\Project;
-use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterface;
+use App\Domain\Gitlab\Project\Repository\GitlabStorageProjectRepositoryInterface;
 
 final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
 {
     public function __construct(
         private SyncDateAfter $syncDateAfter,
-        private GitlabDataBaseProjectRepositoryInterface $dataBaseProjectRepository,
-        private GitlabApiCommitRepositoryInterface $apiCommitRepository,
-        private GitlabDataBaseCommitRepositoryInterface $dataBaseCommitRepository,
+        private GitlabStorageProjectRepositoryInterface $dataBaseProjectRepository,
+        private GitlabSourceCommitRepositoryInterface $apiCommitRepository,
+        private GitlabStorageCommitRepositoryInterface $dataBaseCommitRepository,
         private SyncOutputInterface $output,
         private Paginator $paginator,
     ) {

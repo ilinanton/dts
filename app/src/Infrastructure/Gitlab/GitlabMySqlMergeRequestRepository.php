@@ -7,11 +7,11 @@ namespace App\Infrastructure\Gitlab;
 use App\Domain\Gitlab\MergeRequest\MergeRequest;
 use App\Domain\Gitlab\MergeRequest\MergeRequestCollection;
 use App\Domain\Gitlab\MergeRequest\MergeRequestFactory;
-use App\Domain\Gitlab\MergeRequest\Repository\GitlabDataBaseMergeRequestRepositoryInterface;
+use App\Domain\Gitlab\MergeRequest\Repository\GitlabStorageMergeRequestRepositoryInterface;
 use App\Domain\Gitlab\MergeRequest\ValueObject\UpdatedAfterDate;
 use PDO;
 
-final readonly class GitlabMySqlMergeRequestRepository implements GitlabDataBaseMergeRequestRepositoryInterface
+final readonly class GitlabMySqlMergeRequestRepository implements GitlabStorageMergeRequestRepositoryInterface
 {
     public function __construct(
         private PDO $pdo,

@@ -7,10 +7,10 @@ namespace App\Infrastructure\Gitlab;
 use App\Domain\Gitlab\Project\Factory\ProjectFactory;
 use App\Domain\Gitlab\Project\Project;
 use App\Domain\Gitlab\Project\ProjectCollection;
-use App\Domain\Gitlab\Project\Repository\GitlabDataBaseProjectRepositoryInterface;
+use App\Domain\Gitlab\Project\Repository\GitlabStorageProjectRepositoryInterface;
 use PDO;
 
-final readonly class GitlabMySqlProjectRepository implements GitlabDataBaseProjectRepositoryInterface
+final readonly class GitlabMySqlProjectRepository implements GitlabStorageProjectRepositoryInterface
 {
     public function __construct(
         private PDO $pdo,

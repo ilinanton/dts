@@ -6,7 +6,7 @@ namespace App\Domain\Gitlab\Label\Repository;
 
 use App\Domain\Gitlab\Label\LabelCollection;
 
-interface GitlabApiLabelRepositoryInterface
+interface GitlabSourceLabelRepositoryInterface
 {
     public function get(array $params = []): LabelCollection;
 }

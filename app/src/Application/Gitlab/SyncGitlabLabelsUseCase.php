@@ -8,14 +8,14 @@ use App\Application\Common\Paginator;
 use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 use App\Domain\Gitlab\Label\LabelCollection;
-use App\Domain\Gitlab\Label\Repository\GitlabApiLabelRepositoryInterface;
-use App\Domain\Gitlab\Label\Repository\GitlabDataBaseLabelRepositoryInterface;
+use App\Domain\Gitlab\Label\Repository\GitlabSourceLabelRepositoryInterface;
+use App\Domain\Gitlab\Label\Repository\GitlabStorageLabelRepositoryInterface;
 
 final readonly class SyncGitlabLabelsUseCase implements UseCaseInterface
 {
     public function __construct(
-        private GitlabApiLabelRepositoryInterface $apiLabelRepository,
-        private GitlabDataBaseLabelRepositoryInterface $dataBaseLabelRepository,
+        private GitlabSourceLabelRepositoryInterface $apiLabelRepository,
+        private GitlabStorageLabelRepositoryInterface $dataBaseLabelRepository,
         private SyncOutputInterface $output,
         private Paginator $paginator,
     ) {

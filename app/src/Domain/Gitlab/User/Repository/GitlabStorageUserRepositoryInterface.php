@@ -7,7 +7,7 @@ namespace App\Domain\Gitlab\User\Repository;
 use App\Domain\Gitlab\User\User;
 use App\Domain\Gitlab\User\UserCollection;
 
-interface GitlabDataBaseUserRepositoryInterface
+interface GitlabStorageUserRepositoryInterface
 {
     public function save(User $object): void;
 
