@@ -22,9 +22,4 @@ abstract readonly class AbstractUnsignedInt
             throw new InvalidArgumentException(get_class($this) . ' is incorrect!');
         }
     }
-
-    public function getDbValue(): ?int
-    {
-        return $this->value === 0 ? null : $this->value;
-    }
 }

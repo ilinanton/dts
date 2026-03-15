@@ -60,7 +60,7 @@ SQL;
             ':ID' => $object->id->value,
             ':PROJECT_ID' => $object->projectId->value,
             ':GIT_COMMIT_ID' => $object->gitCommitId->value,
-            ':TITLE' => $object->title->getDbValue(),
+            ':TITLE' => DbValueConverter::nullableString($object->title),
             ':CREATED_AT' => $object->createdAt->getValue(),
             ':WEB_URL' => $object->webUrl->value,
 

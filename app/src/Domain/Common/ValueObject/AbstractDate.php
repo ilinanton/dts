@@ -37,15 +37,6 @@ abstract readonly class AbstractDate
         return $this->value->format('Y-m-d H:i:s');
     }
 
-    public function getDbValue(DateTimeZone $timeZone = new DateTimeZone('Etc/GMT+0')): ?string
-    {
-        if (!$this->value instanceof DateTime) {
-            return null;
-        }
-
-        return $this->getValue($timeZone);
-    }
-
     private function assertValueIsValid(string $value): void
     {
         $dateTime = DateTime::createFromFormat($this->format, $value);
