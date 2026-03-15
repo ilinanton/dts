@@ -44,4 +44,9 @@ abstract class AbstractCollection implements IteratorAggregate, Countable
     {
         return count($this->list);
     }
+
+    public function isEmpty(): bool
+    {
+        return 0 === $this->count();
+    }
 }

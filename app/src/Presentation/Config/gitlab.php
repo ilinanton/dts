@@ -28,6 +28,7 @@ use App\Domain\Gitlab\Common\SyncDateAfter;
 use App\Domain\Report\Repository\DevReportRepositoryInterface;
 use App\Domain\Report\ScoringConfiguration;
 use App\Domain\Report\ValueObject\LabelName;
+use App\Domain\Report\ValueObject\LabelNameCollection;
 use App\Domain\Report\ValueObject\ScoringPenalty;
 use App\Domain\Report\ValueObject\ScoringWeight;
 use App\Domain\Report\ScoringService;
@@ -179,11 +180,12 @@ return [
             new Paginator(60),
         );
     },
-    'REPORT_TESTED_LABELS' => function (ContainerInterface $c): array {
-        return array_map(
-            static fn(string $name): LabelName => new LabelName($name),
-            $c->get(GitlabConfiguration::class)->reportTestedLabels,
-        );
+    'REPORT_TESTED_LABELS' => function (ContainerInterface $c): LabelNameCollection {
+        $collection = new LabelNameCollection();
+        foreach ($c->get(GitlabConfiguration::class)->reportTestedLabels as $name) {
+            $collection->add(new LabelName($name));
+        }
+        return $collection;
     },
     ScoringConfiguration::class => function (ContainerInterface $c): ScoringConfiguration {
         $config = $c->get(GitlabConfiguration::class);

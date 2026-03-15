@@ -9,17 +9,16 @@ use App\Domain\Report\DeveloperStatisticsCollection;
 use App\Domain\Report\ReportCriteria;
 use App\Domain\Report\Repository\DevReportRepositoryInterface;
 use App\Domain\Report\ScoringService;
-use App\Domain\Report\ValueObject\LabelName;
+use App\Domain\Report\ValueObject\LabelNameCollection;
 
 final readonly class DevReportUseCase implements UseCaseInterface
 {
-    /** @param array<LabelName> $testedLabelNames */
     public function __construct(
         private DevReportRepositoryInterface $repository,
         private ScoringService $scoringService,
         private DevReportPresenterInterface $presenter,
         private ReportDateProviderInterface $dateProvider,
-        private array $testedLabelNames = [],
+        private LabelNameCollection $testedLabelNames = new LabelNameCollection(),
     ) {
     }
 

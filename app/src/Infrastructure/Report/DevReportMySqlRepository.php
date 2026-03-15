@@ -12,7 +12,7 @@ use App\Domain\Report\ValueObject\ApprovalCount;
 use App\Domain\Report\ValueObject\CommitCount;
 use App\Domain\Report\ValueObject\DeveloperUserId;
 use App\Domain\Report\ValueObject\DeveloperUserName;
-use App\Domain\Report\ValueObject\LabelName;
+use App\Domain\Report\ValueObject\LabelNameCollection;
 use App\Domain\Report\ValueObject\LineCount;
 use App\Domain\Report\ValueObject\MergeRequestCount;
 use PDO;
@@ -27,7 +27,7 @@ final readonly class DevReportMySqlRepository implements DevReportRepositoryInte
     public function getStatistics(ReportCriteria $criteria): DeveloperStatisticsCollection
     {
         $afterAt = $criteria->startDate->getValue();
-        $hasTestedLabels = $criteria->testedLabelNames !== [];
+        $hasTestedLabels = !$criteria->testedLabelNames->isEmpty();
 
         $testedJoin = '';
         $testedSelect = '0 AS mr_tested';
@@ -166,20 +166,18 @@ SQL;
         return $collection;
     }
 
-    /** @param array<LabelName> $labels */
-    private function buildLabelPlaceholders(array $labels): string
+    private function buildLabelPlaceholders(LabelNameCollection $labels): string
     {
         $keys = [];
-        foreach (array_keys($labels) as $i) {
+        foreach (array_keys(iterator_to_array($labels)) as $i) {
             $keys[] = ':LABEL_' . $i;
         }
         return implode(', ', $keys);
     }
 
-    /** @param array<LabelName> $labels */
-    private function bindLabelValues(\PDOStatement $stmt, array $labels): void
+    private function bindLabelValues(\PDOStatement $stmt, LabelNameCollection $labels): void
     {
-        foreach (array_values($labels) as $i => $label) {
+        foreach (array_values(iterator_to_array($labels)) as $i => $label) {
             $stmt->bindValue(':LABEL_' . $i, $label->value);
         }
     }
