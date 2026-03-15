@@ -40,13 +40,13 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Domain\Gitlab\Commit\Repository\GitlabSourceCommitRepositoryInterface;
 use App\Domain\Gitlab\Commit\Repository\GitlabStorageCommitRepositoryInterface;
 use App\Domain\Gitlab\CommitStats\Repository\GitlabStorageCommitStatsRepositoryInterface;
-use App\Domain\Gitlab\ApiClient\GitlabApiClientCommitInterface;
-use App\Domain\Gitlab\ApiClient\GitlabApiClientEventInterface;
-use App\Domain\Gitlab\ApiClient\GitlabApiClientLabelInterface;
-use App\Domain\Gitlab\ApiClient\GitlabApiClientMergeRequestInterface;
-use App\Domain\Gitlab\ApiClient\GitlabApiClientProjectInterface;
-use App\Domain\Gitlab\ApiClient\GitlabApiClientResourceLabelEventInterface;
-use App\Domain\Gitlab\ApiClient\GitlabApiClientUserInterface;
+use App\Domain\Gitlab\Source\GitlabSourceCommitInterface;
+use App\Domain\Gitlab\Source\GitlabSourceEventInterface;
+use App\Domain\Gitlab\Source\GitlabSourceLabelInterface;
+use App\Domain\Gitlab\Source\GitlabSourceMergeRequestInterface;
+use App\Domain\Gitlab\Source\GitlabSourceProjectInterface;
+use App\Domain\Gitlab\Source\GitlabSourceResourceLabelEventInterface;
+use App\Domain\Gitlab\Source\GitlabSourceUserInterface;
 use App\Domain\Gitlab\Event\Repository\GitlabSourceEventRepositoryInterface;
 use App\Domain\Gitlab\Event\Repository\GitlabStorageEventRepositoryInterface;
 use App\Domain\Gitlab\Label\Repository\GitlabSourceLabelRepositoryInterface;
@@ -256,29 +256,29 @@ return [
 
     GitlabSourceProjectRepositoryInterface::class => function (ContainerInterface $c): GitlabSourceProjectRepositoryInterface {
         return new GitlabApiProjectRepository(
-            $c->get(GitlabApiClientProjectInterface::class),
+            $c->get(GitlabSourceProjectInterface::class),
             $c->get(GitlabConfiguration::class)->excludedProjectIds,
         );
     },
     GitlabSourceUserRepositoryInterface::class => function (ContainerInterface $c): GitlabSourceUserRepositoryInterface {
         return new GitlabApiUserRepository(
-            $c->get(GitlabApiClientUserInterface::class),
+            $c->get(GitlabSourceUserInterface::class),
             $c->get(GitlabConfiguration::class)->excludedUserIds,
         );
     },
     GitlabSourceLabelRepositoryInterface::class => function (ContainerInterface $c): GitlabSourceLabelRepositoryInterface {
         return new GitlabApiLabelRepository(
-            $c->get(GitlabApiClientLabelInterface::class),
+            $c->get(GitlabSourceLabelInterface::class),
         );
     },
     GitlabSourceResourceLabelEventRepositoryInterface::class => function (ContainerInterface $c): GitlabSourceResourceLabelEventRepositoryInterface {
         return new GitlabApiResourceLabelEventRepository(
-            $c->get(GitlabApiClientResourceLabelEventInterface::class),
+            $c->get(GitlabSourceResourceLabelEventInterface::class),
         );
     },
     GitlabSourceMergeRequestRepositoryInterface::class => function (ContainerInterface $c): GitlabSourceMergeRequestRepositoryInterface {
         return new GitlabApiMergeRequestRepository(
-            $c->get(GitlabApiClientMergeRequestInterface::class),
+            $c->get(GitlabSourceMergeRequestInterface::class),
         );
     },
     EventFactory::class => function (ContainerInterface $c): EventFactory {
@@ -306,7 +306,7 @@ return [
     },
     GitlabSourceEventRepositoryInterface::class => function (ContainerInterface $c): GitlabSourceEventRepositoryInterface {
         return new GitlabApiEventRepository(
-            $c->get(GitlabApiClientEventInterface::class),
+            $c->get(GitlabSourceEventInterface::class),
             $c->get(EventFactory::class),
         );
     },
@@ -318,7 +318,7 @@ return [
     },
     GitlabSourceCommitRepositoryInterface::class => function (ContainerInterface $c): GitlabSourceCommitRepositoryInterface {
         return new GitlabApiCommitRepository(
-            $c->get(GitlabApiClientCommitInterface::class),
+            $c->get(GitlabSourceCommitInterface::class),
             $c->get(GitlabCommitFactory::class),
         );
     },
@@ -330,25 +330,25 @@ return [
             $config->gitlabGroupId,
         );
     },
-    GitlabApiClientProjectInterface::class => function (ContainerInterface $c): GitlabApiClientProjectInterface {
+    GitlabSourceProjectInterface::class => function (ContainerInterface $c): GitlabSourceProjectInterface {
         return $c->get(GitlabApiClient::class);
     },
-    GitlabApiClientUserInterface::class => function (ContainerInterface $c): GitlabApiClientUserInterface {
+    GitlabSourceUserInterface::class => function (ContainerInterface $c): GitlabSourceUserInterface {
         return $c->get(GitlabApiClient::class);
     },
-    GitlabApiClientMergeRequestInterface::class => function (ContainerInterface $c): GitlabApiClientMergeRequestInterface {
+    GitlabSourceMergeRequestInterface::class => function (ContainerInterface $c): GitlabSourceMergeRequestInterface {
         return $c->get(GitlabApiClient::class);
     },
-    GitlabApiClientEventInterface::class => function (ContainerInterface $c): GitlabApiClientEventInterface {
+    GitlabSourceEventInterface::class => function (ContainerInterface $c): GitlabSourceEventInterface {
         return $c->get(GitlabApiClient::class);
     },
-    GitlabApiClientCommitInterface::class => function (ContainerInterface $c): GitlabApiClientCommitInterface {
+    GitlabSourceCommitInterface::class => function (ContainerInterface $c): GitlabSourceCommitInterface {
         return $c->get(GitlabApiClient::class);
     },
-    GitlabApiClientLabelInterface::class => function (ContainerInterface $c): GitlabApiClientLabelInterface {
+    GitlabSourceLabelInterface::class => function (ContainerInterface $c): GitlabSourceLabelInterface {
         return $c->get(GitlabApiClient::class);
     },
-    GitlabApiClientResourceLabelEventInterface::class => function (ContainerInterface $c): GitlabApiClientResourceLabelEventInterface {
+    GitlabSourceResourceLabelEventInterface::class => function (ContainerInterface $c): GitlabSourceResourceLabelEventInterface {
         return $c->get(GitlabApiClient::class);
     },
     GitlabStorageProjectRepositoryInterface::class => function (ContainerInterface $c): GitlabStorageProjectRepositoryInterface {

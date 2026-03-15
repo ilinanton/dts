@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
-use App\Domain\Gitlab\ApiClient\GitlabApiClientUserInterface;
+use App\Domain\Gitlab\Source\GitlabSourceUserInterface;
 use App\Domain\Gitlab\User\Factory\UserCollectionFromArray;
 use App\Domain\Gitlab\User\Repository\GitlabSourceUserRepositoryInterface;
 use App\Domain\Gitlab\User\UserCollection;
@@ -12,7 +12,7 @@ use App\Domain\Gitlab\User\UserCollection;
 final readonly class GitlabApiUserRepository implements GitlabSourceUserRepositoryInterface
 {
     public function __construct(
-        private GitlabApiClientUserInterface $client,
+        private GitlabSourceUserInterface $client,
         private array $excludedUserIds,
     ) {
     }

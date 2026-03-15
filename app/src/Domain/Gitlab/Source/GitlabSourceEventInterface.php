@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Gitlab\ApiClient;
+namespace App\Domain\Gitlab\Source;
 
-interface GitlabApiClientEventInterface
+interface GitlabSourceEventInterface
 {
     public function getProjectEvents(int $projectId, array $params = []): array;
 

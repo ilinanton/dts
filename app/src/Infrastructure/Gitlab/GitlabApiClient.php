@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
-use App\Domain\Gitlab\ApiClient\GitlabApiClientCommitInterface;
-use App\Domain\Gitlab\ApiClient\GitlabApiClientEventInterface;
-use App\Domain\Gitlab\ApiClient\GitlabApiClientLabelInterface;
-use App\Domain\Gitlab\ApiClient\GitlabApiClientMergeRequestInterface;
-use App\Domain\Gitlab\ApiClient\GitlabApiClientProjectInterface;
-use App\Domain\Gitlab\ApiClient\GitlabApiClientResourceLabelEventInterface;
-use App\Domain\Gitlab\ApiClient\GitlabApiClientUserInterface;
+use App\Domain\Gitlab\Source\GitlabSourceCommitInterface;
+use App\Domain\Gitlab\Source\GitlabSourceEventInterface;
+use App\Domain\Gitlab\Source\GitlabSourceLabelInterface;
+use App\Domain\Gitlab\Source\GitlabSourceMergeRequestInterface;
+use App\Domain\Gitlab\Source\GitlabSourceProjectInterface;
+use App\Domain\Gitlab\Source\GitlabSourceResourceLabelEventInterface;
+use App\Domain\Gitlab\Source\GitlabSourceUserInterface;
 use Exception;
 use GuzzleHttp\Client;
 
 final readonly class GitlabApiClient implements
-    GitlabApiClientProjectInterface,
-    GitlabApiClientUserInterface,
-    GitlabApiClientMergeRequestInterface,
-    GitlabApiClientEventInterface,
-    GitlabApiClientCommitInterface,
-    GitlabApiClientLabelInterface,
-    GitlabApiClientResourceLabelEventInterface
+    GitlabSourceProjectInterface,
+    GitlabSourceUserInterface,
+    GitlabSourceMergeRequestInterface,
+    GitlabSourceEventInterface,
+    GitlabSourceCommitInterface,
+    GitlabSourceLabelInterface,
+    GitlabSourceResourceLabelEventInterface
 {
     private Client $client;
     private int $groupId;

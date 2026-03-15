@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
-use App\Domain\Gitlab\ApiClient\GitlabApiClientResourceLabelEventInterface;
+use App\Domain\Gitlab\Source\GitlabSourceResourceLabelEventInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\Repository\GitlabSourceResourceLabelEventRepositoryInterface;
 use App\Domain\Gitlab\ResourceLabelEvent\ResourceLabelEventCollection;
 use App\Domain\Gitlab\ResourceLabelEvent\ResourceLabelEventFactory;
@@ -12,7 +12,7 @@ use App\Domain\Gitlab\ResourceLabelEvent\ResourceLabelEventFactory;
 final readonly class GitlabApiResourceLabelEventRepository implements GitlabSourceResourceLabelEventRepositoryInterface
 {
     public function __construct(
-        private GitlabApiClientResourceLabelEventInterface $client,
+        private GitlabSourceResourceLabelEventInterface $client,
     ) {
     }
 
