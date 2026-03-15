@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace App\Application\Common;
 
+use InvalidArgumentException;
+
 final readonly class Paginator
 {
     public function __construct(
         private int $itemsPerPage,
     ) {
+        if ($itemsPerPage <= 0) {
+            throw new InvalidArgumentException('Items per page must be greater than zero');
+        }
     }
 
     /**
