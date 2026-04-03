@@ -22,6 +22,8 @@ INSERT INTO gitlab_commit_stats
     (
      git_commit_id,
      project_id,
+     author_email,
+     author_date,
      files,
      additions,
      deletions
@@ -30,17 +32,23 @@ VALUES
     (
      :GIT_COMMIT_ID,
      :PROJECT_ID,
+     :AUTHOR_EMAIL,
+     :AUTHOR_DATE,
      :FILES,
      :ADDITIONS,
      :DELETIONS
     )
-ON DUPLICATE KEY UPDATE git_commit_id = git_commit_id
+ON DUPLICATE KEY UPDATE
+    author_email = VALUES(author_email),
+    author_date = VALUES(author_date)
 SQL;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             ':GIT_COMMIT_ID' => $object->gitCommitId->value,
             ':PROJECT_ID' => $object->projectId->value,
+            ':AUTHOR_EMAIL' => $object->authorEmail->value,
+            ':AUTHOR_DATE' => $object->authorDate->getValue(),
             ':FILES' => $object->files->value,
             ':ADDITIONS' => $object->additions->value,
             ':DELETIONS' => $object->deletions->value,

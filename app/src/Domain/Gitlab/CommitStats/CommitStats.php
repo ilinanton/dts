@@ -6,6 +6,8 @@ namespace App\Domain\Gitlab\CommitStats;
 
 use App\Domain\Common\EntityInterface;
 use App\Domain\Gitlab\CommitStats\ValueObject\CommitStatsAdditions;
+use App\Domain\Gitlab\CommitStats\ValueObject\CommitStatsAuthorDate;
+use App\Domain\Gitlab\CommitStats\ValueObject\CommitStatsAuthorEmail;
 use App\Domain\Gitlab\CommitStats\ValueObject\CommitStatsDeletions;
 use App\Domain\Gitlab\CommitStats\ValueObject\CommitStatsFiles;
 use App\Domain\Gitlab\CommitStats\ValueObject\CommitStatsGitCommitId;
@@ -16,6 +18,8 @@ final readonly class CommitStats implements EntityInterface
     public function __construct(
         public CommitStatsGitCommitId $gitCommitId,
         public CommitStatsProjectId $projectId,
+        public CommitStatsAuthorEmail $authorEmail,
+        public CommitStatsAuthorDate $authorDate,
         public CommitStatsFiles $files,
         public CommitStatsAdditions $additions,
         public CommitStatsDeletions $deletions,

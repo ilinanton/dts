@@ -125,12 +125,9 @@ LEFT JOIN (
         SUM(s.additions) AS loc_add,
         SUM(s.deletions) AS loc_del
     FROM gitlab_user_x_git_user x
-    INNER JOIN gitlab_commit c
-            ON c.author_email = x.git_email
-           AND c.created_at >= :AFTER_AT
     INNER JOIN gitlab_commit_stats s
-            ON s.project_id = c.project_id
-           AND s.git_commit_id = c.git_commit_id
+            ON s.author_email = x.git_email
+           AND s.author_date >= :AFTER_AT
     GROUP BY x.gitlab_user_id
 ) commit_stats ON commit_stats.gitlab_user_id = u.id
 {$testedJoin}

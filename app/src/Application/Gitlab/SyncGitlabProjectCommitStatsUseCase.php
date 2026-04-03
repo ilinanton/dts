@@ -52,6 +52,8 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
                 $gitlabCommitStats = $this->commitStatsFactory->create(
                     $gitlabProject->id->value,
                     $gitCommit->id->value,
+                    $gitCommit->authorEmail->value,
+                    $gitCommit->authorDate->getValue(),
                     $gitCommit->stats->value->files->value,
                     $gitCommit->stats->value->additions->value,
                     $gitCommit->stats->value->deletions->value,
