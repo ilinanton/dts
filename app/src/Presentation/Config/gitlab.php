@@ -11,7 +11,6 @@ use App\Domain\Gitlab\Event\EventFilterCollection;
 use App\Domain\Gitlab\Event\EventFilterParam;
 use App\Domain\Gitlab\Event\EventFilterValue;
 use App\Application\Gitlab\SyncGitlabProjectCommitStatsUseCase;
-use App\Application\Gitlab\SyncGitlabProjectCommitsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectEventsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectMergeRequestsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectsUseCase;
@@ -40,8 +39,6 @@ use App\Presentation\Config\GitlabConfiguration;
 use App\Presentation\Report\CliReportDateProvider;
 use App\Presentation\Report\DevReportTablePresenter;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use App\Domain\Gitlab\Commit\Repository\GitlabSourceCommitRepositoryInterface;
-use App\Domain\Gitlab\Commit\Repository\GitlabStorageCommitRepositoryInterface;
 use App\Domain\Gitlab\CommitStats\Repository\GitlabStorageCommitStatsRepositoryInterface;
 use App\Domain\Gitlab\Source\GitlabSourceCommitInterface;
 use App\Domain\Gitlab\Source\GitlabSourceEventInterface;
@@ -65,7 +62,6 @@ use App\Domain\Gitlab\User\Repository\GitlabStorageUserRepositoryInterface;
 use App\Domain\Git\Commit\CommitFactory;
 use App\Domain\Git\Stats\StatsFactory;
 use App\Domain\Gitlab\CommitStats\CommitStatsFactory;
-use App\Infrastructure\Gitlab\Factory\CommitFactory as GitlabCommitFactory;
 use App\Infrastructure\Gitlab\Factory\EventFactory;
 use App\Infrastructure\Gitlab\Factory\MergeRequestFactory;
 use App\Infrastructure\Gitlab\Factory\NoteFactory;
@@ -73,14 +69,12 @@ use App\Infrastructure\Gitlab\Factory\ProjectFactory;
 use App\Infrastructure\Gitlab\Factory\PushDataFromArray;
 use App\Infrastructure\Git\GitRepository;
 use App\Infrastructure\Gitlab\GitlabApiClient;
-use App\Infrastructure\Gitlab\GitlabApiCommitRepository;
 use App\Infrastructure\Gitlab\GitlabApiEventRepository;
 use App\Infrastructure\Gitlab\GitlabApiLabelRepository;
 use App\Infrastructure\Gitlab\GitlabApiMergeRequestRepository;
 use App\Infrastructure\Gitlab\GitlabApiProjectRepository;
 use App\Infrastructure\Gitlab\GitlabApiResourceLabelEventRepository;
 use App\Infrastructure\Gitlab\GitlabApiUserRepository;
-use App\Infrastructure\Gitlab\GitlabMySqlCommitRepository;
 use App\Infrastructure\Gitlab\GitlabMySqlCommitStatsRepository;
 use App\Infrastructure\Gitlab\GitlabMySqlEventRepository;
 use App\Infrastructure\Gitlab\GitlabMySqlLabelRepository;
@@ -130,16 +124,6 @@ return [
             $c->get(GitlabSourceEventRepositoryInterface::class),
             $c->get(GitlabStorageEventRepositoryInterface::class),
             $c->get(EventFilterCollection::class),
-            $c->get(SyncOutputInterface::class),
-            new Paginator(40),
-        );
-    },
-    SyncGitlabProjectCommitsUseCase::class => function (ContainerInterface $c): UseCaseInterface {
-        return new SyncGitlabProjectCommitsUseCase(
-            new SyncDateAfter($c->get(GitlabConfiguration::class)->syncDateAfter),
-            $c->get(GitlabStorageProjectRepositoryInterface::class),
-            $c->get(GitlabSourceCommitRepositoryInterface::class),
-            $c->get(GitlabStorageCommitRepositoryInterface::class),
             $c->get(SyncOutputInterface::class),
             new Paginator(40),
         );
@@ -300,9 +284,6 @@ return [
     CommitStatsFactory::class => function (): CommitStatsFactory {
         return new CommitStatsFactory();
     },
-    GitlabCommitFactory::class => function (): GitlabCommitFactory {
-        return new GitlabCommitFactory();
-    },
     MergeRequestFactory::class => function (): MergeRequestFactory {
         return new MergeRequestFactory();
     },
@@ -319,12 +300,6 @@ return [
         return new GitRepository(
             $c->get(GitlabConfiguration::class)->gitLogExcludePath,
             $c->get(CommitFactory::class),
-        );
-    },
-    GitlabSourceCommitRepositoryInterface::class => function (ContainerInterface $c): GitlabSourceCommitRepositoryInterface {
-        return new GitlabApiCommitRepository(
-            $c->get(GitlabSourceCommitInterface::class),
-            $c->get(GitlabCommitFactory::class),
         );
     },
     GitlabApiClient::class => function (ContainerInterface $c): GitlabApiClient {
@@ -385,11 +360,6 @@ return [
     },
     GitlabStorageEventRepositoryInterface::class => function (ContainerInterface $c): GitlabStorageEventRepositoryInterface {
         return new GitlabMySqlEventRepository(
-            $c->get(PDO::class),
-        );
-    },
-    GitlabStorageCommitRepositoryInterface::class => function (ContainerInterface $c): GitlabStorageCommitRepositoryInterface {
-        return new GitlabMySqlCommitRepository(
             $c->get(PDO::class),
         );
     },

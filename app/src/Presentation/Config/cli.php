@@ -11,7 +11,6 @@ use App\Application\Gitlab\SyncGitlabDataUseCase;
 use App\Application\Gitlab\SyncGitlabMergeRequestLabelEventsUseCase;
 use App\Application\Gitlab\SyncGitlabLabelsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectCommitStatsUseCase;
-use App\Application\Gitlab\SyncGitlabProjectCommitsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectEventsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectMergeRequestsUseCase;
 use App\Application\Gitlab\SyncGitlabProjectsUseCase;
@@ -37,9 +36,6 @@ return [
     },
     Command::sync_gitlab_project_events->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitlabProjectEventsUseCase::class);
-    },
-    Command::sync_gitlab_project_commits->diId() => function (ContainerInterface $c) {
-        return $c->get(SyncGitlabProjectCommitsUseCase::class);
     },
     Command::sync_gitlab_project_commit_stats->diId() => function (ContainerInterface $c) {
         return $c->get(SyncGitlabProjectCommitStatsUseCase::class);
