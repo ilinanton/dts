@@ -37,8 +37,7 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
     private function syncProject(GitProject $gitProject): void
     {
         $this->output->write(' - Git project ' . $gitProject->name->value);
-        $gitlabProjectCollection =
-            $this->dataBaseProjectRepository->findByUrlToRepo($gitProject->url->value);
+        $gitlabProjectCollection = $this->dataBaseProjectRepository->findByUrlToRepo($gitProject->url->value);
 
         if (0 === $gitlabProjectCollection->count()) {
             $this->output->writeLine(' gitlab projects not found!');
