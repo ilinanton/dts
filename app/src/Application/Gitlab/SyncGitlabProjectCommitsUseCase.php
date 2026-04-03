@@ -8,19 +8,19 @@ use App\Application\SyncOutputInterface;
 use App\Application\UseCaseInterface;
 use App\Domain\Git\Commit\CommitSinceDate;
 use App\Domain\Git\Common\GitRepositoryInterface;
-use App\Domain\Gitlab\CommitStats\CommitStatsFactory;
-use App\Domain\Gitlab\CommitStats\Repository\GitlabStorageCommitStatsRepositoryInterface;
+use App\Domain\Gitlab\Commit\CommitFactory;
+use App\Domain\Gitlab\Commit\Repository\GitlabStorageCommitRepositoryInterface;
 use App\Domain\Git\Project\Project as GitProject;
 use App\Domain\Gitlab\Project\Repository\GitlabStorageProjectRepositoryInterface;
 
-final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInterface
+final readonly class SyncGitlabProjectCommitsUseCase implements UseCaseInterface
 {
     public function __construct(
         private CommitSinceDate $syncDateAfter,
         private GitRepositoryInterface $gitRepository,
         private GitlabStorageProjectRepositoryInterface $dataBaseProjectRepository,
-        private GitlabStorageCommitStatsRepositoryInterface $dataBaseCommitStatsRepository,
-        private CommitStatsFactory $commitStatsFactory,
+        private GitlabStorageCommitRepositoryInterface $dataBaseCommitRepository,
+        private CommitFactory $commitFactory,
         private SyncOutputInterface $output,
     ) {
     }
@@ -49,7 +49,7 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
         foreach ($gitCommitCollection as $gitCommit) {
             $counter++;
             foreach ($gitlabProjectCollection as $gitlabProject) {
-                $gitlabCommitStats = $this->commitStatsFactory->create(
+                $commit = $this->commitFactory->create(
                     $gitlabProject->id->value,
                     $gitCommit->id->value,
                     $gitCommit->authorEmail->value,
@@ -58,7 +58,7 @@ final readonly class SyncGitlabProjectCommitStatsUseCase implements UseCaseInter
                     $gitCommit->stats->value->additions->value,
                     $gitCommit->stats->value->deletions->value,
                 );
-                $this->dataBaseCommitStatsRepository->save($gitlabCommitStats);
+                $this->dataBaseCommitRepository->save($commit);
             }
 
             if (0 === $counter % 500) {

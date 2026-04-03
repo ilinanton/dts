@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Gitlab\CommitStats\ValueObject;
+namespace App\Domain\Gitlab\Commit\ValueObject;
 
 use App\Domain\Common\ValueObject\AbstractRequiredDate;
 
-final readonly class CommitStatsAuthorDate extends AbstractRequiredDate
+final readonly class CommitAuthorDate extends AbstractRequiredDate
 {
     public function __construct(string $value)
     {

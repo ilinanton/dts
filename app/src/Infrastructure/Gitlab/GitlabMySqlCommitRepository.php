@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gitlab;
 
-use App\Domain\Gitlab\CommitStats\CommitStats;
-use App\Domain\Gitlab\CommitStats\Repository\GitlabStorageCommitStatsRepositoryInterface;
+use App\Domain\Gitlab\Commit\Commit;
+use App\Domain\Gitlab\Commit\Repository\GitlabStorageCommitRepositoryInterface;
 use PDO;
 
-final readonly class GitlabMySqlCommitStatsRepository implements GitlabStorageCommitStatsRepositoryInterface
+final readonly class GitlabMySqlCommitRepository implements GitlabStorageCommitRepositoryInterface
 {
     public function __construct(
         private PDO $pdo,
     ) {
     }
 
-    public function save(CommitStats $object): void
+    public function save(Commit $object): void
     {
         $sql = <<<SQL
 INSERT INTO gitlab_commit_stats
