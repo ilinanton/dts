@@ -8,7 +8,8 @@ DTS synchronizes data from GitLab (projects, users, merge requests, commits, eve
 
 ## Features
 
-- Sync GitLab resources (projects, users, merge requests, commits, events, labels)
+- Sync GitLab resources (projects, users, merge requests, events, labels)
+- Sync commits directly from local Git repositories for accurate stats (additions/deletions/author)
 - Store data locally in MySQL for fast querying and reporting
 - Generate developer performance reports with customizable scoring
 - Dual report output: Markdown table (CLI) and interactive HTML with sortable columns
@@ -159,8 +160,8 @@ A merged MR is the tangible result of a developer's work that brings value to th
 | `POINTS_LINES_ADDED` | `0.001` | Points per added line of code |
 | `POINTS_LINES_REMOVED` | `0.002` | Points per removed line of code |
 
-- Lines are summed from commit stats (`additions` / `deletions`) for commits created after the report start date.
-- Git commits are matched to GitLab users via email through the `gitlab_user_x_git_user` bridge table.
+- Lines are summed from commit stats (`additions` / `deletions`) sourced directly from local Git repositories.
+- Commits are matched to GitLab users via author email through the `gitlab_user_x_git_user` bridge table.
 
 #### Informational Metrics
 
@@ -190,8 +191,7 @@ app/src/
 │   ├── Common/            # Abstract value objects (string, int, date, url)
 │   ├── Git/               # Git entities (Commit, Project, Stats, User)
 │   ├── Gitlab/            # GitLab entities per resource type
-│   │   ├── Commit/        # Commits with CommitGitCommitId
-│   │   ├── CommitStats/   # Commit statistics (additions/deletions)
+│   │   ├── Commit/        # Git commits (id, author, date, additions/deletions)
 │   │   ├── Event/         # GitLab events
 │   │   ├── Label/         # Labels
 │   │   ├── MergeRequest/  # Merge requests
@@ -233,7 +233,7 @@ app/src/
 
 ### Key Principles
 
-- **Repository Pattern**: each entity has API repository (fetch from GitLab) and MySQL repository (local storage)
+- **Repository Pattern**: each entity has a source repository (GitLab API or Git) and a MySQL storage repository
 - **Dependency Inversion**: domain interfaces defined in Domain layer, implemented in Infrastructure
 - **Use Case Pattern**: each business operation is a separate class implementing `UseCaseInterface`
 - **DI Container**: PHP-DI configured in `Presentation/Config/` — all dependencies injected, no static coupling
