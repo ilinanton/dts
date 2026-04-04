@@ -18,7 +18,7 @@ final readonly class GitlabMySqlCommitRepository implements GitlabStorageCommitR
     public function save(Commit $object): void
     {
         $sql = <<<SQL
-INSERT INTO gitlab_commit_stats
+INSERT INTO gitlab_commit
     (
      git_commit_id,
      project_id,
